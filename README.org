@@ -13,6 +13,8 @@
 
 ** Configuration
 
+Blocks preceded with 'IE' are just examples that are not evaluated, the rest of the blocks are put in the filename of the corresponding heading.
+
 *** TODO init.el
 
 *** package.el
@@ -32,6 +34,7 @@ use 'M-x doom/reload'.
 
 To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 
+IE:
 #+begin_src elisp :tangle no
 (package! some-package)
 #+end_src
@@ -40,6 +43,7 @@ To install a package directly from a remote git repo, you must specify a
 `:recipe'. You'll find documentation on what `:recipe' accepts here:
 https://github.com/raxod502/straight.el#the-recipe-format
 
+IE:
 #+begin_src elisp :tangle no
 (package! another-package
   :recipe (:host github :repo "username/repo"))
@@ -49,6 +53,7 @@ If the package you are trying to install does not contain a PACKAGENAME.el
 file, or is located in a subdirectory of the repo, you'll need to specify
 `:files' in the `:recipe':
 
+IE:
 #+begin_src elisp :tangle no
 (package! this-package
   :recipe (:host github :repo "username/repo"
@@ -58,6 +63,7 @@ file, or is located in a subdirectory of the repo, you'll need to specify
 If you'd like to disable a package included with Doom, you can do so here
 with the `:disable' property:
 
+IE:
 #+begin_src elisp :tangle no
 (package! builtin-package :disable t)
 #+end_src
@@ -66,6 +72,7 @@ You can override the recipe of a built in package without having to specify
 all the properties for `:recipe'. These will inherit the rest of its recipe
 from Doom or MELPA/ELPA/Emacsmirror:
 
+IE:
 #+begin_src elisp :tangle no
 (package! builtin-package :disable t)
 #+end_src
@@ -74,6 +81,7 @@ You can override the recipe of a built in package without having to specify
 all the properties for `:recipe'. These will inherit the rest of its recipe
 from Doom or MELPA/ELPA/Emacsmirror:
 
+IE:
 #+begin_src elisp :tangle no
 (package! builtin-package :recipe (:nonrecursive t))
 (package! builtin-package-2 :recipe (:repo "myfork/package"))
@@ -83,11 +91,13 @@ Specify a `:branch' to install a package from a particular branch or tag.
 This is required for some packages whose default branch isn't 'master' (which
 our package manager can't deal with; see raxod502/straight.el#279)
 
+IE:
 #+begin_src elisp :tangle no
 (package! builtin-package :recipe (:branch "develop"))
 #+end_src
 
 Use `:pin' to specify a particular commit to install.
+IE:
 #+begin_src elisp :tangle no
 (package! builtin-package :pin "1a2b3c4d5e")
 #+end_src
@@ -95,6 +105,7 @@ Use `:pin' to specify a particular commit to install.
 Doom's packages are pinned to a specific commit and updated from release to
 release. The `unpin!' macro allows you to unpin single packages...
 
+IE:
 #+begin_src elisp :tangle no
 (unpin! pinned-package)
 ; ...or multiple packages
@@ -142,11 +153,14 @@ are the three important ones:
 
 They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 font string. You generally only need these two:
+
+IE:
 #+begin_src elisp :tangle no
 (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 #+end_src
 
+Let's choose our monospaced font, Roboto Mono goodness:
 #+begin_src elisp
 (setq doom-font (font-spec :family "monospace" :size 16 :name "Roboto Mono"))
 #+end_src
