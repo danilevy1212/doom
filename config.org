@@ -447,6 +447,7 @@ Keybinding to easily find the feeds file.
                                           (find-file (car rmh-elfeed-org-files))))
 #+end_src
 
+**** TODO Create =x= keybinding for =starring= (★) a register, in search map and show map
 
 *** Japanese input.
 
@@ -468,18 +469,43 @@ First, let's define our toggle function. Activates mozc mode and changes the mod
            (setq global-mode-string (cdr msg-modeline)))))
 #+end_src
 
-Then we add a keybinding to the entry point, plus making sure the package lazily loads.
+Let's lazy load mozc, so it loads only when our entry function is called.
 
 #+begin_src elisp
 (use-package! mozc
   :commands mozc-mode
-  :config
-  (map! :ni "C-x j" #'dan/toggle-mozc-mode))
+#+end_src
+
+The overlay style is sluggish, the echo-area style is still pretty and very functional, it even works in the minibuffer!
+
+#+begin_src elisp
+  :custom
+  (mozc-candidate-style 'echo-area))
+#+end_src
+
+Finally, we create a keybinding activate mozc-mode.
+
+#+begin_src elisp
+(map! :g "C-x j" #'dan/toggle-mozc-mode)
+#+end_src
+
+**** TODO UGLY HACK, FIX THIS UNHOLY CREATION
+
+This is an ugly as hell hack that removes the keybindings defined by doom so mozc can work with evil-org-mode.
+
+I think that a better solution would be remove the bindings whe in mozc-mode and re-add them when getting out of mozc-mode
+
+[[https://emacs.stackexchange.com/questions/47090/how-to-automatically-remove-a-hook-provided-by-a-minor-mode-after-disabling-that/47092#47092][Something like this might do.]]
+
+#+begin_src elisp
+  (after! evil-org ;; TODO Document! Ugly hack to make mozc work in evil-org-mode
+    (map! :map evil-org-mode-map :i "<return>" nil
+                                 :i "RET"      nil))
 #+end_src
 
 **** TODO Prerequesites
 
-Requires emacs_mozc_helper
+Requires emacs_mozc_helper, this is how you install it:
 
 *** Rust
 
@@ -494,7 +520,7 @@ Seems like rls is more stable than rust-analyzer.
 
 When using the rustic popup, be in emacs state.
 
-*** TODO See if we can use ~set-popup-rules!~ to do this for us.
+**** TODO See if we can use ~set-popup-rules!~ to do this for us.
 
 #+begin_src elisp
   :config
