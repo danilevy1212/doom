@@ -9,7 +9,11 @@
 
 *** TODO Why Doom?
 
+[[https://blog.jethro.dev/posts/migrating_to_doom_emacs/][It's easy once you know what you are doing.]]
+
 ** Installation
+
+*** TODO Prerequesites
 
 ** Configuration
 
@@ -119,6 +123,14 @@ IE:
 So, finally, let's declare the packages we will use:
 
 #+begin_src elisp :tangle packages.el
+(package! org-edna)
+(package! mozc)
+#+end_src
+
+And disable ones we don't use.
+#+begin_src elisp :tangle packages.el
+(package! ddskk ;; MOZC is better, consider contributing it to the japanese module.
+  :disable t)
 #+end_src
 
 *** config.el
@@ -189,6 +201,15 @@ Let's add some small customizations, mostly make everything a bit brighter and b
   (doom-nord-region-highlight 'frost))
 #+end_src
 
+**** Rainbow Delimeters
+
+Matching pairs draw with the same face color, making them easily identifiable.
+
+#+begin_src elisp
+(add-hook! 'prog-mode-hook #'rainbow-delimiters-mode-enable)
+#+end_src
+
+
 **** Modeline
 
 The default doom-modeline is great, the only thing is that I want it to show me
@@ -209,13 +230,120 @@ Also, the battery indicator is pretty neat:
   (doom-modeline-mode . display-battery-mode))
 #+end_src
 
+**** TODO Perspective
+
 **** Org
+
+One of the killer features of emacs.
+
+#+begin_src elisp
+(use-package! org
+    :defer t
+#+end_src
 
 If you use `org' and don't want your org files in the default location below,
 change `org-directory'. It must be set before org loads!
 
 #+begin_src elisp
-(setq org-directory "~/Cloud/org/")
+    :custom
+    (org-directory "~/Cloud/org/")
+#+end_src
+
+Set ~org-attach-id-dir~ back to default value.
+
+#+begin_src elisp
+    (org-attach-id-dir  "data")
+#+end_src
+
+I only use one agenda file, that has all my rutine stuff in it.
+
+#+begin_src elisp
+    (org-agenda-files  `(,(expand-file-name "agenda.org" org-directory)))
+#+end_src
+
+Modules for keeping track of habits and completing checklists.
+
+#+begin_src elisp
+    (org-module  '(org-habit org-checklist))
+#+end_src
+
+Switch entry to 'DONE' when all subentries are done, to 'TODO' otherwise.
+
+#+begin_src elisp
+    :config
+    (add-hook! 'org-after-todo-statistics-hook '(lambda (n-done n-not-done)
+                          (let (org-log-done org-log-states)
+                            (org-todo (if (= n-not-done 0) "DONE" "TODO")))))
+#+end_src
+
+
+Switch header 'TODO' state to 'DONE' when all checkboxes are ticked, to 'TODO'
+otherwise
+
+#+begin_src elisp
+    (add-hook! 'org-checkbox-statistics-hook  '(lambda ()
+                                             (let ((todo-state (org-get-todo-state)) beg end)
+                                               (unless (not todo-state)
+                                                 (save-excursion
+                                                   (org-back-to-heading t)
+                                                   (setq beg (point))
+                                                   (end-of-line)
+                                                   (setq end (point))
+                                                   (goto-char beg)
+                                                   (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
+                                                                          end t)
+                                                       (if (match-end 1)
+                                                           (if (equal (match-string 1) "100%")
+                                                               (unless (string-equal todo-state "DONE")
+                                                                 (org-todo 'done))
+                                                             (unless (string-equal todo-state "TODO")
+                                                               (org-todo 'todo)))
+                                                         (if (and (> (match-end 2) (match-beginning 2))
+                                                                  (equal (match-string 2) (match-string 3)))
+                                                             (unless (string-equal todo-state "DONE")
+                                                               (org-todo 'done))
+                                                           (unless (string-equal todo-state "TODO")
+                                                             (org-todo 'todo)))))))))))
+#+end_src
+
+More control ove how and when tasks change state.
+
+#+begin_src elisp
+(use-package! org-edna
+  :hook
+  '(org-mode . org-edna-mode))
+#+end_src
+
+
+**** Pretending we are in vim? That's just plain EVIL!
+
+Bad puns aside, vim keybindings are hard to let go once you are used to them.
+Luckily, doom comes with much of the heavy lifting already done when it comes to
+evil mode. We just gotta customize some minor details.
+
+#+begin_src elisp
+(use-package! evil
+  :defer t
+  :custom
+#+end_src
+
+Make horizontal motions move to other lines.
+
+#+begin_src elisp
+  (evil-cross-lines t)
+#+end_src
+
+Remove highlighted items after search is finished.
+
+#+begin_src elisp
+  (evil-ex-search-persistent-highlight t)
+#+end_src
+
+Universal argument mapped to M-u instead.
+
+#+begin_src elisp
+  :config
+  (map! :g "M-u" #'universal-argument))
 #+end_src
 
 
@@ -235,10 +363,7 @@ Let's make an global keybinding to find something I don't understand about emacs
 quickly!
 
 #+begin_src elisp
-(use-package! helpful
-  :defer-incrementally t
-  :config
-  (map! :g "C-c C-d" #'helpful-at-point))
+(map! :g "C-c C-d" #'helpful-at-point)
 #+end_src
 
 **** Which Key
@@ -283,6 +408,12 @@ First, lets bring our feeds into the cloud.
   (elfeed-db-directory "~/Cloud/elfeed/"))
 #+end_src
 
+Give it an easy keybinding to access it:
+
+#+begin_src elisp
+(map! :leader :desc "RSS feed" :m "o e" #'elfeed)
+#+end_src
+
 And point elfeed to the org configuration file.
 
 #+begin_src elisp
@@ -290,4 +421,44 @@ And point elfeed to the org configuration file.
   :defer t
   :custom
   (rmh-elfeed-org-files (list (concat org-directory "elfeed.org"))))
+#+end_src
+
+**** Japanese input.
+
+I am learning japanese as a hobby, and I do most of my note taking in emacs. To input japanese text we use google's MOZC.
+
+#+begin_src elisp
+(use-package! mozc
+  :commands mozc-mode
+  :config
+  (defun dan/toggle-mozc-mode ()
+    "Toggle activation/deactivation of `mozc-mode'."
+    (interactive)
+    (let* ((active (mozc-mode))
+           (msg (if active "Activated" "Deactivated")))
+      (message "Mozc Mode %s" msg)))
+  (map! :ni "C-x j" #'dan/toggle-mozc-mode))
+#+end_src
+
+***** TODO Prerequesites
+
+Requires emacs_mozc_helper
+
+**** Rust
+
+Seems like rls is more stable than rust-analyzer.
+
+#+begin_src elisp
+(use-package! rustic
+  :defer t
+  :custom
+  (rustic-lsp-server 'rls)
+#+end_src
+
+When using the rustic popup, be in emacs state.
+
+#+begin_src elisp
+:config
+(when (featurep 'evil)
+  (add-hook! 'rustic-popup-mode-hook #'evil-emacs-state)))
 #+end_src
