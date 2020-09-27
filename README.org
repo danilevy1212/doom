@@ -1,40 +1,38 @@
-#+TITLE: Doom Emacs Config
+#+TITLE: Dan's DOOM emacs config
 
 
-* Dan's DOOM emacs config
+* TODO Rationale
 
-** TODO Rationale
+** TODO My vainilla emacs adventures
 
-*** TODO My vainilla emacs adventures
-
-*** TODO Why Doom?
+** TODO Why Doom?
 
 [[https://blog.jethro.dev/posts/migrating_to_doom_emacs/][It's easy once you know what you are doing.]]
 
-** Installation
+* Installation
 
-*** TODO Prerequesites
+** TODO Prerequesites
 
-** Configuration
+* Configuration
 
-Blocks preceded with 'IE' are just examples that are not evaluated, the rest of the blocks are put in the filename of the corresponding heading.
+Blocks preceded with =IE= are just examples that are not evaluated, the rest of the blocks are put in the filename of the corresponding heading.
 
-*** TODO init.el
+** TODO init.el
 
-*** package.el
+** package.el
 
-**** Lexical binding
+*** Lexical binding
 
-#+begin_src elisp tangle: packages.el
+#+begin_src elisp :tangle packages.el
 ;; -*- no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
 #+end_src
 
-**** How does package.el work?
+*** How does package.el work?
 
-To install a package with Doom you must declare them here and run 'doom sync'
+To install a package with Doom you must declare them here and run ~doom sync~
 on the command line, then restart Emacs for the changes to take effect -- or
-use 'M-x doom/reload'.
+use ~M-x doom/reload~.
 
 To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 
@@ -44,7 +42,7 @@ IE:
 #+end_src
 
 To install a package directly from a remote git repo, you must specify a
-`:recipe'. You'll find documentation on what `:recipe' accepts here:
+~:recipe~. You'll find documentation on what ~:recipe~ accepts here:
 https://github.com/raxod502/straight.el#the-recipe-format
 
 IE:
@@ -55,7 +53,7 @@ IE:
 
 If the package you are trying to install does not contain a PACKAGENAME.el
 file, or is located in a subdirectory of the repo, you'll need to specify
-`:files' in the `:recipe':
+~:files~ in the ~:recipe~:
 
 IE:
 #+begin_src elisp :tangle no
@@ -65,7 +63,7 @@ IE:
 #+end_src
 
 If you'd like to disable a package included with Doom, you can do so here
-with the `:disable' property:
+with the ~:disable~ property:
 
 IE:
 #+begin_src elisp :tangle no
@@ -73,7 +71,7 @@ IE:
 #+end_src
 
 You can override the recipe of a built in package without having to specify
-all the properties for `:recipe'. These will inherit the rest of its recipe
+all the properties for ~:recipe~. These will inherit the rest of its recipe
 from Doom or MELPA/ELPA/Emacsmirror:
 
 IE:
@@ -82,7 +80,7 @@ IE:
 #+end_src
 
 You can override the recipe of a built in package without having to specify
-all the properties for `:recipe'. These will inherit the rest of its recipe
+all the properties for ~:recipe~. These will inherit the rest of its recipe
 from Doom or MELPA/ELPA/Emacsmirror:
 
 IE:
@@ -91,8 +89,8 @@ IE:
 (package! builtin-package-2 :recipe (:repo "myfork/package"))
 #+end_src
 
-Specify a `:branch' to install a package from a particular branch or tag.
-This is required for some packages whose default branch isn't 'master' (which
+Specify a ~:branch~ to install a package from a particular branch or tag.
+This is required for some packages whose default branch isn't ~master~ (which
 our package manager can't deal with; see raxod502/straight.el#279)
 
 IE:
@@ -100,14 +98,14 @@ IE:
 (package! builtin-package :recipe (:branch "develop"))
 #+end_src
 
-Use `:pin' to specify a particular commit to install.
+Use ~:pin~ to specify a particular commit to install.
 IE:
 #+begin_src elisp :tangle no
 (package! builtin-package :pin "1a2b3c4d5e")
 #+end_src
 
 Doom's packages are pinned to a specific commit and updated from release to
-release. The `unpin!' macro allows you to unpin single packages...
+release. The ~unpin!~ macro allows you to unpin single packages...
 
 IE:
 #+begin_src elisp :tangle no
@@ -118,7 +116,7 @@ IE:
 (unpin! t)
 #+end_src
 
-**** Declarations
+*** Declarations
 
 So, finally, let's declare the packages we will use:
 
@@ -133,16 +131,16 @@ And disable ones we don't use.
   :disable t)
 #+end_src
 
-*** config.el
+** config.el
 
-**** Lexical binding
+*** Lexical binding
 
 #+BEGIN_SRC elisp
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 #+END_SRC
 
 
-**** Personal information
+*** Personal information
 
 Some functionality uses this to identify you, e.g. GPG configuration, email
 clients, file templates and snippets.
@@ -153,14 +151,14 @@ clients, file templates and snippets.
 #+end_src
 
 
-**** Default font
+*** Default font
 
 Doom exposes five (optional) variables for controlling fonts in Doom. Here
 are the three important ones:
 
-+ `doom-font'
-+ `doom-variable-pitch-font'
-+ `doom-big-font' -- used for `doom-big-font-mode'; use this for
++ ~doom-font~
++ ~doom-variable-pitch-font~
++ ~doom-big-font~ -- used for ~doom-big-font-mode~; use this for
   presentations or streaming.
 
 They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
@@ -178,17 +176,17 @@ Let's choose our monospaced font, Roboto Mono goodness:
 #+end_src
 
 
-**** Default theme
+*** Default theme
 
 There are two ways to load a theme. Both assume the theme is installed and
-available. You can either set `doom-theme' or manually load a theme with the
-`load-theme' function. This is the default:
+available. You can either set ~doom-theme~ or manually load a theme with the
+~load-theme~ function. This is the default:
 
 #+begin_src elisp
 (setq doom-theme 'doom-nord)
 #+end_src
 
-***** Nord powered aesthetics.
+**** Nord powered aesthetics.
 
 Let's add some small customizations, mostly make everything a bit brighter and bigger:
 
@@ -201,7 +199,7 @@ Let's add some small customizations, mostly make everything a bit brighter and b
   (doom-nord-region-highlight 'frost))
 #+end_src
 
-**** Rainbow Delimeters
+*** Rainbow Delimeters
 
 Matching pairs draw with the same face color, making them easily identifiable.
 
@@ -210,7 +208,7 @@ Matching pairs draw with the same face color, making them easily identifiable.
 #+end_src
 
 
-**** Modeline
+*** Modeline
 
 The default doom-modeline is great, the only thing is that I want it to show me
 the evil state I am in with a letter instead of an icon:
@@ -230,9 +228,9 @@ Also, the battery indicator is pretty neat:
   (doom-modeline-mode . display-battery-mode))
 #+end_src
 
-**** TODO Perspective
+*** TODO Perspective
 
-**** Org
+*** Org
 
 One of the killer features of emacs.
 
@@ -241,8 +239,8 @@ One of the killer features of emacs.
     :defer t
 #+end_src
 
-If you use `org' and don't want your org files in the default location below,
-change `org-directory'. It must be set before org loads!
+If you use ~org~ and don't want your org files in the default location below,
+change ~org-directory~. It must be set before org loads!
 
 #+begin_src elisp
     :custom
@@ -315,7 +313,7 @@ More control ove how and when tasks change state.
 #+end_src
 
 
-**** Pretending we are in vim? That's just plain EVIL!
+*** Pretending we are in vim? That's just plain EVIL!
 
 Bad puns aside, vim keybindings are hard to let go once you are used to them.
 Luckily, doom comes with much of the heavy lifting already done when it comes to
@@ -347,17 +345,17 @@ Universal argument mapped to M-u instead.
 #+end_src
 
 
-**** Line-numbers
+*** Line-numbers
 
-This determines the style of line numbers in effect. If set to `nil', line
-numbers are disabled. For relative line numbers, set this to `relative'.
+This determines the style of line numbers in effect. If set to ~nil~, line
+numbers are disabled. For relative line numbers, set this to ~relative~.
 
 #+begin_src elisp
 (setq display-line-numbers-type 'relative)
 #+end_src
 
 
-**** Helpful
+*** Helpful
 
 Let's make an global keybinding to find something I don't understand about emacs
 quickly!
@@ -366,7 +364,7 @@ quickly!
 (map! :g "C-c C-d" #'helpful-at-point)
 #+end_src
 
-**** Which Key
+*** Which Key
 
 Doom emacs default config is too slow, lets speed it up.
 
@@ -378,7 +376,7 @@ Doom emacs default config is too slow, lets speed it up.
   (which-key-idle-secondary-delay 0.2))
 #+end_src
 
-**** Customize Group
+*** Customize Group
 
 An essential interface to know what to customize!
 
@@ -397,7 +395,7 @@ values within this configuration. So, let's make it show the actual real values.
   (custom-unlispify-remove-prefixes nil))
 #+end_src
 
-**** RSS, or how to get news the old-way.
+*** RSS, or how to get news the old-way.
 
 First, lets bring our feeds into the cloud.
 
@@ -405,14 +403,31 @@ First, lets bring our feeds into the cloud.
 (use-package! elfeed
   :defer t
   :custom
-  (elfeed-db-directory "~/Cloud/elfeed/"))
+  (elfeed-db-directory "~/Cloud/elfeed/")
 #+end_src
+
+Special faces for special tags.
+
+#+begin_src elisp
+  (elfeed-search-face-alist '((unread elfeed-search-unread-title-face)
+                              (★      elfeed-search-unread-count-face)))
+#+end_src
+
+
+Show me entries from within a month that I haven't read.
+
+#+begin_src elisp
+  :config
+  (setq elfeed-search-filter "@4-week-ago +unread "))
+#+end_src
+
 
 Give it an easy keybinding to access it:
 
 #+begin_src elisp
 (map! :leader :desc "RSS feed" :m "o e" #'elfeed)
 #+end_src
+
 
 And point elfeed to the org configuration file.
 
@@ -423,28 +438,50 @@ And point elfeed to the org configuration file.
   (rmh-elfeed-org-files (list (concat org-directory "elfeed.org"))))
 #+end_src
 
-**** Japanese input.
+Keybinding to easily find the feeds file.
+
+#+begin_src elisp
+(map! :leader
+      :desc "RSS feed config" :m "o E" (lambda ()
+                                          (interactive)
+                                          (find-file (car rmh-elfeed-org-files))))
+#+end_src
+
+
+*** Japanese input.
 
 I am learning japanese as a hobby, and I do most of my note taking in emacs. To input japanese text we use google's MOZC.
+
+First, let's define our toggle function. Activates mozc mode and changes the modeline to show it.
+
+#+begin_src elisp
+;;;###autoload
+(defun dan/toggle-mozc-mode ()
+  "Toggle activation/deactivation of `mozc-mode'."
+  (interactive)
+  (let* ((active (mozc-mode))
+         (msg-modeline (if active
+                           '("Activated" . "日本語")
+                         '("Deactivated" . ""))))
+         (progn
+           (message "Mozc Mode %s" (car msg-modeline))
+           (setq global-mode-string (cdr msg-modeline)))))
+#+end_src
+
+Then we add a keybinding to the entry point, plus making sure the package lazily loads.
 
 #+begin_src elisp
 (use-package! mozc
   :commands mozc-mode
   :config
-  (defun dan/toggle-mozc-mode ()
-    "Toggle activation/deactivation of `mozc-mode'."
-    (interactive)
-    (let* ((active (mozc-mode))
-           (msg (if active "Activated" "Deactivated")))
-      (message "Mozc Mode %s" msg)))
   (map! :ni "C-x j" #'dan/toggle-mozc-mode))
 #+end_src
 
-***** TODO Prerequesites
+**** TODO Prerequesites
 
 Requires emacs_mozc_helper
 
-**** Rust
+*** Rust
 
 Seems like rls is more stable than rust-analyzer.
 
@@ -457,8 +494,10 @@ Seems like rls is more stable than rust-analyzer.
 
 When using the rustic popup, be in emacs state.
 
+*** TODO See if we can use ~set-popup-rules!~ to do this for us.
+
 #+begin_src elisp
-:config
-(when (featurep 'evil)
-  (add-hook! 'rustic-popup-mode-hook #'evil-emacs-state)))
+  :config
+  (when (featurep 'evil)
+    (add-hook! 'rustic-popup-mode-hook #'evil-emacs-state)))
 #+end_src
