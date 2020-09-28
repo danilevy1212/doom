@@ -17,7 +17,206 @@
 
 Blocks preceded with =IE= are just examples that are not evaluated, the rest of the blocks are put in the filename of the corresponding heading.
 
-** TODO init.el
+** init.el
+
+This file controls what Doom modules are enabled and what order they load
+in. Remember to run 'doom sync' after modifying it!
+
+*** Lexical binding.
+
+Elisp by default has dynamic-scope, which is fine if a little weird. However,
+dynamic scope comes with a performence penalty. Optional lexical scope has to be
+activated with a file parameter, as such:
+
+#+begin_src elisp :tangle init.el
+;;; init.el -*- lexical-binding: t; -*-
+#+end_src
+
+
+*** doom!
+
+The ~doom!~ macro controls which modules are loaded into doom emacs. Modules are
+package configurations made by the community. In the spirit of emacs, all the
+configuration that comes with a particular module can be extended or even completly
+overwritten by your private config.
+
+Modules are completly open for discovery.Press 'SPC h d h' (or 'C-h d h' for
+non-vim users) to access Doom's documentation. There you'll find a "Module
+Index" link where you'll find a comprehensive list of Doom's modules and what
+flags they support.
+
+Alternatively, press 'gd' (or 'C-c c d') on a module to browse its directory
+(for easy access to its source code).
+
+#+begin_src elisp :tangle init.el
+(doom! :input
+       ;;chinese
+       ;;japanese
+       ;;layout            ; auie,ctsrnm is the superior home row
+
+       :completion
+       company           ; the ultimate code completion backend
+       ;;helm              ; the *other* search engine for love and life
+       ;;ido               ; the other *other* search engine...
+       (ivy +icons)        ; a search engine for love and life
+
+       :ui
+       ;;deft              ; notational velocity for Emacs
+       doom              ; what makes DOOM look the way it does
+       doom-dashboard    ; a nifty splash screen for Emacs
+       doom-quit         ; DOOM quit-message prompts when you quit Emacs
+       ;;fill-column       ; a `fill-column' indicator
+       hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
+       ;;hydra
+       ;;indent-guides     ; highlighted indent columns
+       ;;ligatures         ; ligatures and symbols to make your code pretty again
+       ;;minimap           ; show a map of the code on the side
+       modeline          ; snazzy, Atom-inspired modeline, plus API
+       ;;nav-flash         ; blink cursor line after big motions
+       ;;neotree           ; a project drawer, like NERDTree for vim
+       ophints           ; highlight the region an operation acts on
+       (popup +defaults)   ; tame sudden yet inevitable temporary windows
+       ;;tabs              ; a tab bar for Emacs
+       ;;treemacs          ; a project drawer, like neotree but cooler
+       ;;unicode           ; extended unicode support for various languages
+       vc-gutter         ; vcs diff in the fringe
+       vi-tilde-fringe   ; fringe tildes to mark beyond EOB
+       ;;window-select     ; visually switch windows
+       workspaces        ; tab emulation, persistence & separate workspaces
+       ;;zen               ; distraction-free coding or writing
+
+       :editor
+       (evil +everywhere); come to the dark side, we have cookies
+       file-templates    ; auto-snippets for empty files
+       fold              ; (nigh) universal code folding
+       ;;(format +onsave)  ; automated prettiness
+       ;;god               ; run Emacs commands without modifier keys
+       ;;lispy             ; vim for lisp, for people who don't like vim
+       ;;multiple-cursors  ; editing in many places at once
+       ;;objed             ; text object editing for the innocent
+       ;;parinfer          ; turn lisp into python, sort of
+       ;;rotate-text       ; cycle region at point between text candidates
+       snippets          ; my elves. They type so I don't have to
+       ;;word-wrap         ; soft wrapping with language-aware indent
+
+       :emacs
+       dired             ; making dired pretty [functional]
+       electric          ; smarter, keyword-based electric-indent
+       ;;ibuffer         ; interactive buffer management
+       undo              ; persistent, smarter undo for your inevitable mistakes
+       vc                ; version-control and Emacs, sitting in a tree
+
+       :term
+       ;;eshell            ; the elisp shell that works everywhere
+       ;;shell             ; simple shell REPL for Emacs
+       ;;term              ; basic terminal emulator for Emacs
+       vterm             ; the best terminal emulation in Emacs
+
+       :checkers
+       syntax              ; tasing you for every semicolon you forget
+       ;;spell             ; tasing you for misspelling mispelling
+       ;;grammar           ; tasing grammar mistake every you make
+
+       :tools
+       ;;ansible
+       ;;debugger          ; FIXME stepping through code, to help you add bugs
+       ;;direnv
+       ;;docker
+       ;;editorconfig      ; let someone else argue about tabs vs spaces
+       ;;ein               ; tame Jupyter notebooks with emacs
+       (eval +overlay)     ; run code, run (also, repls)
+       ;;gist              ; interacting with github gists
+       lookup              ; navigate your code and its documentation
+       lsp
+       magit             ; a git porcelain for Emacs
+       ;;make              ; run make tasks from Emacs
+       ;;pass              ; password manager for nerds
+       pdf               ; pdf enhancements
+       ;;prodigy           ; FIXME managing external services & code builders
+       ;;rgb               ; creating color strings
+       ;;taskrunner        ; taskrunner for all your projects
+       ;;terraform         ; infrastructure as code
+       ;;tmux              ; an API for interacting with tmux
+       ;;upload            ; map local to remote projects via ssh/ftp
+
+       :os
+       (:if IS-MAC macos)  ; improve compatibility with macOS
+       ;;tty               ; improve the terminal Emacs experience
+
+       :lang
+       ;;agda              ; types of types of types of types...
+       ;;cc                ; C/C++/Obj-C madness
+       ;;clojure           ; java with a lisp
+       ;;common-lisp       ; if you've seen one lisp, you've seen them all
+       ;;coq               ; proofs-as-programs
+       ;;crystal           ; ruby at the speed of c
+       ;;csharp            ; unity, .NET, and mono shenanigans
+       ;;data              ; config/data formats
+       ;;(dart +flutter)   ; paint ui and not much else
+       ;;elixir            ; erlang done right
+       ;;elm               ; care for a cup of TEA?
+       emacs-lisp        ; drown in parentheses
+       ;;erlang            ; an elegant language for a more civilized age
+       ;;ess               ; emacs speaks statistics
+       ;;faust             ; dsp, but you get to keep your soul
+       ;;fsharp            ; ML stands for Microsoft's Language
+       ;;fstar             ; (dependent) types and (monadic) effects and Z3
+       ;;gdscript          ; the language you waited for
+       ;;(go +lsp)         ; the hipster dialect
+       ;;(haskell +dante)  ; a language that's lazier than I am
+       ;;hy                ; readability of scheme w/ speed of python
+       ;;idris             ;
+       ;;json              ; At least it ain't XML
+       ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
+       ;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
+       ;;julia             ; a better, faster MATLAB
+       ;;kotlin            ; a better, slicker Java(Script)
+       ;;latex             ; writing papers in Emacs has never been so fun
+       ;;lean
+       ;;factor
+       ;;ledger            ; an accounting system in Emacs
+       ;;lua               ; one-based indices? one-based indices
+       markdown          ; writing docs for people to ignore
+       ;;nim               ; python + lisp at the speed of c
+       ;;nix               ; I hereby declare "nix geht mehr!"
+       ;;ocaml             ; an objective camel
+       org               ; organize your plain life in plain text
+       ;;php               ; perl's insecure younger brother
+       ;;plantuml          ; diagrams for confusing people more
+       ;;purescript        ; javascript, but functional
+       ;;python            ; beautiful is better than ugly
+       ;;qt                ; the 'cutest' gui framework ever
+       ;;racket            ; a DSL for DSLs
+       ;;raku              ; the artist formerly known as perl6
+       ;;rest              ; Emacs as a REST client
+       ;;rst               ; ReST in peace
+       ;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
+       (rust +lsp)              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       ;;scala             ; java, but good
+       ;;scheme            ; a fully conniving family of lisps
+       sh                ; she sells {ba,z,fi}sh shells on the C xor
+       ;;sml
+       ;;solidity          ; do you need a blockchain? No.
+       ;;swift             ; who asked for emoji variables?
+       ;;terra             ; Earth and Moon in alignment for performance.
+       ;;web               ; the tubes
+       ;;yaml              ; JSON, but readable
+
+       :email
+       ;;(mu4e +gmail)
+       ;;notmuch
+       ;;(wanderlust +gmail)
+
+       :app
+       ;;calendar
+       ;;irc               ; how neckbeards socialize
+       (rss +org)        ; emacs as an RSS reader
+       ;;twitter           ; twitter client https://twitter.com/vnought
+
+       :config
+       literate
+       (default +bindings +smartparens))
+#+end_src
 
 ** package.el
 
@@ -334,16 +533,21 @@ Make horizontal motions move to other lines.
 Remove highlighted items after search is finished.
 
 #+begin_src elisp
-  (evil-ex-search-persistent-highlight t)
+  (evil-ex-search-persistent-highlight nil)
 #+end_src
 
 Universal argument mapped to M-u instead.
 
 #+begin_src elisp
   :config
-  (map! :g "M-u" #'universal-argument))
+  (map! :g "M-u" #'universal-argument
 #+end_src
 
+Remove highlighted items after a search.
+
+#+begin_src elisp
+        :m "C-l" #'evil-ex-nohighlight))
+#+end_src
 
 *** Line-numbers
 
@@ -464,9 +668,19 @@ First, let's define our toggle function. Activates mozc mode and changes the mod
          (msg-modeline (if active
                            '("Activated" . "日本語")
                          '("Deactivated" . ""))))
-         (progn
-           (message "Mozc Mode %s" (car msg-modeline))
-           (setq global-mode-string (cdr msg-modeline)))))
+    (progn
+      (message "Mozc Mode %s" (car msg-modeline))
+      (setq global-mode-string (cdr msg-modeline))
+#+end_src
+
+This part is a bit of hack so mozc plays nicely with Doom's configuration of evil-org.
+
+#+begin_src elisp
+      (map! (:when (and (featurep 'evil-org) evil-org-mode) :map evil-org-mode-map
+             (:when mozc-mode    :i "<return>"   nil)
+             (:unless mozc-mode  :i "<return>"   (cmd! (org-return electric-indent-mode)))
+             (:when mozc-mode    :i "RET"        nil)
+             (:unless mozc-mode  :i "RET"        (cmd! (org-return electric-indent-mode))))))))
 #+end_src
 
 Let's lazy load mozc, so it loads only when our entry function is called.
@@ -476,7 +690,7 @@ Let's lazy load mozc, so it loads only when our entry function is called.
   :commands mozc-mode
 #+end_src
 
-The overlay style is sluggish, the echo-area style is still pretty and very functional, it even works in the minibuffer!
+The overlay style is sluggish, the echo-area style is pretty and very functional, it even works in the minibuffer!
 
 #+begin_src elisp
   :custom
@@ -486,21 +700,8 @@ The overlay style is sluggish, the echo-area style is still pretty and very func
 Finally, we create a keybinding activate mozc-mode.
 
 #+begin_src elisp
-(map! :g "C-x j" #'dan/toggle-mozc-mode)
-#+end_src
-
-**** TODO UGLY HACK, FIX THIS UNHOLY CREATION
-
-This is an ugly as hell hack that removes the keybindings defined by doom so mozc can work with evil-org-mode.
-
-I think that a better solution would be remove the bindings whe in mozc-mode and re-add them when getting out of mozc-mode
-
-[[https://emacs.stackexchange.com/questions/47090/how-to-automatically-remove-a-hook-provided-by-a-minor-mode-after-disabling-that/47092#47092][Something like this might do.]]
-
-#+begin_src elisp
-  (after! evil-org ;; TODO Document! Ugly hack to make mozc work in evil-org-mode
-    (map! :map evil-org-mode-map :i "<return>" nil
-                                 :i "RET"      nil))
+(map! :g "C-x j"  #'dan/toggle-mozc-mode
+      :ni "C-x j" #'dan/toggle-mozc-mode)
 #+end_src
 
 **** TODO Prerequesites
