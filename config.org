@@ -1,5 +1,7 @@
 # -*- eval: (when (fboundp #'toc-org-mode) (toc-org-mode)); -*-
+
 #+TITLE: Dan's DOOM emacs configuration
+#+STARTUP: inlineimages
 #+OPTIONS: toc:nil tags:nil todo:nil
 
 * Table Of Contents :TOC_9:
@@ -231,7 +233,7 @@ because I knew It would take a long time to really configure it like I wanted
 to. Honorable mentions in this categories are =lsp= and =treemacs=.
 
 #+CAPTION: So many todos, so little time...
-[[./img/too-many-todos.png]]
+[[https://raw.githubusercontent.com/danilevy1212/doom/master/img/too-many-todos.png]]
 
 So, _Why work on problems that others have already solved?_. Not all problems
 are made equally and some problems are just tedious to solve, this is the
