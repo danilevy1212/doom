@@ -232,6 +232,10 @@ Other times, the packages I was interested in were so massive I never wanted to
 because I knew It would take a long time to really configure it like I wanted
 to. Honorable mentions in this categories are =lsp= and =treemacs=.
 
+The following image shows the number of =TODO= tasks that I left unresolved
+in my vanilla configuration just before switching to =doom=.
+
+#+ATTR_HTML style="margin-left: auto; margin-right: auto;"
 #+CAPTION: So many todos, so little time...
 [[https://raw.githubusercontent.com/danilevy1212/doom/master/img/too-many-todos.png]]
 
