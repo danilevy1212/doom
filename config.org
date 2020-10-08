@@ -185,7 +185,7 @@ details still escape me. I learned a LOT about not only emacs, but about
 lisp, functional programming and free (as in freedom) extensible software! Going
 back to basics paid of in spades.
 
-** TODO Why DOOM?
+** Why DOOM?
 
 I'll ask again, _Why work on problems that others have already solved?_. Well,
 in my case, It was to learn more about the problem-context.  The thing is, emacs
@@ -232,7 +232,7 @@ Other times, the packages I was interested in were so massive I never wanted to
 because I knew It would take a long time to really configure it like I wanted
 to. Honorable mentions in this categories are =lsp= and =treemacs=.
 
-#+HTML: <p align="center"><img src="https://raw.githubusercontent.com/danilevy1212/doom/master/img/too-many-todos.png"/></p>
+#+HTML: <p align="center"><img src="img/too-many-todos.png"/></p>
 #+HTML: <p align="center">Unresolved issues in my vanilla configuration.</p>
 
 So, _Why work on problems that others have already solved?_. Not all problems
