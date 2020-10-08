@@ -55,7 +55,6 @@
     - [[#which-key][Which Key]]
     - [[#customize-group][Customize Group]]
     - [[#rss-or-how-to-get-news-the-old-way][RSS, or how to get news the old-way.]]
-      - [[#create-x-keybinding-for-starring--a-register-in-search-map-and-show-map][Create =x= keybinding for =starring= (★) a register, in search map and show map]]
     - [[#japanese-input][Japanese input.]]
       - [[#prerequesites][Prerequesites]]
     - [[#rust][Rust]]
@@ -969,25 +968,41 @@ First, lets bring our feeds into the cloud.
 Special faces for special tags.
 
 #+begin_src elisp
-  (elfeed-search-face-alist '((unread elfeed-search-unread-title-face)
-                              (★      elfeed-search-unread-count-face)))
+  (elfeed-search-face-alist '((unread    elfeed-search-unread-title-face)
+                              (star      elfeed-search-unread-count-face)))
 #+end_src
 
-
-Show me entries from within a month that I haven't read.
+Show me entries from within a month that I haven't read and that I have 'starred'.
 
 #+begin_src elisp
   :config
-  (setq elfeed-search-filter "@4-week-ago +unread "))
+  (setq elfeed-search-filter "@4-week-ago +unread ")
 #+end_src
 
+Some entries are worth preserving. By 'starring' them we don't lose them.
+
+#+begin_src elisp
+(defalias 'dan/elfeed-search-tag-all-star
+         (elfeed-expose #'elfeed-search-tag-all 'star)
+         "Add the `star' tag to all selected entries.")
+
+(defalias 'dan/elfeed-search-untag-all-star
+         (elfeed-expose #'elfeed-search-untag-all 'star)
+         "Remove the `star' tag from all selected entries.")
+#+end_src
+
+Expose the aliases to the 'x' keybinding.
+
+#+begin_src elisp
+(map! :map 'elfeed-search-mode-map :nv "x" #'dan/elfeed-search-tag-all-star
+                                   :nv "X" #'dan/elfeed-search-untag-all-star))
+#+end_src
 
 Give it an easy keybinding to access it:
 
 #+begin_src elisp
 (map! :leader :desc "RSS feed" :m "o e" #'elfeed)
 #+end_src
-
 
 And point elfeed to the org configuration file.
 
@@ -1006,8 +1021,6 @@ Keybinding to easily find the feeds file.
                                           (interactive)
                                           (find-file (car rmh-elfeed-org-files))))
 #+end_src
-
-**** TODO Create =x= keybinding for =starring= (★) a register, in search map and show map
 
 *** Japanese input.
 
