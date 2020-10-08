@@ -232,13 +232,8 @@ Other times, the packages I was interested in were so massive I never wanted to
 because I knew It would take a long time to really configure it like I wanted
 to. Honorable mentions in this categories are =lsp= and =treemacs=.
 
-The following image shows the number of =TODO= tasks that I left unresolved
-in my vanilla configuration just before switching to =doom=.
-
-# TODO Align this image in center, use `markdown` for images with org babel?
-
-#+CAPTION: So many todos, so little time...
-[[https://raw.githubusercontent.com/danilevy1212/doom/master/img/too-many-todos.png]]
+#+HTML: <p align="center"><img src="https://raw.githubusercontent.com/danilevy1212/doom/master/img/too-many-todos.png"/></p>
+#+HTML: <p align="center">Unresolved issues in my vanilla configuration.</p>
 
 So, _Why work on problems that others have already solved?_. Not all problems
 are made equally and some problems are just tedious to solve, this is the
