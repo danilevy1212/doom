@@ -232,7 +232,7 @@ Other times, the packages I was interested in were so massive I never wanted to
 because I knew It would take a long time to really configure it like I wanted
 to. Honorable mentions in this categories are =lsp= and =treemacs=.
 
-#+HTML: <p align="center"><img src="img/too-many-todos.png"/></p>
+#+HTML: <p align="center"><img src="https://raw.githubusercontent.com/danilevy1212/doom/master/img/too-many-todos.png"/></p>
 #+HTML: <p align="center">Unresolved issues in my vanilla configuration.</p>
 
 So, _Why work on problems that others have already solved?_. Not all problems
