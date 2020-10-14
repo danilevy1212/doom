@@ -16,25 +16,24 @@
 - [[#configuration][Configuration]]
   - [[#initel][init.el]]
     - [[#lexical-binding][Lexical binding.]]
-    - [[#doom][doom!]]
-      - [[#document-which-modules-i-choose-and-why][Document which modules I choose and why.]]
-        - [[#input][:input]]
-        - [[#completion][:completion]]
-        - [[#ui][:ui]]
-        - [[#editor][:editor]]
-        - [[#emacs][:emacs]]
-        - [[#term][:term]]
-        - [[#checkers][:checkers]]
-        - [[#tools][:tools]]
-        - [[#tools-1][:tools]]
-        - [[#lang][:lang]]
-          - [[#rust-lsp][rust +lsp]]
-            - [[#dependencies][Dependencies:]]
-          - [[#sh][sh]]
-          - [[#web][web]]
-        - [[#email][:email]]
-        - [[#app][:app]]
-        - [[#config][:config]]
+    - [[#doom-modules][~doom!~ modules]]
+      - [[#input][:input]]
+      - [[#completion][:completion]]
+      - [[#ui][:ui]]
+      - [[#editor][:editor]]
+      - [[#emacs][:emacs]]
+      - [[#term][:term]]
+      - [[#checkers][:checkers]]
+      - [[#tools][:tools]]
+      - [[#tools-1][:tools]]
+      - [[#lang][:lang]]
+        - [[#rust-lsp][rust +lsp]]
+          - [[#dependencies][Dependencies:]]
+        - [[#sh][sh]]
+        - [[#web][web]]
+      - [[#email][:email]]
+      - [[#app][:app]]
+      - [[#config][:config]]
   - [[#packageel][package.el]]
     - [[#lexical-binding-1][Lexical binding]]
     - [[#how-does-packageel-work][How does package.el work?]]
@@ -45,6 +44,7 @@
     - [[#default-font][Default font]]
     - [[#default-theme][Default theme]]
       - [[#nord-powered-aesthetics][Nord powered aesthetics.]]
+    - [[#splash-screen][Splash Screen]]
     - [[#rainbow-delimeters][Rainbow Delimeters]]
     - [[#modeline][Modeline]]
     - [[#perspective][Perspective]]
@@ -59,6 +59,7 @@
       - [[#prerequesites][Prerequesites]]
     - [[#rust][Rust]]
       - [[#see-if-we-can-use-set-popup-rules-to-do-this-for-us][See if we can use ~set-popup-rules!~ to do this for us.]]
+    - [[#web-mode][Web Mode]]
   - [[#private-modules][Private modules.]]
 
 * Rationale
@@ -268,7 +269,7 @@ reliable manner, much more so that If I were back in vanilla emacs.
 
 Additionally, the =doom= executable (located at ~user-emacs-directory/bin/doom~)
 can be called with the =doctor= argument to obtain information of posible
-missing dependencies used in the modules.
+missing dependencies used by the modules.
 
 * Configuration
 
@@ -290,7 +291,7 @@ activated with a file parameter, as such:
 ;;; init.el -*- lexical-binding: t; -*-
 #+end_src
 
-*** doom!
+*** TODO ~doom!~ modules
 
 The ~doom!~ macro controls which modules are loaded into doom emacs. Modules are
 package configurations made by the community. In the spirit of emacs, all the
@@ -320,14 +321,7 @@ Some modules can be wrapped in a list and given 'flags', that activate extra
 optional configuration. The list must have the module name as the car, the flags
 as the tail.
 
-**** TODO Document which modules I choose and why.
-
-For brevity sake I'll mostly comment on the modules I am using, giving some insight
-on why I choose them and the dependencies needed to make them work. Ocassionally, I
-may comment on modules that I might try.
-
-
-***** :input
+**** :input
 
 I was tempted to use the ~japanese~ module but only ~pangu spacing~ seems like a
 package I could use, so I rather install it standalone.
@@ -339,7 +333,7 @@ package I could use, so I rather install it standalone.
        ;;layout            ; auie,ctsrnm is the superior home row
 #+end_src
 
-***** TODO :completion
+**** TODO :completion
 
 #+begin_src elisp :tangle init.el
        :completion
@@ -349,7 +343,7 @@ package I could use, so I rather install it standalone.
        (ivy +icons)        ; a search engine for love and life
 #+end_src
 
-***** TODO :ui
+**** TODO :ui
 
 #+begin_src elisp :tangle init.el
        :ui
@@ -378,7 +372,7 @@ package I could use, so I rather install it standalone.
        ;;zen               ; distraction-free coding or writing
 #+end_src
 
-***** TODO :editor
+**** TODO :editor
 
 #+begin_src elisp :tangle init.el
        :editor
@@ -396,7 +390,7 @@ package I could use, so I rather install it standalone.
        ;;word-wrap         ; soft wrapping with language-aware indent
 #+end_src
 
-***** TODO :emacs
+**** TODO :emacs
 
 #+begin_src elisp :tangle init.el
        :emacs
@@ -407,7 +401,7 @@ package I could use, so I rather install it standalone.
        vc                ; version-control and Emacs, sitting in a tree
 #+end_src
 
-***** TODO :term
+**** TODO :term
 
 #+begin_src elisp :tangle init.el
        :term
@@ -417,7 +411,7 @@ package I could use, so I rather install it standalone.
        vterm             ; the best terminal emulation in Emacs
 #+end_src
 
-***** TODO :checkers
+**** TODO :checkers
 
 #+begin_src elisp :tangle init.el
        :checkers
@@ -426,7 +420,7 @@ package I could use, so I rather install it standalone.
        ;; grammar           ; tasing grammar mistake every you make
 #+end_src
 
-***** TODO :tools
+**** TODO :tools
 #+begin_src elisp :tangle init.el
        :tools
        ;;ansible
@@ -451,14 +445,14 @@ package I could use, so I rather install it standalone.
        ;;upload            ; map local to remote projects via ssh/ftp
 #+end_src
 
-***** TODO :tools
+**** TODO :tools
 #+begin_src elisp :tangle init.el
        :os
        ;;(:if IS-MAC macos)  ; improve compatibility with macOS
        ;;tty               ; improve the terminal Emacs experience
 #+end_src
 
-***** TODO :lang
+**** TODO :lang
 #+begin_src elisp :tangle init.el
        :lang
        ;;agda              ; types of types of types of types...
@@ -511,7 +505,7 @@ package I could use, so I rather install it standalone.
 #+end_src
 
 
-****** rust +lsp
+***** rust +lsp
 
 Rustic mode is great and the integrates really well with cargo.  The defaults
 are also reasonable, what's not to love?
@@ -520,11 +514,11 @@ are also reasonable, what's not to love?
        (rust +lsp)         ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
 #+end_src
 
-******* Dependencies:
+****** Dependencies:
 
 Requires [[https://github.com/rust-lang/rls][rls]] or [[https://rust-analyzer.github.io/manual.html#installation][rust-analyzer]], both obtainable with [[https://github.com/rust-lang/rustup][rustup]]. I always use =rls=.
 
-****** TODO sh
+***** TODO sh
 
 #+begin_src elisp :tangle init.el
        ;;scala             ; java, but good
@@ -532,7 +526,7 @@ Requires [[https://github.com/rust-lang/rls][rls]] or [[https://rust-analyzer.gi
        sh                  ; she sells {ba,z,fi}sh shells on the C xor
 #+end_src
 
-****** TODO web
+***** TODO web
 
 #+begin_src elisp :tangle init.el
        ;;sml
@@ -543,7 +537,7 @@ Requires [[https://github.com/rust-lang/rls][rls]] or [[https://rust-analyzer.gi
        ;;yaml              ; JSON, but readable
 #+end_src
 
-***** TODO :email
+**** TODO :email
 
 #+begin_src elisp :tangle init.el
        :email
@@ -552,7 +546,7 @@ Requires [[https://github.com/rust-lang/rls][rls]] or [[https://rust-analyzer.gi
        ;;(wanderlust +gmail)
 #+end_src
 
-***** TODO :app
+**** TODO :app
 
 #+begin_src elisp :tangle init.el
        :app
@@ -562,7 +556,7 @@ Requires [[https://github.com/rust-lang/rls][rls]] or [[https://rust-analyzer.gi
        ;;twitter           ; twitter client https://twitter.com/vnought
 #+end_src
 
-***** TODO :config
+**** TODO :config
 
 #+begin_src elisp :tangle init.el
        :config
@@ -588,7 +582,7 @@ use ~M-x doom/reload~.
 
 To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 
-IE:
+ie:
 #+begin_src elisp :tangle no
 (package! some-package)
 #+end_src
@@ -597,7 +591,7 @@ To install a package directly from a remote git repo, you must specify a
 ~:recipe~. You'll find documentation on what ~:recipe~ accepts here:
 https://github.com/raxod502/straight.el#the-recipe-format
 
-IE:
+ie:
 #+begin_src elisp :tangle no
 (package! another-package
   :recipe (:host github :repo "username/repo"))
@@ -607,7 +601,7 @@ If the package you are trying to install does not contain a PACKAGENAME.el
 file, or is located in a subdirectory of the repo, you'll need to specify
 ~:files~ in the ~:recipe~:
 
-IE:
+ie:
 #+begin_src elisp :tangle no
 (package! this-package
   :recipe (:host github :repo "username/repo"
@@ -617,7 +611,7 @@ IE:
 If you'd like to disable a package included with Doom, you can do so here
 with the ~:disable~ property:
 
-IE:
+ie:
 #+begin_src elisp :tangle no
 (package! builtin-package :disable t)
 #+end_src
@@ -626,7 +620,7 @@ You can override the recipe of a built in package without having to specify
 all the properties for ~:recipe~. These will inherit the rest of its recipe
 from Doom or MELPA/ELPA/Emacsmirror:
 
-IE:
+ie:
 #+begin_src elisp :tangle no
 (package! builtin-package :disable t)
 #+end_src
@@ -635,7 +629,7 @@ You can override the recipe of a built in package without having to specify
 all the properties for ~:recipe~. These will inherit the rest of its recipe
 from Doom or MELPA/ELPA/Emacsmirror:
 
-IE:
+ie:
 #+begin_src elisp :tangle no
 (package! builtin-package :recipe (:nonrecursive t))
 (package! builtin-package-2 :recipe (:repo "myfork/package"))
@@ -645,13 +639,13 @@ Specify a ~:branch~ to install a package from a particular branch or tag.
 This is required for some packages whose default branch isn't ~master~ (which
 our package manager can't deal with; see raxod502/straight.el#279)
 
-IE:
+ie:
 #+begin_src elisp :tangle no
 (package! builtin-package :recipe (:branch "develop"))
 #+end_src
 
 Use ~:pin~ to specify a particular commit to install.
-IE:
+ie:
 #+begin_src elisp :tangle no
 (package! builtin-package :pin "1a2b3c4d5e")
 #+end_src
@@ -659,7 +653,7 @@ IE:
 Doom's packages are pinned to a specific commit and updated from release to
 release. The ~unpin!~ macro allows you to unpin single packages...
 
-IE:
+ie:
 #+begin_src elisp :tangle no
 (unpin! pinned-package)
 ; ...or multiple packages
@@ -717,7 +711,7 @@ are the three important ones:
 They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 font string. You generally only need these two:
 
-IE:
+ie:
 #+begin_src elisp :tangle no
 (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
       doom-variable-pitch-font (font-spec :family "sans" :size 13))
@@ -750,6 +744,18 @@ Let's add some small customizations, mostly make everything a bit brighter and b
   (doom-nord-padded-modeline t)
   (doom-nord-region-highlight 'frost))
 #+end_src
+
+*** Splash Screen
+
+Default doom dashboard is pretty and welcoming, let's just give it a small personal touch.
+
+#+begin_src elisp
+(setq fancy-splash-image (concat doom-private-dir "img/stallman.png"))
+#+end_src
+
+Paying respects to both the spirit of emacs and its creator.
+
+#+HTML: <p align="center"><img src="https://raw.githubusercontent.com/danilevy1212/doom/master/img/stallman.png"/></p>
 
 *** Rainbow Delimeters
 
@@ -819,14 +825,14 @@ Modules for keeping track of habits and completing checklists.
 Switch entry to 'DONE' when all subentries are done else keep entry original todo state.
 
 #+begin_src elisp
-:config
-(add-hook! 'org-after-todo-statistics-hook '(lambda (n-done n-not-done)
-                                              (let (org-log-done org-log-states)
-                                                (org-todo (if (= n-not-done 0)
-                                                              "DONE"
-                                                            (pcase (org-get-todo-state) ;; Keeps the keyword state.
-                                                              ('nil "")
-                                                              (todo todo)))))))
+    :config
+    (add-hook! 'org-after-todo-statistics-hook '(lambda (n-done n-not-done)
+                                                (let (org-log-done org-log-states)
+                                                    (org-todo (if (= n-not-done 0)
+                                                                "DONE"
+                                                                (pcase (org-get-todo-state) ;; Keeps the keyword state.
+                                                                ('nil "")
+                                                                (todo todo)))))))
 #+end_src
 
 Switch header 'TODO' state to 'DONE' when all checkboxes are ticked, to 'TODO'
@@ -864,8 +870,13 @@ More control ove how and when tasks change state.
 (use-package! org-edna
   :hook
   '(org-mode . org-edna-mode)
+#+end_src
+
+We want =org-edna= to trigger in any state change except done.
+
+#+begin_src elisp
   :custom
-  (org-edna-from-todo-states 'not-done)) ;; TODO Document why this!
+  (org-edna-from-todo-states 'not-done))
 #+end_src
 
 *** Pretending we are in vim? That's just plain EVIL!
@@ -1017,9 +1028,7 @@ Keybinding to easily find the feeds file.
 
 #+begin_src elisp
 (map! :leader
-      :desc "RSS feed config" :m "o E" (lambda ()
-                                          (interactive)
-                                          (find-file (car rmh-elfeed-org-files))))
+      :desc "RSS feed config" :m "o E" (cmd! (find-file (car rmh-elfeed-org-files))))
 #+end_src
 
 *** Japanese input.
@@ -1098,6 +1107,33 @@ When using the rustic popup, be in emacs state.
   :config
   (when (featurep 'evil)
     (add-hook! 'rustic-popup-mode-hook #'evil-emacs-state)))
+#+end_src
+
+*** Web Mode
+
+~web-mode~, as customized in the ~web~ module, has more features that I could
+wish for. Indentation is the only sore point I wish to change.
+
+First, text at the beginning of line should not be indented by default.
+
+#+begin_src elisp
+(after! web-mode
+  (setq web-mode-indent-style 1
+#+end_src
+
+The default indentation is of 2 spaces.
+
+#+begin_src elisp
+    web-mode-code-indent-offset 2
+    web-mode-css-indent-offset 2
+    web-mode-markup-indent-offset 2
+#+end_src
+
+And no padding!
+
+#+begin_src elisp
+    web-mode-part-padding nil
+    web-mode-script-padding nil))
 #+end_src
 
 ** TODO Private modules.
