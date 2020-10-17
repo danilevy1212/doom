@@ -1,7 +1,6 @@
-# -*- eval: (when (fboundp #'toc-org-mode) (toc-org-mode)); -*-
+# -*- eval: (when (fboundp #'toc-org-mode) (not toc-org-mode)) (toc-org-mode)); -*-
 
 #+TITLE: Dan's DOOM emacs configuration
-#+STARTUP: inlineimages
 #+OPTIONS: toc:nil tags:nil todo:nil
 
 * Table Of Contents :TOC_9:
@@ -19,6 +18,8 @@
     - [[#doom-modules][~doom!~ modules]]
       - [[#input][:input]]
       - [[#completion][:completion]]
+        - [[#company-mode][Company Mode]]
+        - [[#ivy][Ivy]]
       - [[#ui][:ui]]
       - [[#editor][:editor]]
       - [[#emacs][:emacs]]
@@ -35,11 +36,10 @@
       - [[#app][:app]]
       - [[#config][:config]]
   - [[#packageel][package.el]]
-    - [[#lexical-binding-1][Lexical binding]]
     - [[#how-does-packageel-work][How does package.el work?]]
     - [[#declarations][Declarations]]
+  - [[#autoloadel][autoload.el]]
   - [[#configel][config.el]]
-    - [[#lexical-binding-2][Lexical binding]]
     - [[#personal-information][Personal information]]
     - [[#default-font][Default font]]
     - [[#default-theme][Default theme]]
@@ -47,7 +47,6 @@
     - [[#splash-screen][Splash Screen]]
     - [[#rainbow-delimeters][Rainbow Delimeters]]
     - [[#modeline][Modeline]]
-    - [[#perspective][Perspective]]
     - [[#org][Org]]
     - [[#pretending-we-are-in-vim-thats-just-plain-evil][Pretending we are in vim? That's just plain EVIL!]]
     - [[#line-numbers][Line-numbers]]
@@ -55,11 +54,10 @@
     - [[#which-key][Which Key]]
     - [[#customize-group][Customize Group]]
     - [[#rss-or-how-to-get-news-the-old-way][RSS, or how to get news the old-way.]]
-    - [[#japanese-input][Japanese input.]]
-      - [[#prerequesites][Prerequesites]]
+    - [[#mozc-japanese-input][Mozc (Japanese Input).]]
     - [[#rust][Rust]]
-      - [[#see-if-we-can-use-set-popup-rules-to-do-this-for-us][See if we can use ~set-popup-rules!~ to do this for us.]]
     - [[#web-mode][Web Mode]]
+    - [[#nvm][nvm]]
   - [[#private-modules][Private modules.]]
 
 * Rationale
@@ -335,9 +333,64 @@ package I could use, so I rather install it standalone.
 
 **** TODO :completion
 
+***** Company Mode
+
+In my opinion, this package offers such a boost in productivity it's almost
+essential. Sure, the overlay can be distracting for some, but it's very
+unintrusive and completly optional while being a very good tool for
+discoverability.
+
 #+begin_src elisp :tangle init.el
        :completion
-       company           ; the ultimate code completion backend
+       (company +childframe)  ; the ultimate code completion backend
+#+end_src
+
+Doom offers a bunch of neat little extras. For starters, =+childframe= flag
+configures the company overlay to live in its own frame, which looks nicer
+in the GUI.
+
+By default, completion is triggered after a short idle period or with the
+=C-SPC= key. While the popup is visible, the following keys are available:
+
+| Keybind | Description                              |
+|---------+------------------------------------------|
+| =C-n=   | Go to next candidate                     |
+| =C-p=   | Go to previous candidate                 |
+| =C-j=   | (evil) Go to next candidate              |
+| =C-k=   | (evil) Go to previous candidate          |
+| =C-h=   | Display documentation (if available)     |
+| =C-u=   | Move to previous page of candidates      |
+| =C-d=   | Move to next page of candidates          |
+| =C-s=   | Filter candidates                        |
+| =C-S-s= | Search candidates with helm/ivy          |
+| =C-SPC= | Complete common                          |
+| =TAB=   | Complete common or select next candidate |
+| =S-TAB= | Select previous candidate                |
+
+In the spirit of Vim's omni-completion, the following insert mode keybinds are
+available to evil users to access specific company backends:
+
+| Keybind   | Description                       |
+|-----------+-----------------------------------|
+| =C-x C-]= | Complete etags                    |
+| =C-x C-f= | Complete file path                |
+| =C-x C-k= | Complete from dictionary/keyword  |
+| =C-x C-l= | Complete full line                |
+| =C-x C-o= | Invoke complete-at-point function |
+| =C-x C-n= | Complete next symbol at point     |
+| =C-x C-p= | Complete previous symbol at point |
+| =C-x C-s= | Complete snippet                  |
+| =C-x s=   | Complete spelling suggestions     |
+
+Completion candidates are supplied by the functions defined in
+~company-backends~. Doom offers a helper macro, ~set-company-backend!~ to change
+the value of a ~company-backends~ for a specific major/minor mode locally in the
+buffer.  Some examples of how to use it can be found in the
+~set-company-backend!~ documentation.
+
+***** TODO Ivy
+
+#+begin_src elisp :tangle init.el
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        (ivy +icons)        ; a search engine for love and life
@@ -565,14 +618,6 @@ Requires [[https://github.com/rust-lang/rls][rls]] or [[https://rust-analyzer.gi
 #+end_src
 
 ** package.el
-*** Lexical binding
-
-Been there, done that...
-
-#+begin_src elisp :tangle packages.el
-;; -*- no-byte-compile: t; -*-
-;;; $DOOMDIR/packages.el
-#+end_src
 
 *** How does package.el work?
 
@@ -664,25 +709,52 @@ ie:
 
 *** Declarations
 
-So, finally, let's declare the packages we will use:
+For convinience, packages will be declared in code blocks close to their
+configuration code blocks. Package declaration blocks actually go to into
+=package.el=.  Package declarations blocks can be distinguished for only
+containing the ~package!~ macro.
 
-#+begin_src elisp :tangle packages.el
-(package! org-edna)
-(package! mozc)
-(package! nvm)
-; TODO https://github.com/dalanicolai/pdf-continuous-scroll-mode.el/blob/master/pdf-continuous-scroll-mode.el Look into this.
+We don't permit the package.el file to be byte compiled and declare its
+lexical binding.
+
+#+begin_src elisp :tangle package.el
+;; -*- no-byte-compile: t; lexical-binding:t; -*-
+;;; $DOOMDIR/packages.el
 #+end_src
 
-And disable ones we don't use.
-#+begin_src elisp :tangle packages.el
-(package! ddskk ;; MOZC is better, consider contributing it to the japanese module.
-  :disable t)
+# TODO https://github.com/dalanicolai/pdf-continuous-scroll-mode.el/blob/master/pdf-continuous-scroll-mode.el Look into this.
+
+** autoload.el
+
+In this file functions are stored that shouldn't be loaded until they're needed
+and logic that should be autoloaded (evaluated very, very early at startup).
+
+This is all made possible thanks to the autoload cookie: ~;;;###autoload~.
+Placing this on top of a lisp form will do one of two things:
+
+1. Add a ~autoload~ call to Doom's autoload file (found in
+   =~/.emacs.d/.local/autoloads.el=, which is read very early in the startup
+   process).
+2. Or copy that lisp form to Doom's autoload file verbatim (usually the case for
+   anything other then ~def*~ forms, like ~defun~ or ~defmacro~).
+
+Doom's autoload file is generated by scanning these files when you execute ~doom
+sync~.
+
+As with package declarations blocks, autoload code blocks will be placed close
+to their related configuration blocks. This can be identied by their
+~;;;###autoload~ cookie. Autoloads blocks go into =autoload.el=. Here we just
+declare it's lexical binding.
+
+#+begin_src elisp :tangle autoload.el
+;;; $DOOMDIR/autoload.el -*- lexical-binding: t; -*-
 #+end_src
 
 ** config.el
-*** Lexical binding
 
-Third time is the charm...
+Most of the configuration is written here. In =config.el= we further customize
+the packages from the different modules and in =package.el=. In other words, the
+real fun starts here.  As always, we start by declaring the lexical binding:
 
 #+BEGIN_SRC elisp
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
@@ -750,7 +822,7 @@ Let's add some small customizations, mostly make everything a bit brighter and b
 Default doom dashboard is pretty and welcoming, let's just give it a small personal touch.
 
 #+begin_src elisp
-(setq fancy-splash-image (concat doom-private-dir "img/stallman.png"))
+(setq fancy-splash-image (expand-file-name "img/stallman.png" doom-private-dir))
 #+end_src
 
 Paying respects to both the spirit of emacs and its creator.
@@ -785,7 +857,7 @@ Also, the battery indicator is pretty neat:
   (doom-modeline-mode . display-battery-mode))
 #+end_src
 
-*** TODO Perspective
+# TODO Perspective Heading, customize
 
 *** Org
 
@@ -822,49 +894,81 @@ Modules for keeping track of habits and completing checklists.
     (org-module  '(org-habit org-checklist))
 #+end_src
 
-Switch entry to 'DONE' when all subentries are done else keep entry original todo state.
+Add custom functions to some org hooks. First, a function to be runned when
+subheading change KEYWORD state.
 
 #+begin_src elisp
     :config
-    (add-hook! 'org-after-todo-statistics-hook '(lambda (n-done n-not-done)
-                                                (let (org-log-done org-log-states)
-                                                    (org-todo (if (= n-not-done 0)
-                                                                "DONE"
-                                                                (pcase (org-get-todo-state) ;; Keeps the keyword state.
-                                                                ('nil "")
-                                                                (todo todo)))))))
+    (add-hook! 'org-after-todo-statistics-hook #'dan/org-after-todo-statistics-preserve-todo-state)
 #+end_src
 
 Switch header 'TODO' state to 'DONE' when all checkboxes are ticked, to 'TODO'
 otherwise
 
 #+begin_src elisp
-    (add-hook! 'org-checkbox-statistics-hook  '(lambda ()
-                                             (let ((todo-state (org-get-todo-state)) beg end)
-                                               (unless (not todo-state)
-                                                 (save-excursion
-                                                   (org-back-to-heading t)
-                                                   (setq beg (point))
-                                                   (end-of-line)
-                                                   (setq end (point))
-                                                   (goto-char beg)
-                                                   (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
-                                                                          end t)
-                                                       (if (match-end 1)
-                                                           (if (equal (match-string 1) "100%")
-                                                               (unless (string-equal todo-state "DONE")
-                                                                 (org-todo 'done))
-                                                             (unless (string-equal todo-state "TODO")
-                                                               (org-todo 'todo)))
-                                                         (if (and (> (match-end 2) (match-beginning 2))
-                                                                  (equal (match-string 2) (match-string 3)))
-                                                             (unless (string-equal todo-state "DONE")
-                                                               (org-todo 'done))
-                                                           (unless (string-equal todo-state "TODO")
-                                                             (org-todo 'todo)))))))))))
+    (add-hook! 'org-checkbox-statistics-hook  #'dan/org-checkbox-statistics-change-to-done-when-all-ticked))
 #+end_src
 
-More control ove how and when tasks change state.
+Define the custom function, switch entry to 'DONE' when all subentries are
+'DONE', else keep entry original todo state.
+
+#+begin_src elisp :tangle autoload.el
+;;;###autoload
+(defun dan/org-after-todo-statistics-preserve-todo-state (n-done n-not-done)
+  "Change KEYWORD state to `DONE` if all subheadings are also `DONE`, otherwise
+KEYWORD state is conserved.
+
+N-DONE are the number of subheadings that are done and N-NOT=DONE the number of
+headings that are not done. This function is meant to be run as as part of
+`org-after-todo-statistics-hook`"
+  (let (org-log-done org-log-states)
+    (org-todo (if (= n-not-done 0)
+                  "DONE"
+                (pcase (org-get-todo-state) ;; Keeps the keyword state.
+                  ('nil "")
+                  (todo todo))))))
+#+end_src
+
+Custom function that switches heading from 'TODO' to 'DONE' when all checkboxes are ticked.
+
+#+begin_src elisp :tangle autoload.el
+;;;###autoload
+(defun dan/org-checkbox-statistics-change-to-done-when-all-ticked ()
+  "Change KEYWORD state to `DONE` if all checkboxes of the heading are ticked.
+
+This function is meant to be run as as part of `org-checkbox-statistics-hook`"
+  (let ((todo-state (org-get-todo-state)) beg end)
+    (unless (not todo-state)
+      (save-excursion
+        (org-back-to-heading t)
+        (setq beg (point))
+        (end-of-line)
+        (setq end (point))
+        (goto-char beg)
+        (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
+                               end t)
+            (if (match-end 1)
+                (if (equal (match-string 1) "100%")
+                    (unless (string-equal todo-state "DONE")
+                      (org-todo 'done))
+                  (unless (string-equal todo-state "TODO")
+                    (org-todo 'todo)))
+              (if (and (> (match-end 2) (match-beginning 2))
+                       (equal (match-string 2) (match-string 3)))
+                  (unless (string-equal todo-state "DONE")
+                    (org-todo 'done))
+                (unless (string-equal todo-state "TODO")
+                  (org-todo 'todo)))))))))
+#+end_src
+
+=org-edna= offers more control ove how and when tasks change state and manages
+dependencies between tasks through extra heading proporties.
+
+#+begin_src elisp :tangle package.el
+(package! org-edna)
+#+end_src
+
+Load and activate org-edna together with org-mode.
 
 #+begin_src elisp
 (use-package! org-edna
@@ -872,7 +976,7 @@ More control ove how and when tasks change state.
   '(org-mode . org-edna-mode)
 #+end_src
 
-We want =org-edna= to trigger in any state change except done.
+Make =org-edna= to trigger in any state change except done.
 
 #+begin_src elisp
   :custom
@@ -1031,15 +1135,19 @@ Keybinding to easily find the feeds file.
       :desc "RSS feed config" :m "o E" (cmd! (find-file (car rmh-elfeed-org-files))))
 #+end_src
 
-*** Japanese input.
+*** Mozc (Japanese Input).
 
 I am learning japanese as a hobby, and I do most of my note taking in emacs. To
 input japanese text we use google's MOZC.
 
-First, let's define our toggle function. Activates mozc mode and changes the
-modeline to show it.
+#+begin_src elisp :tangle package.el
+(package! mozc)
+#+end_src
 
-#+begin_src elisp
+First, let's define our toggle function and lazily load it. Activates mozc mode
+and changes the modeline to show it.
+
+#+begin_src elisp :tangle autoload.el
 ;;;###autoload
 (defun dan/toggle-mozc-mode ()
   "Toggle activation/deactivation of `mozc-mode'."
@@ -1055,7 +1163,7 @@ modeline to show it.
 
 This part is a bit of hack so mozc plays nicely with Doom's configuration of evil-org.
 
-#+begin_src elisp
+#+begin_src elisp :tangle autoload.el
       (map! (:when (and (featurep 'evil-org) evil-org-mode) :map evil-org-mode-map
              (:when mozc-mode    :i "<return>"   nil)
              (:unless mozc-mode  :i "<return>"   (cmd! (org-return electric-indent-mode)))
@@ -1084,9 +1192,12 @@ Finally, we create a keybinding activate mozc-mode.
       :ni "C-x j" #'dan/toggle-mozc-mode)
 #+end_src
 
-**** TODO Prerequesites
+# TODO Prerequesites Heading
 
-Requires =emacs_mozc_helper=, this is how you install it:
+# Requires =emacs_mozc_helper=, this is how you install it:
+
+# TODO Document [[https://github.com/rzl24ozi/mozc-emacs-helper-module][インストール]] instructions, maybe create elisp script for it?
+# TODO If realiable, this could be added to the =japanese= module, as a =+mozc= flag.
 
 *** Rust
 
@@ -1101,7 +1212,7 @@ Seems like rls is more stable than rust-analyzer.
 
 When using the rustic popup, be in emacs state.
 
-**** TODO See if we can use ~set-popup-rules!~ to do this for us.
+# TODO See if we can use ~set-popup-rules!~ to do this for us.
 
 #+begin_src elisp
   :config
@@ -1136,7 +1247,48 @@ And no padding!
     web-mode-script-padding nil))
 #+end_src
 
-** TODO Private modules.
+*** TODO nvm
+
+=nvm= stands for "n.ode v.ersion m.anager". At it's core it's just a shell
+script that keeps versions of node/npm that can be activated on a per-project
+basis.  The =nvm.el= package offers a few non-interactive functions to interact
+with =nvm=. This functions change the ~PATH~ value inside =emacs=, so when =npm=
+or =node= are called from it, they are look in the directory =nvm.el= has set.
+
+#+begin_src elisp :tangle package.el
+(package! nvm)
+#+end_src
+
+# TODO ~dan/nvm-deactivate~ interactive function, so I can go back to using system npm/node
+
+# Get PATH, get NVM_DIR (default to "~/.nvm"), find path in PATH that contain NVM_DIR, delete it, setenv of PATH with result.
+
+# TODO ~dan/nvm-use~ interactive wrapper. If a .nvmrc can't be found in ~default-directory~, then prompt user.
+
+# Candidates: (nvm--installed-version) + system node (would be nice to show the version) (If it exists)
+
+# If user selects 'system', call ~dan/nvm-deactivate~
+# If user selects a version, call ~(nvm-use *version*)~
+
+# - (would be nice to show the version) --> (with-temp-buffer (call-process-shell-command "/usr/bin/node -v" nil t))
+
+#     BUT! Make sure a system node exists
+
+# - (if it exists)
+
+#     Search in PATH, filtered of NVM_DIR, for node, and run
+
+#     #+begin_src elisp :tangle no
+# (with-temp-buffer
+#   (list :exit-status (call-process-shell-command (concat system-node " -v") nil t)
+#         :output (buffer-string)))
+#     #+end_src
+
+#     Then just check with ~plist-get~ for exit status 0 and read output (~s-trim~-ed).
+
+#     ~system-node~ can be obtained with ~expand-file-name~
+
+** Private modules.
 
 =doom= allows the user to [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#writing-your-own-modules][to write their own modules]] in their ~$DOOMDIR~
 directory, which will be autoloaded at startup. It offers a few extra features
