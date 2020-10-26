@@ -28,7 +28,7 @@
       - [[#tools][:tools]]
       - [[#tools-1][:tools]]
       - [[#lang][:lang]]
-        - [[#rust-lsp][rust +lsp]]
+        - [[#rust][rust]]
           - [[#dependencies][Dependencies:]]
         - [[#sh][sh]]
         - [[#web][web]]
@@ -48,6 +48,7 @@
     - [[#rainbow-delimeters][Rainbow Delimeters]]
     - [[#modeline][Modeline]]
     - [[#org][Org]]
+      - [[#org-edna][org-edna]]
       - [[#autoloads][Autoloads]]
     - [[#pretending-we-are-in-vim-thats-just-plain-evil][Pretending we are in vim? That's just plain EVIL!]]
     - [[#line-numbers][Line-numbers]]
@@ -57,9 +58,11 @@
     - [[#rss-or-how-to-get-news-the-old-way][RSS, or how to get news the old-way.]]
     - [[#mozc-japanese-input][Mozc (Japanese Input).]]
       - [[#autoloads-1][Autoloads]]
-    - [[#rust][Rust]]
+    - [[#rust-1][Rust]]
     - [[#web-mode][Web Mode]]
     - [[#nvm][nvm]]
+      - [[#doctorel][doctor.el]]
+      - [[#autoloads-2][Autoloads]]
   - [[#private-modules][Private modules.]]
 
 * Rationale
@@ -272,6 +275,8 @@ can be called with the =doctor= argument to obtain information of posible
 missing dependencies used by the modules.
 
 # TODO Installation of the config may require to manually uncomment 'literate' module and run doom sync, create script for that?
+# TODO Explore using defcli! to install with the doom cli utilily.
+# TODO defcli! documentation is a bit out ouf date, another contributing opportunity?
 
 * Configuration
 
@@ -513,6 +518,9 @@ buffer.  Some examples of how to use it can be found in the
 #+end_src
 
 **** TODO :lang
+
+# TODO [[https://github.com/p3r7/awesome-elisp][Check awesome-lisp or keep it as a reference.]]
+
 #+begin_src elisp :tangle init.el
        :lang
        ;;agda              ; types of types of types of types...
@@ -565,10 +573,11 @@ buffer.  Some examples of how to use it can be found in the
 #+end_src
 
 
-***** rust +lsp
+***** rust
 
-Rustic mode is great and the integrates really well with cargo.  The defaults
-are also reasonable, what's not to love?
+Rustic mode is great and the integrates really well with cargo. The defaults are
+reasonable and with the =+lsp= it integrates nicely with lsp, what's not to
+love?
 
 #+begin_src elisp :tangle init.el
        (rust +lsp)         ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
@@ -657,7 +666,7 @@ ie:
 #+begin_src elisp :tangle no
 (package! this-package
   :recipe (:host github :repo "username/repo"
-           :files ("some-file.el" "src/lisp/*.el")))   
+           :files ("some-file.el" "src/lisp/*.el")))
 #+end_src
 
 If you'd like to disable a package included with Doom, you can do so here
@@ -793,9 +802,18 @@ ie:
       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 #+end_src
 
-Let's choose our monospaced font, Roboto Mono goodness:
+Let's choose our *monospaced* font, /Hack/ goodness:
+
 #+begin_src elisp
-(setq doom-font (font-spec :family "monospace" :size 16 :name "Roboto Mono"))
+(setq doom-font (font-spec :family "Hack" :size 16))
+#+end_src
+
+Comments and keywords should pop more...
+
+#+begin_src elisp
+(custom-set-faces!
+  '(font-lock-comment-face :slant italic)
+  '(font-lock-keyword-face :slant italic))
 #+end_src
 
 *** Default theme
@@ -892,6 +910,12 @@ I only use one agenda file, that has all my rutine stuff in it.
     (org-agenda-files  `(,(expand-file-name "agenda.org" org-directory)))
 #+end_src
 
+Make emphasis markers autohide
+
+#+begin_src elisp
+    (org-hide-emphasis-markers t)
+#+end_src
+
 Modules for keeping track of habits and completing checklists.
 
 #+begin_src elisp
@@ -913,6 +937,7 @@ otherwise
     (add-hook! 'org-checkbox-statistics-hook  #'dan/org-checkbox-statistics-change-to-done-when-all-ticked))
 #+end_src
 
+**** org-edna
 
 =org-edna= offers more control ove how and when tasks change state and manages
 dependencies between tasks through extra heading proporties.
@@ -935,6 +960,39 @@ Make =org-edna= to trigger in any state change except done.
   :custom
   (org-edna-from-todo-states 'not-done))
 #+end_src
+
+# TODO https://github.com/m-cat/org-recur#time-of-day Utilizar esto para los schedule clases de japones.
+
+# TODO org-recur
+
+# This package extends org-mode and org-agenda with support for defining recurring
+# tasks and easily scheduling them.
+
+# By adding some simple syntax to anywhere in the task heading you can control how
+# often the task should recur. Examples:
+
+#     |+2|: Recur every other day.
+#     |+w|: Recur every week.
+#     |1|: Recur on the first of every month.
+#     |Thu|: Recur every Thursday.
+#     |Sun,Sat|: Recur every Sunday and Saturday.*
+#     |Wkdy|: Recur every weekday.*
+
+# The syntax is the same as the one already used by org-schedule, with examples of
+# additional syntax, provided by org-recur, marked by *.
+
+# First, we declare the package.
+
+# #+begin_src elisp :tangle package.el
+# (package! org-recur)
+# #+end_src
+
+# #+begin_src elisp
+# (use-package! org-recur
+#   :defer t)
+# #+end_src
+
+# TODO Look into Auto-Fill-Mode for org buffers.
 
 **** Autoloads
 
@@ -1281,11 +1339,62 @@ or =node= are called from it, they are look in the directory =nvm.el= has set.
 (package! nvm)
 #+end_src
 
-# **** TODO Autoloads
+**** TODO doctor.el
 
-# TODO ~dan/nvm-deactivate~ interactive function, so I can go back to using system npm/node
+[[file:~/.config/emacs/docs/getting_started.org::*=doctor.el=][=doctor.el=]] EXPLAIN THIS AND USE TO DETECT NVM
 
-# Get PATH, get NVM_DIR (default to "~/.nvm"), find path in PATH that contain NVM_DIR, delete it, setenv of PATH with result.
+# (or (file-directory-p "~/.nvm") (getenv "NVM_DIR")) Detect if nvm is installed.
+
+**** TODO Autoloads
+
+=nvm.el= lacks functions to interactively activate or deactivate a version of
+node within emacs.  Luckily, emacs is extensible. We'll create our functions in
+a autoloaded file.
+
+#+begin_src elisp :tangle autoload/nvm.el :mkdirp yes
+;;; $DOOMDIR/autoload/nvm.el -*- lexical-binding: t; -*-
+#+end_src
+
+When loading the autoload file, load the nvm module. Essentially, we give
+access to the nvm package to the autoloaded functions.
+
+#+begin_src elisp :tangle autoload/nvm.el :mkdirp yes
+(require 'nvm)
+#+end_src
+
+A function to deactivate the current version of node, if it was activated by
+nvm. Essentially, it removes the modifications nvm may have done to PATH
+enviroment variable.
+
+#+begin_src  elisp :tangle autoload/nvm.el :mkdirp yes
+;;;###autoload
+(defun dan/nvm-deactivate ()
+  "Deactivate nvm.
+
+This function will restore the enviroment variable PATH to it's value before nvm
+was activated.
+
+If nvm wasn't activated previously, PATH will remain unchanged."
+  (interactive)
+  (when nvm-current-version
+    (let* ((node-version-dir (expand-file-name "bin/" (-last-item nvm-current-version)))
+           (old-path-list (parse-colon-path (getenv "PATH")))
+           (new-path-list (--remove-first (s-equals-p node-version-dir it) old-path-list))) ;; TODO Use --reject with path-regex like in original package.
+      (setenv "PATH" (s-join path-separator new-path-list))
+      (setq nvm-current-version nil)
+      (message "NVM deactivated. Restored node version to system default."))))
+
+;; TODO Use this instead:
+;; (let* ((path-re (concat "^" (f-join nvm-dir nvm-runtime-re) nvm-version-re "/bin/?$"))
+;;        (new-bin-path (f-full (f-join version-path "bin")))
+;;        (paths
+;;         (cons
+;;          new-bin-path
+;;          (-reject
+;;           (lambda (path)
+;;             (if path (s-matches? path-re path) t))
+;;           (parse-colon-path (getenv "PATH"))))))
+#+end_src
 
 # TODO ~dan/nvm-use~ interactive wrapper. If a .nvmrc can't be found in ~default-directory~, then prompt user.
 
