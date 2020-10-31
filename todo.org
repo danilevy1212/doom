@@ -59,16 +59,36 @@ If realiable, this could be added to the =japanese= module, as a =+mozc= flag.
 + [[https://github.com/p3r7/awesome-elisp][awesome-lisp.]]
 +  https://www.reddit.com/r/emacs/comments/9lv1fd/a_simple_guide_to_writing_publishing_emacs/
 * Inbox
-** TODO Use [[doom-docs:getting_started.org][doctor.el]] to detect if nvm is installed.
+** WAIT Use [[doom-docs:getting_started.org][doctor.el]] to detect if nvm is installed.
 
-(or (file-directory-p "~/.nvm") (getenv "NVM_DIR")) Detect if nvm is installed.
+Unfortunatly, this feature cannot be implemented because there is no support for
+it in doom emacs. However, I opened a [[https://github.com/hlissner/doom-emacs/issues/4190][issue]] in doom-emacs repo requesting this
+feature.
 
-[[file:~/.config/doom/config.org::*nvm][nvm]]
-** TODO Show the node versions of system in completion buffer. @dan/nvm-use-for-buffer
+I would love to make it myself!
 
-[[file:~/.config/doom/config.org::*Autoloads][Autoloads]]
+Here is the headings I would have to put after the feature comes to fruition:
 
-(would be nice to show the version) --> (with-temp-buffer (call-process-shell-command "/usr/bin/node -v" nil t))
-BUT! Make sure a system node exists
+Before @config.el heading
+# ** doctor.el
 
-Get system node version in a let binding, wrap everything in it.
+# In this file we can check for missing dependencies or incorrect configuration,
+# which will be shown to the user when he runs ~doom doctor~.
+
+# #+begin_src elisp :tangle doctor.el
+# ;;; $DOOMDIR/doctor.el -*- lexical-binding: t; -*-
+# #+end_src
+
+Inside @nvm.el
+
+# **** Doctor
+
+# This package needs =nvm= to work, so let's warn the user if we detect that nvm is
+# not installed.
+
+# #+begin_src elisp :tangle doctor.el
+# (error! "Test")
+
+# (unless (or (file-directory-p "~/.nvm") (getenv "NVM_DIR"))
+#   (warn! "Can't find the nvm directory, nvm package won't work."))
+# #+end_src
