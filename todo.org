@@ -1,0 +1,74 @@
+#+TITLE: To Dos
+
+* To Do
+
+** TODO [#B] Installation instructions.
+
+*** Installation of the config may require to manually uncomment 'literate' module and run doom sync, create script for that?
+
+*** Explore using defcli! to install with the doom cli utilily.
+
+*** defcli! documentation is a bit out ouf date, another contributing opportunity?
+
+** TODO https://github.com/dalanicolai/pdf-continuous-scroll-mode.el/blob/master/pdf-continuous-scroll-mode.el Look into this.
+
+** TODO https://github.com/folke/splashcii THIS BUT IN ELISP.
+
+** TODO [#B] Customize and research pespective mode.
+
+** TODO Create a function to only display the battery IF there is one. [[file:~/.config/doom/config.org::*Modeline][Modeline]]
+
+** TODO [#B] [[file:config.org::*Org]] https://github.com/m-cat/org-recur#time-of-day Utilizar esto para los schedule clases de japones.
+
+MEJORAR mis diary s-exp con ~let~. ~current-time~ y las funciones en =time-date.el=,
+Si esto no me convence, entonces:
+
+ This package extends org-mode and org-agenda with support for defining recurring
+ tasks and easily scheduling them.
+
+ By adding some simple syntax to anywhere in the task heading you can control how
+ often the task should recur. Examples:
+
+     |+2|: Recur every other day.
+     |+w|: Recur every week.
+     |1|: Recur on the first of every month.
+     |Thu|: Recur every Thursday.
+     |Sun,Sat|: Recur every Sunday and Saturday.*
+     |Wkdy|: Recur every weekday.*
+
+ The syntax is the same as the one already used by org-schedule, with examples of
+ additional syntax, provided by org-recur, marked by *.
+
+ First, we declare the package.
+
+ #+begin_src elisp :tangle packages.el
+ (package! org-recur)
+ #+end_src
+
+ #+begin_src elisp
+ (use-package! org-recur
+   :defer t)
+ #+end_src
+
+** TODO file:config.org::*Mozc Document [[https://github.com/rzl24ozi/mozc-emacs-helper-module][インストール]] instructions, maybe create elisp script for it? Checkout the recipe in [[https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mozc][AUR]].
+
+If realiable, this could be added to the =japanese= module, as a =+mozc= flag.
+
+* References:
+
++ [[https://github.com/p3r7/awesome-elisp][awesome-lisp.]]
++  https://www.reddit.com/r/emacs/comments/9lv1fd/a_simple_guide_to_writing_publishing_emacs/
+* Inbox
+** TODO Use [[doom-docs:getting_started.org][doctor.el]] to detect if nvm is installed.
+
+(or (file-directory-p "~/.nvm") (getenv "NVM_DIR")) Detect if nvm is installed.
+
+[[file:~/.config/doom/config.org::*nvm][nvm]]
+** TODO Show the node versions of system in completion buffer. @dan/nvm-use-for-buffer
+
+[[file:~/.config/doom/config.org::*Autoloads][Autoloads]]
+
+(would be nice to show the version) --> (with-temp-buffer (call-process-shell-command "/usr/bin/node -v" nil t))
+BUT! Make sure a system node exists
+
+Get system node version in a let binding, wrap everything in it.

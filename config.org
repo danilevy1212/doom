@@ -61,8 +61,8 @@
     - [[#rust-1][Rust]]
     - [[#web-mode][Web Mode]]
     - [[#nvm][nvm]]
-      - [[#doctorel][doctor.el]]
       - [[#autoloads-2][Autoloads]]
+    - [[#vue][Vue]]
   - [[#private-modules][Private modules.]]
 
 * Rationale
@@ -273,10 +273,6 @@ reliable manner, much more so that If I were back in vanilla emacs.
 Additionally, the =doom= executable (located at ~user-emacs-directory/bin/doom~)
 can be called with the =doctor= argument to obtain information of posible
 missing dependencies used by the modules.
-
-# TODO Installation of the config may require to manually uncomment 'literate' module and run doom sync, create script for that?
-# TODO Explore using defcli! to install with the doom cli utilily.
-# TODO defcli! documentation is a bit out ouf date, another contributing opportunity?
 
 * Configuration
 
@@ -519,8 +515,6 @@ buffer.  Some examples of how to use it can be found in the
 
 **** TODO :lang
 
-# TODO [[https://github.com/p3r7/awesome-elisp][Check awesome-lisp or keep it as a reference.]]
-
 #+begin_src elisp :tangle init.el
        :lang
        ;;agda              ; types of types of types of types...
@@ -738,7 +732,6 @@ lexical binding.
 ;;; $DOOMDIR/packages.el
 #+end_src
 
-# TODO https://github.com/dalanicolai/pdf-continuous-scroll-mode.el/blob/master/pdf-continuous-scroll-mode.el Look into this.
 
 ** autoload folder
 
@@ -802,7 +795,7 @@ ie:
       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 #+end_src
 
-Let's choose our *monospaced* font, /Hack/ goodness:
+Let's _choose_ our *monospaced* font, /Hack/ goodness:
 
 #+begin_src elisp
 (setq doom-font (font-spec :family "Hack" :size 16))
@@ -856,7 +849,7 @@ Paying respects to both the spirit of emacs and its creator.
 Matching pairs draw with the same face color, making them easily identifiable.
 
 #+begin_src elisp
-(add-hook! 'prog-mode-hook #'rainbow-delimiters-mode-enable)
+(add-hook! prog-mode #'rainbow-delimiters-mode-enable)
 #+end_src
 
 *** Modeline
@@ -878,8 +871,6 @@ Also, the battery indicator is pretty neat:
   :hook
   (doom-modeline-mode . display-battery-mode))
 #+end_src
-
-# TODO Perspective Heading, customize
 
 *** Org
 
@@ -930,6 +921,13 @@ subheading change KEYWORD state.
     (add-hook! 'org-after-todo-statistics-hook #'dan/org-after-todo-statistics-preserve-todo-state)
 #+end_src
 
+I like my org files to not exceed the ~fill-collumn~ limit, so for them I activate
+~auto-fill-mode~.
+
+#+begin_src elisp
+    (add-hook! org-mode #'auto-fill-mode)
+#+end_src
+
 Switch header 'TODO' state to 'DONE' when all checkboxes are ticked, to 'TODO'
 otherwise
 
@@ -960,39 +958,6 @@ Make =org-edna= to trigger in any state change except done.
   :custom
   (org-edna-from-todo-states 'not-done))
 #+end_src
-
-# TODO https://github.com/m-cat/org-recur#time-of-day Utilizar esto para los schedule clases de japones.
-
-# TODO org-recur
-
-# This package extends org-mode and org-agenda with support for defining recurring
-# tasks and easily scheduling them.
-
-# By adding some simple syntax to anywhere in the task heading you can control how
-# often the task should recur. Examples:
-
-#     |+2|: Recur every other day.
-#     |+w|: Recur every week.
-#     |1|: Recur on the first of every month.
-#     |Thu|: Recur every Thursday.
-#     |Sun,Sat|: Recur every Sunday and Saturday.*
-#     |Wkdy|: Recur every weekday.*
-
-# The syntax is the same as the one already used by org-schedule, with examples of
-# additional syntax, provided by org-recur, marked by *.
-
-# First, we declare the package.
-
-# #+begin_src elisp :tangle package.el
-# (package! org-recur)
-# #+end_src
-
-# #+begin_src elisp
-# (use-package! org-recur
-#   :defer t)
-# #+end_src
-
-# TODO Look into Auto-Fill-Mode for org buffers.
 
 **** Autoloads
 
@@ -1236,12 +1201,7 @@ Finally, we create a keybinding activate mozc-mode.
       :ni "C-x j" #'dan/toggle-mozc-mode)
 #+end_src
 
-# TODO Prerequesites Heading
 
-# Requires =emacs_mozc_helper=, this is how you install it:
-
-# TODO Document [[https://github.com/rzl24ozi/mozc-emacs-helper-module][インストール]] instructions, maybe create elisp script for it?
-# TODO If realiable, this could be added to the =japanese= module, as a =+mozc= flag.
 
 **** Autoloads
 
@@ -1292,8 +1252,6 @@ Seems like rls is more stable than rust-analyzer.
 
 When using the rustic popup, be in emacs state.
 
-# TODO See if we can use ~set-popup-rules!~ to do this for us.
-
 #+begin_src elisp
   :config
   (when (featurep 'evil)
@@ -1327,7 +1285,7 @@ And no padding!
     web-mode-script-padding nil))
 #+end_src
 
-*** TODO nvm
+*** nvm
 
 =nvm= stands for "n.ode v.ersion m.anager". At it's core it's just a shell
 script that keeps versions of node/npm that can be activated on a per-project
@@ -1339,13 +1297,7 @@ or =node= are called from it, they are look in the directory =nvm.el= has set.
 (package! nvm)
 #+end_src
 
-**** TODO doctor.el
-
-[[file:~/.config/emacs/docs/getting_started.org::*=doctor.el=][=doctor.el=]] EXPLAIN THIS AND USE TO DETECT NVM
-
-# (or (file-directory-p "~/.nvm") (getenv "NVM_DIR")) Detect if nvm is installed.
-
-**** TODO Autoloads
+**** Autoloads
 
 =nvm.el= lacks functions to interactively activate or deactivate a version of
 node within emacs.  Luckily, emacs is extensible. We'll create our functions in
@@ -1377,49 +1329,45 @@ was activated.
 If nvm wasn't activated previously, PATH will remain unchanged."
   (interactive)
   (when nvm-current-version
-    (let* ((node-version-dir (expand-file-name "bin/" (-last-item nvm-current-version)))
-           (old-path-list (parse-colon-path (getenv "PATH")))
-           (new-path-list (--remove-first (s-equals-p node-version-dir it) old-path-list))) ;; TODO Use --reject with path-regex like in original package.
+    (let* ((path-re (concat "^" (f-join nvm-dir nvm-runtime-re) nvm-version-re "/bin/?$"))
+           (node-version-dir (expand-file-name "bin/" (-last-item nvm-current-version)))
+           (new-path-list (--reject (s-matches? path-re it) (parse-colon-path (getenv "PATH")))))
       (setenv "PATH" (s-join path-separator new-path-list))
       (setq nvm-current-version nil)
       (message "NVM deactivated. Restored node version to system default."))))
-
-;; TODO Use this instead:
-;; (let* ((path-re (concat "^" (f-join nvm-dir nvm-runtime-re) nvm-version-re "/bin/?$"))
-;;        (new-bin-path (f-full (f-join version-path "bin")))
-;;        (paths
-;;         (cons
-;;          new-bin-path
-;;          (-reject
-;;           (lambda (path)
-;;             (if path (s-matches? path-re path) t))
-;;           (parse-colon-path (getenv "PATH"))))))
 #+end_src
 
-# TODO ~dan/nvm-use~ interactive wrapper. If a .nvmrc can't be found in ~default-directory~, then prompt user.
+An ~nvm-use-for~ interactive wrapper. If a .nvmrc can't be found in ~default-directory~, then prompt user.
 
-# Candidates: (nvm--installed-version) + system node (would be nice to show the version) (If it exists)
+#+begin_src elisp
+;;;###autoload
+(defun dan/nvm-use-for ()
+  "Activate a node version interactively."
+  (interactive)
+  (condition-case err
+      (nvm-use-for)
+    ('error
+     (pcase (completing-read "Select a Node version:"
+                             (append (nvm--installed-versions)
+                                     (list (format "%s (%s)"
+                                                   "system"
+                                                   (s-trim (with-temp-buffer
+                                                             (call-process-shell-command "/usr/bin/node -v" nil t)
+                                                             (buffer-string)))) ))
+                             nil t)
+       ("system" (dan/nvm-deactivate))
+       (node-version (nvm-use node-version))))))
+#+end_src
 
-# If user selects 'system', call ~dan/nvm-deactivate~
-# If user selects a version, call ~(nvm-use *version*)~
+*** Vue
 
-# - (would be nice to show the version) --> (with-temp-buffer (call-process-shell-command "/usr/bin/node -v" nil t))
+The language server =VLS= does not analyse the templates of ~.vue~ files by default,
+let's change that!
 
-#     BUT! Make sure a system node exists
-
-# - (if it exists)
-
-#     Search in PATH, filtered of NVM_DIR, for node, and run
-
-#     #+begin_src elisp :tangle no
-# (with-temp-buffer
-#   (list :exit-status (call-process-shell-command (concat system-node " -v") nil t)
-#         :output (buffer-string)))
-#     #+end_src
-
-#     Then just check with ~plist-get~ for exit status 0 and read output (~s-trim~-ed).
-
-#     ~system-node~ can be obtained with ~expand-file-name~
+#+begin_src elisp
+(after! lsp-vetur
+  (setq lsp-vetur-experimental-template-interpolation-service t))
+#+end_src
 
 ** Private modules.
 
