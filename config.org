@@ -430,7 +430,7 @@ buffer.  Some examples of how to use it can be found in the
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        ;;window-select     ; visually switch windows
        workspaces        ; tab emulation, persistence & separate workspaces
-       ;;zen               ; distraction-free coding or writing
+       zen               ; distraction-free coding or writing
 #+end_src
 
 **** TODO :editor
@@ -809,6 +809,13 @@ Comments and keywords should pop more...
   '(font-lock-keyword-face :slant italic))
 #+end_src
 
+When in zen mode, scale text just a bit.
+
+#+begin_src elisp
+(after! writeroom-mode
+  (setq +zen-text-scale 1.25))
+#+end_src
+
 *** Default theme
 
 There are two ways to load a theme. Both assume the theme is installed and
@@ -926,6 +933,12 @@ I like my org files to not exceed the ~fill-collumn~ limit, so for them I activa
 
 #+begin_src elisp
     (add-hook! org-mode #'auto-fill-mode)
+#+end_src
+
+In org buffers, remove the line number fringe.
+
+#+begin_src elisp
+    (add-hook! org-mode (setq-local display-line-numbers nil))
 #+end_src
 
 Switch header 'TODO' state to 'DONE' when all checkboxes are ticked, to 'TODO'
