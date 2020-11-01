@@ -280,13 +280,13 @@ First, clone this repository in your ~DOOMDIR~. ~DOOMDIR~ is an environment vari
 that points to the location of your private configuration. If ~DOOMDIR~ does not
 exist, =doom= will look for your configuration in =doom.d=.
 
-#+begin_src shell
+#+begin_src shell :tangle no
 export DOOMDIR=/path/to/doom/dir
 #+end_src
 
 With the following command you can clone the repository in either case:
 
-#+begin_src shell
+#+begin_src shell :tangle no
 git clone https://github.com/danilevy1212/doom.git ${DOOMDIR:-~/.doom.d}
 #+end_src
 
@@ -306,7 +306,7 @@ in. Remember to run ~doom sync~ after modifying it!
 *** Lexical binding.
 
 Elisp by default has dynamic-scope, which is fine if a little weird. However,
-dynamic scope comes with a performence penalty. Optional lexical scope has to be
+dynamic scope comes with a performance penalty. Optional lexical scope has to be
 activated with a file parameter, as such:
 
 #+begin_src elisp :tangle init.el
@@ -323,7 +323,7 @@ package configurations made by the community. In the spirit of emacs, all the
 configuration that comes with a particular module can be extended or even completly
 overwritten by your private config.
 
-Modules are completly open for discovery.Press 'SPC h d h' (or 'C-h d h' for
+Modules are completly open for discovery. Press 'SPC h d h' (or 'C-h d h' for
 non-vim users) to access Doom's documentation. There you'll find a "Module
 Index" link where you'll find a comprehensive list of Doom's modules and what
 flags they support.
@@ -381,24 +381,24 @@ By default, completion is triggered after a short idle period or with the
 
 | Keybind | Description                              |
 |---------+------------------------------------------|
-| =C-n=   | Go to next candidate                     |
-| =C-p=   | Go to previous candidate                 |
-| =C-j=   | (evil) Go to next candidate              |
-| =C-k=   | (evil) Go to previous candidate          |
-| =C-h=   | Display documentation (if available)     |
-| =C-u=   | Move to previous page of candidates      |
-| =C-d=   | Move to next page of candidates          |
-| =C-s=   | Filter candidates                        |
-| =C-S-s= | Search candidates with helm/ivy          |
-| =C-SPC= | Complete common                          |
-| =TAB=   | Complete common or select next candidate |
-| =S-TAB= | Select previous candidate                |
+| =C-n=     | Go to next candidate                     |
+| =C-p=     | Go to previous candidate                 |
+| =C-j=     | (evil) Go to next candidate              |
+| =C-k=     | (evil) Go to previous candidate          |
+| =C-h=     | Display documentation (if available)     |
+| =C-u=     | Move to previous page of candidates      |
+| =C-d=     | Move to next page of candidates          |
+| =C-s=     | Filter candidates                        |
+| =C-S-s=   | Search candidates with helm/ivy          |
+| =C-SPC=   | Complete common                          |
+| =TAB=     | Complete common or select next candidate |
+| =S-TAB=   | Select previous candidate                |
 
 In the spirit of Vim's omni-completion, the following insert mode keybinds are
 available to evil users to access specific company backends:
 
-| Keybind   | Description                       |
-|-----------+-----------------------------------|
+| Keybind | Description                       |
+|---------+-----------------------------------|
 | =C-x C-]= | Complete etags                    |
 | =C-x C-f= | Complete file path                |
 | =C-x C-k= | Complete from dictionary/keyword  |

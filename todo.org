@@ -6,8 +6,6 @@
 
 ** TODO https://github.com/folke/splashcii THIS BUT IN ELISP.
 
-** TODO [#B] Customize and research pespective mode.
-
 ** TODO Create a function to only display the battery IF there is one. [[file:~/.config/doom/config.org::*Modeline][Modeline]]
 
 ** TODO [#B] [[file:config.org::*Org]] https://github.com/m-cat/org-recur#time-of-day Utilizar esto para los schedule clases de japones.
