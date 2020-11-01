@@ -825,6 +825,12 @@ Let's _choose_ our *monospaced* font, /Hack/ goodness:
 (setq doom-font (font-spec :family "Hack" :size 16))
 #+end_src
 
+And our =variable pitch= +font+, ~DejaVu Sans~:
+
+#+begin_src elisp :tangle no
+(setq doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 20))
+#+end_src
+
 Comments and keywords should pop more...
 
 #+begin_src elisp
