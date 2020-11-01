@@ -54,12 +54,7 @@ Si esto no me convence, entonces:
 
 If realiable, this could be added to the =japanese= module, as a =+mozc= flag.
 
-* References:
-
-+ [[https://github.com/p3r7/awesome-elisp][awesome-lisp.]]
-+  https://www.reddit.com/r/emacs/comments/9lv1fd/a_simple_guide_to_writing_publishing_emacs/
-* Inbox
-** WAIT Use [[doom-docs:getting_started.org][doctor.el]] to detect if nvm is installed.
+** TODO WAIT for HSLINER Use [[doom-docs:getting_started.org][doctor.el]] to detect if nvm is installed.
 
 Unfortunatly, this feature cannot be implemented because there is no support for
 it in doom emacs. However, I opened a [[https://github.com/hlissner/doom-emacs/issues/4190][issue]] in doom-emacs repo requesting this
@@ -92,3 +87,10 @@ Inside @nvm.el
 # (unless (or (file-directory-p "~/.nvm") (getenv "NVM_DIR"))
 #   (warn! "Can't find the nvm directory, nvm package won't work."))
 # #+end_src
+
+** TODO [[https://bunpro.jp/api#getting-started][Look into the bunpro API]], excuse to use the 'rest' module.
+
+* References:
+
++ [[https://github.com/p3r7/awesome-elisp][awesome-lisp.]]
++  https://www.reddit.com/r/emacs/comments/9lv1fd/a_simple_guide_to_writing_publishing_emacs/
