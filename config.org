@@ -12,6 +12,7 @@
   - [[#tldr][TL;DR:]]
 - [[#installation][Installation]]
   - [[#prerequisites][Prerequisites]]
+  - [[#steps][Steps]]
 - [[#configuration][Configuration]]
   - [[#initel][init.el]]
     - [[#lexical-binding][Lexical binding.]]
@@ -272,6 +273,25 @@ manner, much more so that If I were back in vanilla emacs.
 Additionally, the =doom= executable (located at ~user-emacs-directory/bin/doom~)
 can be called with the =doctor= argument to obtain information of posible
 missing dependencies used by the modules.
+
+** Steps
+
+First, clone this repository in your ~DOOMDIR~. ~DOOMDIR~ is an environment variable
+that points to the location of your private configuration. If ~DOOMDIR~ does not
+exist, =doom= will look for your configuration in =doom.d=.
+
+#+begin_src shell
+export DOOMDIR=/path/to/doom/dir
+#+end_src
+
+With the following command you can clone the repository in either case:
+
+#+begin_src shell
+git clone https://github.com/danilevy1212/doom.git ${DOOMDIR:-~/.doom.d}
+#+end_src
+
+Then, just follow the instructions for installing [[https://github.com/hlissner/doom-emacs#install][doom emacs]]. In case you have
+set ~DOOMDIR~, make sure to run ~doom env~ before ~doom install~.
 
 * Configuration
 
