@@ -921,12 +921,18 @@ the evil state I am in with a letter instead of an icon:
   (doom-modeline-modal-icon nil))
 #+end_src
 
-Also, the battery indicator is pretty neat:
+We would like to display the battery icon in the modeline, but only if I am in
+a laptop:
 
 #+begin_src elisp
 (use-package! battery
-  :hook
-  (doom-modeline-mode . display-battery-mode))
+  :after-call doom-modeline-mode
+  :config
+  (when (and battery-status-function
+             (not (string-match-p "N/A"
+                                  (battery-format "%B"
+                                                  (funcall battery-status-function)))))
+    (display-battery-mode)))
 #+end_src
 
 *** Projectile
