@@ -65,6 +65,7 @@
     - [[#nvm][nvm]]
       - [[#autoloads-2][Autoloads]]
     - [[#vue][Vue]]
+    - [[#dotenv][Dotenv]]
   - [[#private-modules][Private modules.]]
 
 * Rationale
@@ -1450,6 +1451,21 @@ let's change that!
 #+begin_src elisp
 (after! lsp-vetur
   (setq lsp-vetur-experimental-template-interpolation-service t))
+#+end_src
+
+*** Dotenv
+
+Emacs is missing a mode to edit =.env= files. So let's add it one:
+
+#+begin_src elisp :tangle packages.el
+(package! dotenv-mode)
+#+end_src
+
+Now let's activate it when opening a =.env=:
+
+#+begin_src elisp
+(use-package! dotenv-mode
+  :mode ("\\.env\\..*\\'" . dotenv-mode))
 #+end_src
 
 ** Private modules.
