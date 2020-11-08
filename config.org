@@ -1020,6 +1020,8 @@ created window doesn't close with the dired buffer. Thus, I created this small
 wrapper to solve this problem.
 
 #+begin_src elisp :mkdirp yes :tangle autoload/dired.el
+;;; $DOODIR/autoload/dired.el -*- lexical-binding: t; -*-
+
 ;;;###autoload
 (defun dan/dired-quit-all ()
   "Kill all dired buffers and close the dired window."
