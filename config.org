@@ -1513,7 +1513,7 @@ If nvm wasn't activated previously, PATH will remain unchanged."
 
 An ~nvm-use-for~ interactive wrapper. If a .nvmrc can't be found in ~default-directory~, then prompt user.
 
-#+begin_src elisp
+#+begin_src elisp :tangle autoload/nvm.el :mkdirp yes
 ;;;###autoload
 (defun dan/nvm-use-for ()
   "Activate a node version interactively.
