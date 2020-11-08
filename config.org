@@ -49,9 +49,11 @@
     - [[#rainbow-delimeters][Rainbow Delimeters]]
     - [[#modeline][Modeline]]
     - [[#projectile][Projectile]]
+    - [[#dired][Dired]]
+      - [[#autoloads][Autoloads]]
     - [[#org][Org]]
       - [[#org-edna][org-edna]]
-      - [[#autoloads][Autoloads]]
+      - [[#autoloads-1][Autoloads]]
     - [[#pretending-we-are-in-vim-thats-just-plain-evil][Pretending we are in vim? That's just plain EVIL!]]
     - [[#line-numbers][Line-numbers]]
     - [[#helpful][Helpful]]
@@ -59,11 +61,11 @@
     - [[#customize-group][Customize Group]]
     - [[#rss-or-how-to-get-news-the-old-way][RSS, or how to get news the old-way.]]
     - [[#mozc-japanese-input][Mozc (Japanese Input).]]
-      - [[#autoloads-1][Autoloads]]
+      - [[#autoloads-2][Autoloads]]
     - [[#rust-1][Rust]]
     - [[#web-mode][Web Mode]]
     - [[#nvm][nvm]]
-      - [[#autoloads-2][Autoloads]]
+      - [[#autoloads-3][Autoloads]]
     - [[#vue][Vue]]
     - [[#dotenv][Dotenv]]
   - [[#private-modules][Private modules.]]
@@ -500,7 +502,22 @@ We take icons with the flags:
 
 #+begin_src elisp :tangle init.el
        :emacs
-       dired             ; making dired pretty [functional]
+       (dired +icons)    ; making dired pretty [functional]
+#+end_src
+
+=dired-mode=, as configured in the =dired= module, has only a few extra bells and
+whistles added. Apart from aesthetic stuff, there are some extra keybindings:
+
+| Keybind | Description                |
+|---------+----------------------------|
+| =SPC f d= | Find directory with dired  |
+| =q=       | Exit dired buffer          |
+| =C-c C-r= | Run =dired-rsync=            |
+| =C-c C-e= | Rename entries with =wdired= |
+
+Which complement the [[https://www.gnu.org/software/emacs/refcards/pdf/dired-ref.pdf][default keybindings]].
+
+#+begin_src elisp :tangle init.el
        electric          ; smarter, keyword-based electric-indent
        ;;ibuffer         ; interactive buffer management
        undo              ; persistent, smarter undo for your inevitable mistakes
@@ -943,6 +960,82 @@ store projects.
 
 #+begin_src elisp
 (setq projectile-project-search-path '("~/Projects/" "~/.config/"))
+#+end_src
+
+*** Dired
+
+One thing really missing from the default configuration of =dired= is an easy
+way to move up and down from directories.
+
+#+begin_src elisp
+(after! dired
+  (map! :map dired-mode-map
+        :n "h" #'dired-up-directory
+        :n "l" #'dired-find-file
+#+end_src
+
+Also add a way to jump into dired in another window.
+
+#+begin_src elisp
+        :leader
+        :n "o _" #'dired-jump-other-window)
+#+end_src
+
+Most of the information dired throws at you is not really necessary, so let's
+hide it by default. One can toggle this information on/off with ~(~ keybinding.
+
+#+begin_src elisp
+  (add-hook! dired-mode #'dired-hide-details-mode)
+#+end_src
+
+But, do show git information on repos by default, can be toggled on/off with ~)~.
+
+#+begin_src elisp
+   (add-hook! 'dired-after-readin-hook #'+dired-enable-git-info-h))
+#+end_src
+
+Opening files from dired with an external program is a bit of drag by default, so
+we add the =dired-open= package to take care of that.
+
+#+begin_src elisp :tangle packages.el
+(package! dired-open)
+#+end_src
+
+The variable ~dired-open-guess-shell-alist~ determines if the file is opened with
+an external program.
+
+#+begin_src elisp
+(use-package! dired-open
+  :after dired
+  :custom
+  (dired-open-functions (list #'dired-open-guess-shell-alist
+                              #'dired-open-by-extension
+                              #'dired-open-subdir)))
+#+end_src
+
+**** Autoloads
+
+I use ~dired-jump-other-window~ quite frequently and it's annoying when the
+created window doesn't close with the dired buffer. Thus, I created this small
+wrapper to solve this problem.
+
+#+begin_src elisp :mkdirp yes :tangle autoload/dired.el
+;;;###autoload
+(defun dan/dired-quit-all ()
+  "Kill all dired buffers and close the dired window."
+  (interactive)
+  (let ((windows-n (length (window-list))))
+    (when (> windows-n 1)
+      (delete-windows-on (current-buffer)))
+    (+dired/quit-all)))
+#+end_src
+
+And now just override the default.
+
+#+begin_src elisp
+(after! dired
+  (map! :map dired-mode-map
+        :n "q" #'dan/dired-quit-all))
 #+end_src
 
 *** Org

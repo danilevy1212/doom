@@ -1,6 +1,11 @@
 #+TITLE: To Dos
 
-* To Do
+* References:
+
++ [[https://github.com/p3r7/awesome-elisp][awesome-lisp.]]
++  https://www.reddit.com/r/emacs/comments/9lv1fd/a_simple_guide_to_writing_publishing_emacs/
+
+* Inbox
 
 ** TODO https://github.com/folke/splashcii THIS BUT IN ELISP.
 
@@ -86,8 +91,3 @@ Inside @nvm.el
 ** TODO [[https://bunpro.jp/api#getting-started][Look into the bunpro API]], excuse to use the 'rest' module.
 
 ** TODO [#B] Add org-super-agenda and better divide my tasks headings..
-
-* References:
-
-+ [[https://github.com/p3r7/awesome-elisp][awesome-lisp.]]
-+  https://www.reddit.com/r/emacs/comments/9lv1fd/a_simple_guide_to_writing_publishing_emacs/
