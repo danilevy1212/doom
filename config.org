@@ -1,4 +1,4 @@
-# -*- eval: (when (and (fboundp #'toc-org-mode) (not toc-org-mode)) (toc-org-mode)); -*-
+# -*- eval: (progn (when (and (fboundp #'toc-org-mode) (not toc-org-mode)) (toc-org-mode)) (writeroom-mode +1)); -*-
 
 #+TITLE: Dan's DOOM emacs configuration
 #+OPTIONS: toc:nil tags:nil todo:nil
