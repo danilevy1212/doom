@@ -22,12 +22,28 @@
         - [[#company-mode][Company Mode]]
         - [[#ivy][Ivy]]
       - [[#ui][:ui]]
+        - [[#that-doom-feel][That *DOOM* feel.]]
+        - [[#emoji][Emoji]]
+        - [[#hl-todo][hl-todo]]
+        - [[#hydra][hydra]]
+        - [[#ligatures][ligatures]]
+        - [[#modeline][modeline]]
+        - [[#nav-flash][nav-flash]]
+        - [[#ophints][ophints]]
+        - [[#popup][popup]]
+        - [[#treemacs][treemacs]]
+        - [[#unicode][unicode]]
+        - [[#vc-gutter][vc-gutter]]
+        - [[#vi-tilde-fringe][vi-tilde-fringe]]
+        - [[#window-select][window select]]
+        - [[#workspaces][workspaces]]
+        - [[#zen][zen]]
       - [[#editor][:editor]]
       - [[#emacs][:emacs]]
       - [[#term][:term]]
       - [[#checkers][:checkers]]
       - [[#tools][:tools]]
-      - [[#tools-1][:tools]]
+      - [[#os][:os]]
       - [[#lang][:lang]]
         - [[#rust][rust]]
           - [[#dependencies][Dependencies:]]
@@ -47,13 +63,15 @@
       - [[#nord-powered-aesthetics][Nord powered aesthetics.]]
     - [[#splash-screen][Splash Screen]]
     - [[#rainbow-delimeters][Rainbow Delimeters]]
-    - [[#modeline][Modeline]]
+    - [[#modeline-1][Modeline]]
     - [[#projectile][Projectile]]
+    - [[#treemacs-1][Treemacs]]
     - [[#dired][Dired]]
-      - [[#autoloads][Autoloads]]
+    - [[#vc-gutter-1][vc-gutter]]
+    - [[#hydra-1][Hydra]]
     - [[#org][Org]]
       - [[#org-edna][org-edna]]
-      - [[#autoloads-1][Autoloads]]
+      - [[#autoloads][Autoloads]]
     - [[#pretending-we-are-in-vim-thats-just-plain-evil][Pretending we are in vim? That's just plain EVIL!]]
     - [[#line-numbers][Line-numbers]]
     - [[#helpful][Helpful]]
@@ -61,11 +79,11 @@
     - [[#customize-group][Customize Group]]
     - [[#rss-or-how-to-get-news-the-old-way][RSS, or how to get news the old-way.]]
     - [[#mozc-japanese-input][Mozc (Japanese Input).]]
-      - [[#autoloads-2][Autoloads]]
+      - [[#autoloads-1][Autoloads]]
     - [[#rust-1][Rust]]
     - [[#web-mode][Web Mode]]
     - [[#nvm][nvm]]
-      - [[#autoloads-3][Autoloads]]
+      - [[#autoloads-2][Autoloads]]
     - [[#vue][Vue]]
     - [[#dotenv][Dotenv]]
   - [[#private-modules][Private modules.]]
@@ -451,7 +469,11 @@ We take icons with the flags:
        (ivy +icons +fuzzy +prescient)        ; a search engine for love and life
 #+end_src
 
-**** TODO :ui
+**** :ui
+
+***** That *DOOM* feel.
+
+Most of what makes doom feel like doom is contained in the =doom=, =doom-dashboard= and =doom-quit=.
 
 #+begin_src elisp :tangle init.el
        :ui
@@ -459,24 +481,164 @@ We take icons with the flags:
        doom              ; what makes DOOM look the way it does
        doom-dashboard    ; a nifty splash screen for Emacs
        doom-quit         ; DOOM quit-message prompts when you quit Emacs
+#+end_src
+
+***** Emoji
+
+Not really necessary, but they are fun. Use the ~emojify-insert-emoji~ function
+(=SPC i e=) to insert and emoji and ~emojify-apropos-emoji~ to search for them.
+
+#+begin_src elisp :tangle init.el
+       (emoji +unicode)  ; 🙂
+#+end_src
+
+***** hl-todo
+
+=hl-todo= not highlights `TODO` comments in buffers, but also comes some handy
+keybindings:
+
+| keybind | description                      |
+|---------+----------------------------------|
+| =]t=      | go to next TODO item             |
+| =[t=      | go to previous TODO item         |
+| =SPC p t= | show all TODO items in a project |
+| =SPC s p= | search project for a string      |
+| =SPC s b= | search buffer for string         |
+
+
+#+begin_src elisp :tangle init.el
        ;;fill-column       ; a `fill-column' indicator
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
-       ;;hydra
-       ;;indent-guides     ; highlighted indent columns
-       ;;ligatures         ; ligatures and symbols to make your code pretty again
-       ;;minimap           ; show a map of the code on the side
+#+end_src
+
+***** hydra
+
+The =hydra= module activates a few convinient hydras for window controls and text
+zoom level.
+
+#+begin_src elisp :tangle init.el
+       hydra
+#+end_src
+
+***** ligatures
+
+When using ~emacs-major-version >= 28~, enable ligatures, since they can be
+composed by =hardfuzz=.
+
+#+begin_src elisp :tangle init.el
+       ;; indent-guides     ; highlighted indent columns
+       (:if (>= emacs-major-version 28) ligatures)         ; ligatures and symbols to make your code pretty again
+#+end_src
+
+***** modeline
+
+Doom ain't doom without it's modeline.
+
+#+begin_src elisp :tangle init.el
+       ;; minimap           ; show a map of the code on the side
        modeline          ; snazzy, Atom-inspired modeline, plus API
-       ;;nav-flash         ; blink cursor line after big motions
+#+end_src
+
+***** nav-flash
+
+To help with getting lost in big buffers, use the =nav-flash= module:
+
+#+begin_src elisp :tangle init.el
+       nav-flash         ; blink cursor line after big motions
+#+end_src
+
+***** ophints
+
+This module give a visual hint when selecting or doing operations over text-objects.
+
+#+begin_src elisp :tangle init.el
        ;;neotree           ; a project drawer, like NERDTree for vim
        ophints           ; highlight the region an operation acts on
+#+end_src
+
+***** popup
+
+Using ~display-buffer-alist~ under the hood, =doom= has a emergent window (or
+pop-up) management system. It is [[https://github.com/hlissner/doom-emacs/blob/develop/modules/ui/popup/README.org][well documented]], and offers an API to
+arbitrarly extend it.
+
+#+begin_src elisp :tangle init.el
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
        ;;tabs              ; a tab bar for Emacs
-       ;;treemacs          ; a project drawer, like neotree but cooler
-       ;;unicode           ; extended unicode support for various languages
+#+end_src
+
+***** treemacs
+
+A modern, beautiful, extensible and hackable project file editor, what is not to love?
+
+#+begin_src elisp :tangle init.el
+       treemacs          ; a project drawer, like neotree but cooler
+#+end_src
+
+***** unicode
+
+This module is based on [[https://github.com/rolandwalker/unicode-fonts][unicode-fonts]], which tries to cover as many glyphs as
+posible with system fonts. At minimun it needs the following fonts in the system:
+
+    - DejaVu Sans, Dejavu Mono :: [[https://dejavu-fonts.github.io/Download.html][Download]]
+    - Quivira :: [[http://www.quivira-font.com/downloads.php][Download]]
+    - Symbola :: [[https://dn-works.com/wp-content/uploads/2020/UFAS-Fonts/Symbola.zip][Download]]
+    - Noto Sans, Noto Sans Symbols :: [[http://www.google.com/get/noto/][Download]]
+
+Follow [[https://medium.com/source-words/how-to-manually-install-update-and-uninstall-fonts-on-linux-a8d09a3853b0][this guide]] to install the fonts on linux.
+
+#+begin_src elisp :tangle init.el
+       unicode           ; extended unicode support for various languages
+#+end_src
+
+***** vc-gutter
+
+This module integrates with git to show hinges on the side of the buffer that
+indicate the difference between it's contents and the version control version.
+
+#+begin_src elisp :tangle init.el
        vc-gutter         ; vcs diff in the fringe
+#+end_src
+
+***** vi-tilde-fringe
+
+Add a small =~= indicating an empty line, like vi.
+
+#+begin_src elisp :tangle init.el
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
-       ;;window-select     ; visually switch windows
+#+end_src
+
+***** window select
+
+Configuration for =ace-window= and =winum=. These packages associate windows in the
+frame with number, offering a very quick and convenient way of selecting a
+specific window in the frame.
+
+To use =ace-window= use =C-w C-w=. You can short-cut to the associated window number
+using =winum=, with =SPC w {window number}=.
+
+#+begin_src elisp :tangle init.el
+       (window-select +numbers)     ; visually switch windows
+#+end_src
+
+***** workspaces
+
+Workspaces is a wrapper over persp-mode. It offers isolated buffers and windows
+setups that can be saved into a file a loaded for persistent configurations.
+Commands associated with workspaces are under the =SPC TAB= prefix.
+
+It also has a [[https://github.com/hlissner/doom-emacs/tree/develop/modules/ui/workspaces][API]] for programatic access.
+
+#+begin_src elisp :tangle init.el
        workspaces        ; tab emulation, persistence & separate workspaces
+#+end_src
+
+***** zen
+
+Using ~writeroom-mode~, changes the UI elements of a buffer so it's contents
+become the main focus. It can be toggled on and of with =SPC t z=.
+
+#+begin_src elisp :tangle init.el
        zen               ; distraction-free coding or writing
 #+end_src
 
@@ -531,7 +693,7 @@ Which complement the [[https://www.gnu.org/software/emacs/refcards/pdf/dired-ref
        ;;eshell            ; the elisp shell that works everywhere
        ;;shell             ; simple shell REPL for Emacs
        ;;term              ; basic terminal emulator for Emacs
-       vterm             ; the best terminal emulation in Emacs
+       vterm               ; the best terminal emulation in Emacs
 #+end_src
 
 **** TODO :checkers
@@ -568,7 +730,7 @@ Which complement the [[https://www.gnu.org/software/emacs/refcards/pdf/dired-ref
        ;;upload            ; map local to remote projects via ssh/ftp
 #+end_src
 
-**** TODO :tools
+**** TODO :os
 #+begin_src elisp :tangle init.el
        :os
        ;;(:if IS-MAC macos)  ; improve compatibility with macOS
@@ -884,6 +1046,24 @@ When in zen mode, scale text just a bit.
   (setq +zen-text-scale 1.25))
 #+end_src
 
+Not everything fits in the =modeline=, so let's make fonts and icons smaller:
+
+#+begin_src elisp
+(custom-set-faces!
+  '(mode-line :family "Hack" :height 0.95)
+  '(mode-line-inactive :family "Hack" :height 0.95))
+
+(after! all-the-icons
+  (setq all-the-icons-scale-factor 1.1))
+#+end_src
+
+The filename in the =modeline= occupies way too much space.
+
+#+begin_src elisp
+(after! doom-modeline
+  (setq doom-modeline-buffer-file-name-style 'truncate-with-project))
+#+end_src
+
 *** Default theme
 
 There are two ways to load a theme. Both assume the theme is installed and
@@ -962,6 +1142,59 @@ store projects.
 (setq projectile-project-search-path '("~/Projects/" "~/.config/"))
 #+end_src
 
+*** Treemacs
+
+=treemacs= integrates with =git=. By default it's set to a performace oriented
+configuration with limited capabilities. Let's change that.
+
+#+begin_src elisp
+(setq +treemacs-git-mode 'deferred)
+#+end_src
+
+I don't plan on using =treemacs= to explore directories beyond the project root
+directory, that's what dired is for. So let's change the default bindings to be
+more appropiate to my use case.
+
+=h= to go back up a node and =H= to go up the root.
+
+#+begin_src elisp
+(after! treemacs-evil
+  (evil-define-key 'treemacs treemacs-mode-map
+    "h" #'treemacs-collapse-parent-node
+    "H" #'treemacs-root-up
+#+end_src
+
+=l= to *expand* a node, =L= to go down the root.
+
+#+begin_src elisp
+    "l" #'treemacs-TAB-action
+    "L" #'treemacs-root-down))
+#+end_src
+
+Use =all-the-icons= theme in treemacs, for consistency.
+
+#+begin_src elisp
+(setq doom-themes-treemacs-theme "doom-colors")
+#+end_src
+
+When running ~treemacs-find-file~, the focus remains in the file instead of going
+to the treemacs buffer. Lets change that.
+
+#+begin_src elisp
+(defadvice! dan/treemacs-select-after-find-file (&rest args)
+  "Switch focus to the treemacs buffer after calling `treemacs-find-file'."
+  :after #'treemacs-find-file
+  (treemacs-select-window))
+#+end_src
+
+Let's switch the bindings for ~+treemacs/toggle~ and ~treemacs-find-file~.
+
+#+begin_src elisp
+(map! :leader
+      :desc "Find file in project sidebar" :mv "o p" #'treemacs-find-file
+      :desc "Project sidebar" :mv "o P" #'+treemacs/toggle)
+#+end_src
+
 *** Dired
 
 One thing really missing from the default configuration of =dired= is an easy
@@ -970,15 +1203,8 @@ way to move up and down from directories.
 #+begin_src elisp
 (after! dired
   (map! :map dired-mode-map
-        :n "h" #'dired-up-directory
-        :n "l" #'dired-find-file
-#+end_src
-
-Also add a way to jump into dired in another window.
-
-#+begin_src elisp
-        :leader
-        :n "o _" #'dired-jump-other-window)
+        :m "h" #'dired-up-directory
+        :m "l" #'dired-find-file)
 #+end_src
 
 Most of the information dired throws at you is not really necessary, so let's
@@ -1013,31 +1239,30 @@ an external program.
                               #'dired-open-subdir)))
 #+end_src
 
-**** Autoloads
+*** vc-gutter
 
-I use ~dired-jump-other-window~ quite frequently and it's annoying when the
-created window doesn't close with the dired buffer. Thus, I created this small
-wrapper to solve this problem.
+Let's add some minor customizations to the =vc-gutter= module:
 
-#+begin_src elisp :mkdirp yes :tangle autoload/dired.el
-;;; $DOODIR/autoload/dired.el -*- lexical-binding: t; -*-
-
-;;;###autoload
-(defun dan/dired-quit-all ()
-  "Kill all dired buffers and close the dired window."
-  (interactive)
-  (let ((windows-n (length (window-list))))
-    (when (> windows-n 1)
-      (delete-windows-on (current-buffer)))
-    (+dired/quit-all)))
-#+end_src
-
-And now just override the default.
+First, diff the file while the buffer is changing, not just when it's saved.
 
 #+begin_src elisp
-(after! dired
-  (map! :map dired-mode-map
-        :n "q" #'dan/dired-quit-all))
+(setq +vc-gutter-diff-unsaved-buffer t)
+#+end_src
+
+Lastly, let's activate =git-gutter= for remote files as well.
+
+#+begin_src elisp
+(setq +vc-gutter-in-remote-files t)
+#+end_src
+
+*** Hydra
+
+Let's make the =hydra= module's functions easily accesable:
+
+#+begin_src elisp
+(map! :leader
+      :desc "Navigate/Hydra"  :m "w N" #'+hydra/window-nav/body
+      :desc "Text-Zoom/Hydra" :m "w f" #'+hydra/text-zoom/body)
 #+end_src
 
 *** Org
@@ -1518,7 +1743,7 @@ An ~nvm-use-for~ interactive wrapper. If a .nvmrc can't be found in ~default-dir
 (defun dan/nvm-use-for ()
   "Activate a node version interactively.
 
-From `default-directory' upwards, a .nvmrc file will be search to fix the nvm version.
+From `default-directory' upwards, a .nvmrc file will be searched to fix the nvm version.
 If none is found, the user will be prompted to select an available version of node."
   (interactive)
   (condition-case err
@@ -1560,7 +1785,7 @@ Now let's activate it when opening a =.env=:
 
 #+begin_src elisp
 (use-package! dotenv-mode
-  :mode ("\\.env\\..*\\'" . dotenv-mode))
+  :mode ("\\.env\\.?.*\\'" . dotenv-mode))
 #+end_src
 
 ** Private modules.

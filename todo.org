@@ -7,6 +7,10 @@
 
 * Inbox
 
+** TODO Mozc package may need this... Either that or justify why download the entire mozc package...
+
+[[file:~/.config/doom/config.org::*How does packages.el work?][How does packages.el work?]]
+
 ** TODO https://github.com/folke/splashcii THIS BUT IN ELISP.
 
 ** TODO WAIT Test display the battery IF there is one customization on desktop. Will have to test a work computer.
