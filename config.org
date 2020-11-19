@@ -23,7 +23,7 @@
         - [[#ivy][Ivy]]
       - [[#ui][:ui]]
         - [[#that-doom-feel][That *DOOM* feel.]]
-        - [[#emoji][Emoji]]
+        - [[#emoji][emoji]]
         - [[#hl-todo][hl-todo]]
         - [[#hydra][hydra]]
         - [[#ligatures][ligatures]]
@@ -402,24 +402,24 @@ By default, completion is triggered after a short idle period or with the
 
 | Keybind | Description                              |
 |---------+------------------------------------------|
-| =C-n=     | Go to next candidate                     |
-| =C-p=     | Go to previous candidate                 |
-| =C-j=     | (evil) Go to next candidate              |
-| =C-k=     | (evil) Go to previous candidate          |
-| =C-h=     | Display documentation (if available)     |
-| =C-u=     | Move to previous page of candidates      |
-| =C-d=     | Move to next page of candidates          |
-| =C-s=     | Filter candidates                        |
-| =C-S-s=   | Search candidates with helm/ivy          |
-| =C-SPC=   | Complete common                          |
-| =TAB=     | Complete common or select next candidate |
-| =S-TAB=   | Select previous candidate                |
+| =C-n=   | Go to next candidate                     |
+| =C-p=   | Go to previous candidate                 |
+| =C-j=   | (evil) Go to next candidate              |
+| =C-k=   | (evil) Go to previous candidate          |
+| =C-h=   | Display documentation (if available)     |
+| =C-u=   | Move to previous page of candidates      |
+| =C-d=   | Move to next page of candidates          |
+| =C-s=   | Filter candidates                        |
+| =C-S-s= | Search candidates with helm/ivy          |
+| =C-SPC= | Complete common                          |
+| =TAB=   | Complete common or select next candidate |
+| =S-TAB= | Select previous candidate                |
 
 In the spirit of Vim's omni-completion, the following insert mode keybinds are
 available to evil users to access specific company backends:
 
-| Keybind | Description                       |
-|---------+-----------------------------------|
+| Keybind   | Description                       |
+|-----------+-----------------------------------|
 | =C-x C-]= | Complete etags                    |
 | =C-x C-f= | Complete file path                |
 | =C-x C-k= | Complete from dictionary/keyword  |
@@ -449,8 +449,8 @@ their result with include hidden files.
 
 For use evil users, it also offers a nice ex-command:
 
-| ex command           | description                                                    |
-|----------------------+----------------------------------------------------------------|
+| ex command             | description                                                      |
+|------------------------+------------------------------------------------------------------|
 | ~:pg[rep][!] [query]~  | search project (if ~!~, include hidden files)                    |
 | ~:pg[rep]d[!] [query]~ | search from current directory (if ~!~, don't search recursively) |
 
@@ -483,7 +483,7 @@ Most of what makes doom feel like doom is contained in the =doom=, =doom-dashboa
        doom-quit         ; DOOM quit-message prompts when you quit Emacs
 #+end_src
 
-***** Emoji
+***** emoji
 
 Not really necessary, but they are fun. Use the ~emojify-insert-emoji~ function
 (=SPC i e=) to insert and emoji and ~emojify-apropos-emoji~ to search for them.
@@ -497,8 +497,8 @@ Not really necessary, but they are fun. Use the ~emojify-insert-emoji~ function
 =hl-todo= not highlights `TODO` comments in buffers, but also comes some handy
 keybindings:
 
-| keybind | description                      |
-|---------+----------------------------------|
+| keybind   | description                      |
+|-----------+----------------------------------|
 | =]t=      | go to next TODO item             |
 | =[t=      | go to previous TODO item         |
 | =SPC p t= | show all TODO items in a project |
@@ -670,10 +670,10 @@ become the main focus. It can be toggled on and of with =SPC t z=.
 =dired-mode=, as configured in the =dired= module, has only a few extra bells and
 whistles added. Apart from aesthetic stuff, there are some extra keybindings:
 
-| Keybind | Description                |
-|---------+----------------------------|
-| =SPC f d= | Find directory with dired  |
-| =q=       | Exit dired buffer          |
+| Keybind   | Description                  |
+|-----------+------------------------------|
+| =SPC f d= | Find directory with dired    |
+| =q=       | Exit dired buffer            |
 | =C-c C-r= | Run =dired-rsync=            |
 | =C-c C-e= | Rename entries with =wdired= |
 
@@ -681,7 +681,7 @@ Which complement the [[https://www.gnu.org/software/emacs/refcards/pdf/dired-ref
 
 #+begin_src elisp :tangle init.el
        electric          ; smarter, keyword-based electric-indent
-       ;;ibuffer         ; interactive buffer management
+       (ibuffer +icons)  ; interactive buffer management
        undo              ; persistent, smarter undo for your inevitable mistakes
        vc                ; version-control and Emacs, sitting in a tree
 #+end_src
@@ -690,7 +690,7 @@ Which complement the [[https://www.gnu.org/software/emacs/refcards/pdf/dired-ref
 
 #+begin_src elisp :tangle init.el
        :term
-       ;;eshell            ; the elisp shell that works everywhere
+       eshell            ; the elisp shell that works everywhere
        ;;shell             ; simple shell REPL for Emacs
        ;;term              ; basic terminal emulator for Emacs
        vterm               ; the best terminal emulation in Emacs
@@ -700,7 +700,7 @@ Which complement the [[https://www.gnu.org/software/emacs/refcards/pdf/dired-ref
 
 #+begin_src elisp :tangle init.el
        :checkers
-       syntax              ; tasing you for every semicolon you forget
+       (syntax +childframe) ; tasing you for every semicolon you forget
        ;; spell             ; tasing you for misspelling mispelling
        ;; grammar           ; tasing grammar mistake every you make
 #+end_src
@@ -1098,6 +1098,34 @@ Default doom dashboard is pretty and welcoming, let's just give it a small perso
 Paying respects to both the spirit of emacs and its creator.
 
 #+HTML: <p align="center"><img src="https://raw.githubusercontent.com/danilevy1212/doom/master/img/stallman.png"/></p>
+
+But what if I am in the terminal? No worries:
+
+#+begin_src elisp
+(defun dan/my-weebery-is-always-greater ()
+  (mapc (lambda (line)
+          (insert (propertize (+doom-dashboard--center +doom-dashboard--width line)
+                              'face 'doom-dashboard-banner) " ")
+          (insert "\n"))
+        '("⢸⣿⣿⣿⣿⠃⠄⢀⣴⡾⠃⠄⠄⠄⠄⠄⠈⠺⠟⠛⠛⠛⠛⠻⢿⣿⣿⣿⣿⣶⣤⡀⠄"
+          "⢸⣿⣿⣿⡟⢀⣴⣿⡿⠁⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⣸⣿⣿⣿⣿⣿⣿⣿⣷"
+          "⢸⣿⣿⠟⣴⣿⡿⡟⡼⢹⣷⢲⡶⣖⣾⣶⢄⠄⠄⠄⠄⠄⢀⣼⣿⢿⣿⣿⣿⣿⣿⣿⣿"
+          "⢸⣿⢫⣾⣿⡟⣾⡸⢠⡿⢳⡿⠍⣼⣿⢏⣿⣷⢄⡀⠄⢠⣾⢻⣿⣸⣿⣿⣿⣿⣿⣿⣿"
+          "⡿⣡⣿⣿⡟⡼⡁⠁⣰⠂⡾⠉⢨⣿⠃⣿⡿⠍⣾⣟⢤⣿⢇⣿⢇⣿⣿⢿⣿⣿⣿⣿⣿"
+          "⣱⣿⣿⡟⡐⣰⣧⡷⣿⣴⣧⣤⣼⣯⢸⡿⠁⣰⠟⢀⣼⠏⣲⠏⢸⣿⡟⣿⣿⣿⣿⣿⣿"
+          "⣿⣿⡟⠁⠄⠟⣁⠄⢡⣿⣿⣿⣿⣿⣿⣦⣼⢟⢀⡼⠃⡹⠃⡀⢸⡿⢸⣿⣿⣿⣿⣿⡟"
+          "⣿⣿⠃⠄⢀⣾⠋⠓⢰⣿⣿⣿⣿⣿⣿⠿⣿⣿⣾⣅⢔⣕⡇⡇⡼⢁⣿⣿⣿⣿⣿⣿⢣"
+          "⣿⡟⠄⠄⣾⣇⠷⣢⣿⣿⣿⣿⣿⣿⣿⣭⣀⡈⠙⢿⣿⣿⡇⡧⢁⣾⣿⣿⣿⣿⣿⢏⣾"
+          "⣿⡇⠄⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⢻⠇⠄⠄⢿⣿⡇⢡⣾⣿⣿⣿⣿⣿⣏⣼⣿"
+          "⣿⣷⢰⣿⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⢰⣧⣀⡄⢀⠘⡿⣰⣿⣿⣿⣿⣿⣿⠟⣼⣿⣿"
+          "⢹⣿⢸⣿⣿⠟⠻⢿⣿⣿⣿⣿⣿⣿⣿⣶⣭⣉⣤⣿⢈⣼⣿⣿⣿⣿⣿⣿⠏⣾⣹⣿⣿"
+          "⢸⠇⡜⣿⡟⠄⠄⠄⠈⠙⣿⣿⣿⣿⣿⣿⣿⣿⠟⣱⣻⣿⣿⣿⣿⣿⠟⠁⢳⠃⣿⣿⣿"
+          "⠄⣰⡗⠹⣿⣄⠄⠄⠄⢀⣿⣿⣿⣿⣿⣿⠟⣅⣥⣿⣿⣿⣿⠿⠋⠄⠄⣾⡌⢠⣿⡿⠃"
+          "⠜⠋⢠⣷⢻⣿⣿⣶⣾⣿⣿⣿⣿⠿⣛⣥⣾⣿⠿⠟⠛⠉⠄⠄          ")))
+
+(when (not (display-graphic-p))
+  (setq +doom-dashboard-ascii-banner-fn #'dan/my-weebery-is-always-greater))
+#+end_src
 
 *** Rainbow Delimeters
 
@@ -1551,7 +1579,7 @@ Expose the aliases to the 'x' keybinding.
 Give it an easy keybinding to access it:
 
 #+begin_src elisp
-(map! :leader :desc "RSS feed" :m "o e" #'elfeed)
+(map! :leader :desc "News feed" :m "o n" #'elfeed)
 #+end_src
 
 And point elfeed to the org configuration file.
@@ -1567,7 +1595,7 @@ Keybinding to easily find the feeds file.
 
 #+begin_src elisp
 (map! :leader
-      :desc "RSS feed config" :m "o E" (cmd! (find-file (car rmh-elfeed-org-files))))
+      :desc "News feed config" :m "o N" (cmd! (find-file (car rmh-elfeed-org-files))))
 #+end_src
 
 *** Mozc (Japanese Input).
@@ -1576,7 +1604,8 @@ I am learning japanese as a hobby, and I do most of my note taking in emacs. To
 input japanese text we use google's MOZC.
 
 #+begin_src elisp :tangle packages.el
-(package! mozc)
+(package! mozc
+  :recipe (:files ("src/unix/emacs/*.el")))
 #+end_src
 
 Let's lazy load mozc, so it loads only when our entry function is called.
@@ -1599,8 +1628,6 @@ Finally, we create a keybinding activate mozc-mode.
 (map! :g "C-x j"  #'dan/toggle-mozc-mode
       :ni "C-x j" #'dan/toggle-mozc-mode)
 #+end_src
-
-
 
 **** Autoloads
 
@@ -1746,21 +1773,26 @@ An ~nvm-use-for~ interactive wrapper. If a .nvmrc can't be found in ~default-dir
 From `default-directory' upwards, a .nvmrc file will be searched to fix the nvm version.
 If none is found, the user will be prompted to select an available version of node."
   (interactive)
-  (condition-case err
-      (nvm-use-for)
-    ('error
-     (let* ((node-system-path "/usr/bin/node")
-            (node-system (and (file-exists-p node-system-path)
-                              (list (format "System (%s)"
-                                            (s-trim (with-temp-buffer
-                                                      (call-process-shell-command
-                                                       (concat node-system-path " -v") nil t)
-                                                      (buffer-string)))))))
-            (choice (completing-read "Select a Node version:"
-                                     (append (nvm--installed-versions) node-system) nil t)))
-       (cond
-        ((s-equals-p choice node-system) (dan/nvm-deactivate))
-        (t (nvm-use choice)))))))
+  (cl-flet ((announce ()
+                    (message "Node %s activated" (car nvm-current-version))))
+    (condition-case err
+        (progn
+          (nvm-use-for)
+          (announce))
+      ('error
+       (let* ((node-system-path "/usr/bin/node")
+              (node-system (and (file-exists-p node-system-path)
+                                (format "System (%s)"
+                                              (s-trim (with-temp-buffer
+                                                        (call-process-shell-command
+                                                         (concat node-system-path " -v") nil t)
+                                                        (buffer-string))))))
+              (choice (completing-read "Select a Node version:"
+                                       (append (nvm--installed-versions) (list node-system)) nil t)))
+         (cond
+          ((s-equals-p choice node-system) (dan/nvm-deactivate))
+          (t (nvm-use choice)
+             (announce))))))))
 #+end_src
 
 *** Vue
