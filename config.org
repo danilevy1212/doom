@@ -775,7 +775,7 @@ Which complement the [[https://www.gnu.org/software/emacs/refcards/pdf/dired-ref
        ;;lua               ; one-based indices? one-based indices
        markdown          ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
-       ;;nix               ; I hereby declare "nix geht mehr!"
+       nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        org               ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
@@ -1137,7 +1137,7 @@ Matching pairs draw with the same face color, making them easily identifiable.
 
 *** Modeline
 
-The default doom-modeline is great, the only thing is that I want it to show me
+The default =doom-modeline= is great, the only thing is that I want it to show me
 the evil state I am in with a letter instead of an icon:
 
 #+begin_src elisp
