@@ -67,11 +67,13 @@
     - [[#projectile][Projectile]]
     - [[#treemacs-1][Treemacs]]
     - [[#dired][Dired]]
+    - [[#eshell][eshell]]
+      - [[#autoloads][Autoloads]]
     - [[#vc-gutter-1][vc-gutter]]
     - [[#hydra-1][Hydra]]
     - [[#org][Org]]
       - [[#org-edna][org-edna]]
-      - [[#autoloads][Autoloads]]
+      - [[#autoloads-1][Autoloads]]
     - [[#pretending-we-are-in-vim-thats-just-plain-evil][Pretending we are in vim? That's just plain EVIL!]]
     - [[#line-numbers][Line-numbers]]
     - [[#helpful][Helpful]]
@@ -79,11 +81,11 @@
     - [[#customize-group][Customize Group]]
     - [[#rss-or-how-to-get-news-the-old-way][RSS, or how to get news the old-way.]]
     - [[#mozc-japanese-input][Mozc (Japanese Input).]]
-      - [[#autoloads-1][Autoloads]]
+      - [[#autoloads-2][Autoloads]]
     - [[#rust-1][Rust]]
     - [[#web-mode][Web Mode]]
     - [[#nvm][nvm]]
-      - [[#autoloads-2][Autoloads]]
+      - [[#autoloads-3][Autoloads]]
     - [[#vue][Vue]]
     - [[#dotenv][Dotenv]]
   - [[#private-modules][Private modules.]]
@@ -1267,6 +1269,36 @@ an external program.
                               #'dired-open-subdir)))
 #+end_src
 
+*** eshell
+
+The keybinding =M-SPC m b= inserts the name of a buffer in the eshell syntax.
+However, sometimes it's useful to refer to the buffer by it's string name
+representation. So let's make an extra keybinding for said case:
+
+#+begin_src elisp
+(after! eshell
+  (map! :map eshell-mode-map
+        (:localleader
+         :desc "Insert Symbolic Buffer Name" "B" #'eshell-insert-buffer-name
+         :desc "Insert String Buffer Name" "b" #'dan/eshell-insert-buffer-name)))
+#+end_src
+
+**** Autoloads
+
+Here I define the slightly modified version of ~eshell-insert-buffer-name~.
+
+#+begin_src elisp :tangle autoload/eshell.el :mkdirp yes
+;;; $DOOMDIR/autoload/eshell.el -*- lexical-binding: t; -*-
+
+;;;###autoload
+(defun dan/eshell-insert-buffer-name (buffer-name)
+  "Insert BUFFER-NAME into the current buffer at point.
+
+The BUFFER-NAME is given as string surrounded by \"\"."
+  (interactive "BName of buffer: ")
+  (insert-and-inherit "\"" buffer-name "\""))
+#+end_src
+
 *** vc-gutter
 
 Let's add some minor customizations to the =vc-gutter= module:
@@ -1673,7 +1705,7 @@ Seems like rls is more stable than rust-analyzer.
 (use-package! rustic
   :defer t
   :custom
-  (rustic-lsp-server 'rls)
+  (rustic-lsp-server 'rust-analyzer)
 #+end_src
 
 When using the rustic popup, be in emacs state.
