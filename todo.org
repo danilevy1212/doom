@@ -97,3 +97,4 @@ Inside @nvm.el
 ** TODO [[https://bunpro.jp/api#getting-started][Look into the bunpro API]], excuse to use the 'rest' module.
 ** TODO [#B] Add org-super-agenda and better divide my tasks headings..
 ** TODO [#B] Tryout [[yt:vz9aLmxYJB0][org-slide-mode,]] the `+present` flag works badly.
+** TODO Create a eshell/alias with nvm-exec https://jloubert.com/blog/eshell-nvm/

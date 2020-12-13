@@ -39,6 +39,9 @@
         - [[#workspaces][workspaces]]
         - [[#zen][zen]]
       - [[#editor][:editor]]
+        - [[#evil][evil]]
+        - [[#file-templates][file-templates]]
+        - [[#fold][fold]]
       - [[#emacs][:emacs]]
       - [[#term][:term]]
       - [[#checkers][:checkers]]
@@ -645,12 +648,104 @@ become the main focus. It can be toggled on and of with =SPC t z=.
 #+end_src
 
 **** TODO :editor
+***** evil
+
+I prefer vim's keybindings to emacs and thankfully, =doom= offers first class
+support for ~evil-mode~, a vim emulator inside emacs, making it easy to get the
+benefits of both emacs and vim.
 
 #+begin_src elisp :tangle init.el
        :editor
        (evil +everywhere); come to the dark side, we have cookies
+#+end_src
+
+=doom= comes with emulation for some popular vim plugins:
+
+
+| Vim Plugin            | Emacs Plugin                   | Keybind(s)                     |
+|-----------------------+--------------------------------+--------------------------------|
+| vim-commentary        | evil-nerd-commenter            | omap =gc=                        |
+| vim-easymotion        | evil-easymotion                | omap =gs=                        |
+| vim-lion              | evil-lion                      | omap =gl= / =gL=                   |
+| vim-seek or vim-sneak | evil-snipe                     | mmap =s= / =S=, omap =z= / =Z= & =x= / =X= |
+| vim-surround          | evil-embrace and evil-surround | vmap =S=, omap =ys=                |
+
+Along with some extra text objects:
+
++ =a= C-style function arguments (provided by ~evil-args~)
++ =B= any block delimited by braces, parentheses or brackets (provided by
+  ~evil-textobj-anyblock~)
++ =c= Comments
++ =f= For functions (but relies on the major mode to have sane definitions for
+  ~beginning-of-defun-function~ and ~end-of-defun-function~)
++ =g= The entire buffer
++ =i j k= by indentation (=k= includes one line above; =j= includes one line
+  above and below) (provided by ~evil-indent-plus~)
++ =q= For quotes (any kind)
++ =u= For URLs
++ =x= XML attributes (provided by ~exato~)
+
+And custom Ex commands.
+
+| Ex Command          | Description                                                                        |
+|---------------------+------------------------------------------------------------------------------------|
+| ~:@~                  | Apply macro on selected lines                                                      |
+| ~:al[ign][!] REGEXP~  | Align text to the first match of REGEXP. If BANG, align all matches on each line   |
+| ~:cp[!] NEWPATH~      | Copy the current file to NEWPATH                                                   |
+| ~:dash QUERY~         | Look up QUERY (or the symbol at point) in dash docsets                             |
+| ~:dehtml [INPUT]~     | HTML decode selected text / inserts result if INPUT is given                       |
+| ~:enhtml [INPUT]~     | HTML encode selected text / inserts result if INPUT is given                       |
+| ~:iedit REGEXP~       | Invoke iedit on all matches for REGEXP                                             |
+| ~:k[ill]all[!]~       | Kill all buffers (if BANG, affect buffer across workspaces)                        |
+| ~:k[ill]b~            | Kill all buried buffers                                                            |
+| ~:k[ill]m[!] REGEXP~  | Kill buffers whose name matches REGEXP (if BANG, affect buffers across workspaces) |
+| ~:k[ill]o~            | Kill all other buffers besides the selected one                                    |
+| ~:k[ill]~             | Kill the current buffer                                                            |
+| ~:lo[okup] QUERY~     | Look up QUERY on an online search engine                                           |
+| ~:mc REGEXP~          | Invoke multiple cursors on all matches for REGEXP                                  |
+| ~:mv[!] NEWPATH~      | Move the current file to NEWPATH                                                   |
+| ~:na[rrow]~           | Narrow the buffer to the selection                                                 |
+| ~:pad~                | Open a scratch pad for running code quickly                                        |
+| ~:ral[ign][!] REGEXP~ | Right-Align text that matches REGEXP. If BANG, align all matches on each line      |
+| ~:repl~               | Open a REPL and/or copy the current selection to it                                |
+| ~:retab~              | Convert indentation to the default within the selection                            |
+| ~:rev[erse]~          | Reverse the selected lines                                                         |
+| ~:rm[!] [PATH]~       | Delete the current buffer's file and buffer                                        |
+| ~:tcd[!]~             | Send =cd X= to tmux. X = the project root if BANG, X = ~default-directory~ otherwise   |
+
+***** file-templates
+
+Like =yas-snippets=, but for empty files. Includes a mechanism to insert software
+lincenses as well, through ~M-x +file-templates/insert-license~. The module
+documentation gives extra information on customization of the snippets.
+
+#+begin_src elisp :tangle init.el
        file-templates    ; auto-snippets for empty files
+#+end_src
+
+***** fold
+
+#+begin_src elisp :tangle init.el
        fold              ; (nigh) universal code folding
+#+end_src
+
+#+begin_quote
+This module marries hideshow, vimish-fold and outline-minor-mode to bring you
+marker, indent and syntax-based code folding for as many languages as possible.
+#+end_quote
+
+Some keybindings include:
+
+| Keybind            | Description               |
+|--------------------+---------------------------|
+| =C-c C-f C-f=        | Fold region               |
+| =C-c C-f C-u= or =C `= | Unfold region             |
+| =C-c C-f C-d=        | Delete folded region      |
+| =C-c C-a C-f=        | Refold all regions        |
+| =C-c C-a C-u=        | Unfold all regions        |
+| =C-c C-a C-d=        | Delete all folded regions |
+
+#+begin_src elisp :tangle init.el
        ;;(format +onsave)  ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who don't like vim
@@ -672,10 +767,10 @@ become the main focus. It can be toggled on and of with =SPC t z=.
 =dired-mode=, as configured in the =dired= module, has only a few extra bells and
 whistles added. Apart from aesthetic stuff, there are some extra keybindings:
 
-| Keybind   | Description                  |
-|-----------+------------------------------|
-| =SPC f d= | Find directory with dired    |
-| =q=       | Exit dired buffer            |
+| Keybind | Description                |
+|---------+----------------------------|
+| =SPC f d= | Find directory with dired  |
+| =q=       | Exit dired buffer          |
 | =C-c C-r= | Run =dired-rsync=            |
 | =C-c C-e= | Rename entries with =wdired= |
 
@@ -745,7 +840,7 @@ Which complement the [[https://www.gnu.org/software/emacs/refcards/pdf/dired-ref
        :lang
        ;;agda              ; types of types of types of types...
        ;;cc                ; C/C++/Obj-C madness
-       ;;clojure           ; java with a lisp
+       (clojure +lsp)      ; java with a lisp
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
@@ -854,7 +949,6 @@ Requires [[https://github.com/rust-lang/rls][rls]] or [[https://rust-analyzer.gi
 #+end_src
 
 ** packages.el
-
 *** How does packages.el work?
 
 To install a package with Doom you must declare them here and run ~doom sync~
@@ -957,7 +1051,6 @@ lexical binding.
 ;; -*- no-byte-compile: t; lexical-binding:t; -*-
 ;;; $DOOMDIR/packages.el
 #+end_src
-
 
 ** autoload folder
 
@@ -1509,6 +1602,12 @@ Universal argument mapped to M-u instead.
   (map! :g "M-u" #'universal-argument
 #+end_src
 
+Don't continue commented lines with o/O.
+
+#+begin_src elisp
+   (+evil-want-o/O-to-continue-comments nil)
+#+end_src
+
 Remove highlighted items after a search.
 
 #+begin_src elisp
@@ -1683,7 +1782,7 @@ and changes the modeline to show it.
                          '("Deactivated" . ""))))
     (progn
       (message "Mozc Mode %s" (car msg-modeline))
-      (setq global-mode-string (cdr msg-modeline))
+      (setq-local global-mode-string (cdr msg-modeline))
 #+end_src
 
 This part of the function is a bit of hack so mozc plays nicely with Doom's
