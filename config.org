@@ -1595,17 +1595,17 @@ Remove highlighted items after search is finished.
   (evil-ex-search-persistent-highlight nil)
 #+end_src
 
+Don't continue commented lines with o/O.
+
+#+begin_src elisp
+   (+evil-want-o/O-to-continue-comments nil)
+#+end_src
+
 Universal argument mapped to M-u instead.
 
 #+begin_src elisp
   :config
   (map! :g "M-u" #'universal-argument
-#+end_src
-
-Don't continue commented lines with o/O.
-
-#+begin_src elisp
-   (+evil-want-o/O-to-continue-comments nil)
 #+end_src
 
 Remove highlighted items after a search.
