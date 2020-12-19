@@ -47,10 +47,16 @@
         - [[#snippets][snippets]]
         - [[#word-wrap][word-wrap]]
       - [[#emacs][:emacs]]
+        - [[#editor-1][editor]]
+        - [[#electric][electric]]
+        - [[#ibuffer][ibuffer]]
+        - [[#undo][undo]]
+        - [[#vc][vc]]
       - [[#term][:term]]
       - [[#checkers][:checkers]]
       - [[#tools][:tools]]
       - [[#os][:os]]
+        - [[#tty][tty]]
       - [[#lang][:lang]]
         - [[#rust][rust]]
           - [[#dependencies][Dependencies:]]
@@ -824,6 +830,8 @@ lines in the buffer without modifying the buffer content.
 
 **** TODO :emacs
 
+***** editor
+
 #+begin_src elisp :tangle init.el
        :emacs
        (dired +icons)    ; making dired pretty [functional]
@@ -841,10 +849,46 @@ whistles added. Apart from aesthetic stuff, there are some extra keybindings:
 
 Which complement the [[https://www.gnu.org/software/emacs/refcards/pdf/dired-ref.pdf][default keybindings]].
 
+***** electric
+
+Built-in automated indentation.
+
 #+begin_src elisp :tangle init.el
        electric          ; smarter, keyword-based electric-indent
+#+end_src
+
+***** ibuffer
+
+Project-aware buffer management.  Similar to =dired=, but for buffers, it can be
+toogled on with the ~SPC b i~ keybinding.
+
+#+begin_src elisp :tangle init.el
        (ibuffer +icons)  ; interactive buffer management
+#+end_src
+
+***** undo
+
+#+begin_quote
+This module augments Emacs' built-in undo system to be more intuitive and to
+persist across Emacs sessions.
+#+end_quote
+
+This module uses [[https://github.com/emacsmirror/undo-fu][undo-fu]] to keep a history of editing changes.
+
+#+begin_src elisp :tangle init.el
        undo              ; persistent, smarter undo for your inevitable mistakes
+#+end_src
+
+***** vc
+
+#+begin_quote
+This module augments Emacs builtin version control support and provides better integration with git
+#+end_quote
+
+It offers different modes for ~.git{ignore,info,attributes,config} files, a way
+to easily visit the remote file of a repo, ~M-x browse-at-remote~, binded to ~SPC g o o~.
+
+#+begin_src elisp :tangle init.el
        vc                ; version-control and Emacs, sitting in a tree
 #+end_src
 
@@ -892,11 +936,24 @@ Which complement the [[https://www.gnu.org/software/emacs/refcards/pdf/dired-ref
        ;;upload            ; map local to remote projects via ssh/ftp
 #+end_src
 
-**** TODO :os
+**** :os
+
+***** tty
+
+Better integration of emacs with the terminal emulator, particularly:
+
+#+begin_quote
++ System clipboard integration (through an external clipboard program or OSC-52
+  escape codes in supported terminals).
++ Fixes cursor-shape changing across evil states in terminal that support it.
++ Mouse support in the terminal.
+
+#+end_quote
+
 #+begin_src elisp :tangle init.el
        :os
        ;;(:if IS-MAC macos)  ; improve compatibility with macOS
-       ;;tty               ; improve the terminal Emacs experience
+       tty               ; improve the terminal Emacs experience
 #+end_src
 
 **** TODO :lang
@@ -1014,6 +1071,7 @@ Requires [[https://github.com/rust-lang/rls][rls]] or [[https://rust-analyzer.gi
 #+end_src
 
 ** packages.el
+
 *** How does packages.el work?
 
 To install a package with Doom you must declare them here and run ~doom sync~
