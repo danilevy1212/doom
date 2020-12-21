@@ -67,6 +67,8 @@
       - [[#email][:email]]
       - [[#app][:app]]
       - [[#config][:config]]
+        - [[#literate][literate]]
+        - [[#better-defaults][Better Defaults]]
   - [[#packagesel][packages.el]]
     - [[#how-does-packagesel-work][How does packages.el work?]]
     - [[#declarations][Declarations]]
@@ -1075,11 +1077,31 @@ Requires [[https://github.com/rust-lang/rls][rls]] or [[https://rust-analyzer.gi
        ;;twitter           ; twitter client https://twitter.com/vnought
 #+end_src
 
-**** TODO :config
+**** :config
+
+***** literate
+
+The meat and potatoes of this configuration. This module [[https://orgmode.org/manual/Extracting-Source-Code.html][tangles]] the source code blocks in ~$DOOMDIR/config.org=.
 
 #+begin_src elisp :tangle init.el
        :config
        literate
+#+end_src
+
+***** Better Defaults
+
+#+begin_quote
+This module provides a set of reasonable defaults, including:
+
++ A Spacemacs-esque keybinding scheme
++ Extra Ex commands for evil-mode users
++ A yasnippet snippets library tailored to Doom emacs
++ A configuration for (almost) universally repeating searches with =;= and =,=
+#+end_quote
+
+Alongside the reasonable defaults, this module offers tons of convinience commands, under the ~+default/~ prefix.
+
+#+begin_src elisp :tangle init.el
        (default +bindings +smartparens))
 #+end_src
 
