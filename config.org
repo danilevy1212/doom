@@ -53,6 +53,8 @@
         - [[#undo][undo]]
         - [[#vc][vc]]
       - [[#term][:term]]
+        - [[#eshell][eshell]]
+        - [[#vterm][vterm]]
       - [[#checkers][:checkers]]
       - [[#tools][:tools]]
       - [[#os][:os]]
@@ -81,7 +83,7 @@
     - [[#projectile][Projectile]]
     - [[#treemacs-1][Treemacs]]
     - [[#dired][Dired]]
-    - [[#eshell][eshell]]
+    - [[#eshell-1][eshell]]
       - [[#autoloads][Autoloads]]
     - [[#vc-gutter-1][vc-gutter]]
     - [[#hydra-1][Hydra]]
@@ -892,11 +894,22 @@ to easily visit the remote file of a repo, ~M-x browse-at-remote~, binded to ~SP
        vc                ; version-control and Emacs, sitting in a tree
 #+end_src
 
-**** TODO :term
+**** :term
+
+***** eshell
+
+An =emacs= alternative to the traditonal shell. From this shell, you have access to all of emacs internal functions and variables. The features of the =eshell= are too many to [[https://www.gnu.org/software/emacs/manual/html_mono/eshell.html][explain here]].
 
 #+begin_src elisp :tangle init.el
        :term
        eshell            ; the elisp shell that works everywhere
+#+end_src
+
+***** vterm
+
+A traditional terminal emulator, powered by [[https://github.com/neovim/libvterm][libvterm]] and emacs [[https://phst.eu/emacs-modules.html][c modules]].
+
+#+begin_src elisp :tangle init.el
        ;;shell             ; simple shell REPL for Emacs
        ;;term              ; basic terminal emulator for Emacs
        vterm               ; the best terminal emulation in Emacs
