@@ -74,38 +74,39 @@
     - [[#declarations][Declarations]]
   - [[#autoload-folder][autoload folder]]
   - [[#configel][config.el]]
-    - [[#personal-information][Personal information]]
+    - [[#customize-group][Customize Group]]
     - [[#default-font][Default font]]
     - [[#default-theme][Default theme]]
       - [[#nord-powered-aesthetics][Nord powered aesthetics.]]
-    - [[#splash-screen][Splash Screen]]
-    - [[#rainbow-delimeters][Rainbow Delimeters]]
-    - [[#word-wrap-1][Word wrap]]
-    - [[#modeline-1][Modeline]]
-    - [[#projectile][Projectile]]
-    - [[#treemacs-1][Treemacs]]
     - [[#dired][Dired]]
+    - [[#dotenv][Dotenv]]
     - [[#eshell-1][eshell]]
       - [[#autoloads][Autoloads]]
-    - [[#vc-gutter-1][vc-gutter]]
+    - [[#helpful][Helpful]]
     - [[#hydra-1][Hydra]]
+    - [[#line-numbers][Line-numbers]]
+    - [[#modeline-1][Modeline]]
+    - [[#mozc-japanese-input][Mozc (Japanese Input).]]
+      - [[#autoloads-1][Autoloads]]
+    - [[#nvm][nvm]]
+      - [[#autoloads-2][Autoloads]]
     - [[#org][Org]]
       - [[#org-edna][org-edna]]
-      - [[#autoloads-1][Autoloads]]
-    - [[#pretending-we-are-in-vim-thats-just-plain-evil][Pretending we are in vim? That's just plain EVIL!]]
-    - [[#line-numbers][Line-numbers]]
-    - [[#helpful][Helpful]]
-    - [[#which-key][Which Key]]
-    - [[#customize-group][Customize Group]]
-    - [[#rss-or-how-to-get-news-the-old-way][RSS, or how to get news the old-way.]]
-    - [[#mozc-japanese-input][Mozc (Japanese Input).]]
-      - [[#autoloads-2][Autoloads]]
-    - [[#rust-1][Rust]]
-    - [[#web-mode][Web Mode]]
-    - [[#nvm][nvm]]
       - [[#autoloads-3][Autoloads]]
+    - [[#personal-information][Personal information]]
+    -  [[#prescient][Prescient]]
+    - [[#pretending-we-are-in-vim-thats-just-plain-evil][Pretending we are in vim? That's just plain EVIL!]]
+    - [[#projectile][Projectile]]
+    - [[#rainbow-delimeters][Rainbow Delimeters]]
+    - [[#rss-or-how-to-get-news-the-old-way][RSS, or how to get news the old-way.]]
+    - [[#rust-1][Rust]]
+    - [[#splash-screen][Splash Screen]]
+    - [[#treemacs-1][Treemacs]]
+    - [[#vc-gutter-1][vc-gutter]]
     - [[#vue][Vue]]
-    - [[#dotenv][Dotenv]]
+    - [[#web-mode][Web Mode]]
+    - [[#which-key][Which Key]]
+    - [[#word-wrap-1][Word wrap]]
   - [[#private-modules][Private modules.]]
 
 * Rationale
@@ -480,13 +481,12 @@ commands.
 We take icons with the flags:
 
 + +icons :: all-the-icons niceties in the ivy buffer.
-+ +fuzzy  :: Search for "close enough" matches.
 + +prescient :: Order candidate by selection frequency.
 
 #+begin_src elisp :tangle init.el
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
-       (ivy +icons +fuzzy +prescient)        ; a search engine for love and life
+       (ivy +icons +prescient)        ; a search engine for love and life
 #+end_src
 
 **** :ui
@@ -1081,7 +1081,7 @@ Requires [[https://github.com/rust-lang/rls][rls]] or [[https://rust-analyzer.gi
 
 ***** literate
 
-The meat and potatoes of this configuration. This module [[https://orgmode.org/manual/Extracting-Source-Code.html][tangles]] the source code blocks in ~$DOOMDIR/config.org=.
+The meat and potatoes of this configuration. This module [[https://orgmode.org/manual/Extracting-Source-Code.html][tangles]] the source code blocks in ~$DOOMDIR/config.org~.
 
 #+begin_src elisp :tangle init.el
        :config
@@ -1243,14 +1243,23 @@ real fun starts here.  As always, we start by declaring the lexical binding:
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 #+END_SRC
 
-*** Personal information
+*** Customize Group
 
-Some functionality uses this to identify you, e.g. GPG configuration, email
-clients, file templates and snippets.
+An essential interface to know what to customize!
 
 #+begin_src elisp
-(setq user-full-name "Daniel Levy Moreno"
-      user-mail-address "daniellevymoreno@gmail.com")
+(use-package! cus-edit
+  :defer t
+#+end_src
+
+I mostly use it to know the customizable options in a package, chaging the
+values within this configuration. So, let's make it show the actual real values.
+
+#+begin_src elisp
+  :custom
+  (custom-unlispify-menu-entries nil)
+  (custom-unlispify-tag-names nil)
+  (custom-unlispify-remove-prefixes nil))
 #+end_src
 
 *** Default font
@@ -1340,152 +1349,6 @@ Let's add some small customizations, mostly make everything a bit brighter and b
   (doom-nord-region-highlight 'frost))
 #+end_src
 
-*** Splash Screen
-
-Default doom dashboard is pretty and welcoming, let's just give it a small personal touch.
-
-#+begin_src elisp
-(setq fancy-splash-image (expand-file-name "img/stallman.png" doom-private-dir))
-#+end_src
-
-Paying respects to both the spirit of emacs and its creator.
-
-#+HTML: <p align="center"><img src="https://raw.githubusercontent.com/danilevy1212/doom/master/img/stallman.png"/></p>
-
-But what if I am in the terminal? No worries:
-
-#+begin_src elisp
-(defun dan/my-weebery-is-always-greater ()
-  (mapc (lambda (line)
-          (insert (propertize (+doom-dashboard--center +doom-dashboard--width line)
-                              'face 'doom-dashboard-banner) " ")
-          (insert "\n"))
-        '("⢸⣿⣿⣿⣿⠃⠄⢀⣴⡾⠃⠄⠄⠄⠄⠄⠈⠺⠟⠛⠛⠛⠛⠻⢿⣿⣿⣿⣿⣶⣤⡀⠄"
-          "⢸⣿⣿⣿⡟⢀⣴⣿⡿⠁⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⣸⣿⣿⣿⣿⣿⣿⣿⣷"
-          "⢸⣿⣿⠟⣴⣿⡿⡟⡼⢹⣷⢲⡶⣖⣾⣶⢄⠄⠄⠄⠄⠄⢀⣼⣿⢿⣿⣿⣿⣿⣿⣿⣿"
-          "⢸⣿⢫⣾⣿⡟⣾⡸⢠⡿⢳⡿⠍⣼⣿⢏⣿⣷⢄⡀⠄⢠⣾⢻⣿⣸⣿⣿⣿⣿⣿⣿⣿"
-          "⡿⣡⣿⣿⡟⡼⡁⠁⣰⠂⡾⠉⢨⣿⠃⣿⡿⠍⣾⣟⢤⣿⢇⣿⢇⣿⣿⢿⣿⣿⣿⣿⣿"
-          "⣱⣿⣿⡟⡐⣰⣧⡷⣿⣴⣧⣤⣼⣯⢸⡿⠁⣰⠟⢀⣼⠏⣲⠏⢸⣿⡟⣿⣿⣿⣿⣿⣿"
-          "⣿⣿⡟⠁⠄⠟⣁⠄⢡⣿⣿⣿⣿⣿⣿⣦⣼⢟⢀⡼⠃⡹⠃⡀⢸⡿⢸⣿⣿⣿⣿⣿⡟"
-          "⣿⣿⠃⠄⢀⣾⠋⠓⢰⣿⣿⣿⣿⣿⣿⠿⣿⣿⣾⣅⢔⣕⡇⡇⡼⢁⣿⣿⣿⣿⣿⣿⢣"
-          "⣿⡟⠄⠄⣾⣇⠷⣢⣿⣿⣿⣿⣿⣿⣿⣭⣀⡈⠙⢿⣿⣿⡇⡧⢁⣾⣿⣿⣿⣿⣿⢏⣾"
-          "⣿⡇⠄⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⢻⠇⠄⠄⢿⣿⡇⢡⣾⣿⣿⣿⣿⣿⣏⣼⣿"
-          "⣿⣷⢰⣿⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⢰⣧⣀⡄⢀⠘⡿⣰⣿⣿⣿⣿⣿⣿⠟⣼⣿⣿"
-          "⢹⣿⢸⣿⣿⠟⠻⢿⣿⣿⣿⣿⣿⣿⣿⣶⣭⣉⣤⣿⢈⣼⣿⣿⣿⣿⣿⣿⠏⣾⣹⣿⣿"
-          "⢸⠇⡜⣿⡟⠄⠄⠄⠈⠙⣿⣿⣿⣿⣿⣿⣿⣿⠟⣱⣻⣿⣿⣿⣿⣿⠟⠁⢳⠃⣿⣿⣿"
-          "⠄⣰⡗⠹⣿⣄⠄⠄⠄⢀⣿⣿⣿⣿⣿⣿⠟⣅⣥⣿⣿⣿⣿⠿⠋⠄⠄⣾⡌⢠⣿⡿⠃"
-          "⠜⠋⢠⣷⢻⣿⣿⣶⣾⣿⣿⣿⣿⠿⣛⣥⣾⣿⠿⠟⠛⠉⠄⠄          ")))
-
-(when (not (display-graphic-p))
-  (setq +doom-dashboard-ascii-banner-fn #'dan/my-weebery-is-always-greater))
-#+end_src
-
-*** Rainbow Delimeters
-
-Matching pairs draw with the same face color, making them easily identifiable.
-
-#+begin_src elisp
-(add-hook! prog-mode #'rainbow-delimiters-mode-enable)
-#+end_src
-
-*** Word wrap
-
-I work with lot's of files that have very long lines, which can be hard to read
-sometimes. ~+word-wrap-mode~ helps to make these files more readable without
-changing the buffer contents.
-
-#+begin_src elisp
-(+global-word-wrap-mode +1)
-#+end_src
-
-*** Modeline
-
-The default =doom-modeline= is great, the only thing is that I want it to show me
-the evil state I am in with a letter instead of an icon:
-
-#+begin_src elisp
-(use-package! doom-modeline
-  :defer t
-  :custom
-  (doom-modeline-modal-icon nil))
-#+end_src
-
-We would like to display the battery icon in the modeline, but only if I am in
-a laptop:
-
-#+begin_src elisp
-(use-package! battery
-  :after-call doom-modeline-mode
-  :config
-  (when (and battery-status-function
-             (not (string-match-p "N/A"
-                                  (battery-format "%B"
-                                                  (funcall battery-status-function)))))
-    (display-battery-mode)))
-#+end_src
-
-*** Projectile
-
-Let's make projectile's life easier by giving it some paths where I normally
-store projects.
-
-#+begin_src elisp
-(setq projectile-project-search-path '("~/Projects/" "~/.config/"))
-#+end_src
-
-*** Treemacs
-
-=treemacs= integrates with =git=. By default it's set to a performace oriented
-configuration with limited capabilities. Let's change that.
-
-#+begin_src elisp
-(setq +treemacs-git-mode 'deferred)
-#+end_src
-
-I don't plan on using =treemacs= to explore directories beyond the project root
-directory, that's what dired is for. So let's change the default bindings to be
-more appropiate to my use case.
-
-=h= to go back up a node and =H= to go up the root.
-
-#+begin_src elisp
-(after! treemacs-evil
-  (evil-define-key 'treemacs treemacs-mode-map
-    "h" #'treemacs-collapse-parent-node
-    "H" #'treemacs-root-up
-#+end_src
-
-=l= to *expand* a node, =L= to go down the root.
-
-#+begin_src elisp
-    "l" #'treemacs-TAB-action
-    "L" #'treemacs-root-down))
-#+end_src
-
-Use =all-the-icons= theme in treemacs, for consistency.
-
-#+begin_src elisp
-(setq doom-themes-treemacs-theme "doom-colors")
-#+end_src
-
-When running ~treemacs-find-file~, the focus remains in the file instead of going
-to the treemacs buffer. Lets change that.
-
-#+begin_src elisp
-(defadvice! dan/treemacs-select-after-find-file (&rest args)
-  "Switch focus to the treemacs buffer after calling `treemacs-find-file'."
-  :after #'treemacs-find-file
-  (treemacs-select-window))
-#+end_src
-
-Let's switch the bindings for ~+treemacs/toggle~ and ~treemacs-find-file~.
-
-#+begin_src elisp
-(map! :leader
-      :desc "Find file in project sidebar" :mv "o p" #'treemacs-find-file
-      :desc "Project sidebar" :mv "o P" #'+treemacs/toggle)
-#+end_src
-
 *** Dired
 
 One thing really missing from the default configuration of =dired= is an easy
@@ -1527,7 +1390,31 @@ an external program.
   :custom
   (dired-open-functions (list #'dired-open-guess-shell-alist
                               #'dired-open-by-extension
-                              #'dired-open-subdir)))
+                              #'dired-open-subdir))
+  (dired-guess-shell-alist-user '(("\\.\\(?:docx\\|pdf\\|djvu\\|eps\\)\\'" "xdg-open")
+                                  ("\\.\\(?:jpe?g\\|png\\|gif\\|xpm\\)\\'" "xdg-open")
+                                  ("\\.\\(?:xcf\\)\\'" "xdg-open")
+                                  ("\\.csv\\'" "xdg-open")
+                                  ("\\.tex\\'" "xdg-open")
+                                  ("\\.\\(?:mp4\\|mkv\\|avi\\|flv\\|rm\\|rmvb\\|ogv\\|mov\\)\\(?:\\.part\\)?\\'" "xdg-open")
+                                  ("\\.\\(?:mp3\\|flac\\)\\'" "xdg-open")
+                                  ("\\.html?\\'" "xdg-open")
+                                  ("\\.md\\'" "xdg-open"))))
+#+end_src
+
+*** Dotenv
+
+Emacs is missing a mode to edit =.env= files. So let's add it one:
+
+#+begin_src elisp :tangle packages.el
+(package! dotenv-mode)
+#+end_src
+
+Now let's activate it when opening a =.env=:
+
+#+begin_src elisp
+(use-package! dotenv-mode
+  :mode ("\\.env\\.?.*\\'" . dotenv-mode))
 #+end_src
 
 *** eshell
@@ -1560,20 +1447,13 @@ The BUFFER-NAME is given as string surrounded by \"\"."
   (insert-and-inherit "\"" buffer-name "\""))
 #+end_src
 
-*** vc-gutter
+*** Helpful
 
-Let's add some minor customizations to the =vc-gutter= module:
-
-First, diff the file while the buffer is changing, not just when it's saved.
-
-#+begin_src elisp
-(setq +vc-gutter-diff-unsaved-buffer t)
-#+end_src
-
-Lastly, let's activate =git-gutter= for remote files as well.
+Let's make an global keybinding to find something I don't understand about emacs
+quickly!
 
 #+begin_src elisp
-(setq +vc-gutter-in-remote-files t)
+(map! :g "C-c C-d" #'helpful-at-point)
 #+end_src
 
 *** Hydra
@@ -1584,6 +1464,192 @@ Let's make the =hydra= module's functions easily accesable:
 (map! :leader
       :desc "Navigate/Hydra"  :m "w N" #'+hydra/window-nav/body
       :desc "Text-Zoom/Hydra" :m "w f" #'+hydra/text-zoom/body)
+#+end_src
+
+*** Line-numbers
+
+This determines the style of line numbers in effect. If set to ~nil~, line
+numbers are disabled. For relative line numbers, set this to ~relative~.
+
+#+begin_src elisp
+(setq display-line-numbers-type 'relative)
+#+end_src
+
+*** Modeline
+
+The default =doom-modeline= is great, the only thing is that I want it to show me
+the evil state I am in with a letter instead of an icon:
+
+#+begin_src elisp
+(use-package! doom-modeline
+  :defer t
+  :custom
+  (doom-modeline-modal-icon nil))
+#+end_src
+
+We would like to display the battery icon in the modeline, but only if I am in
+a laptop:
+
+#+begin_src elisp
+(use-package! battery
+  :after-call doom-modeline-mode
+  :config
+  (when (and battery-status-function
+             (not (string-match-p "N/A"
+                                  (battery-format "%B"
+                                                  (funcall battery-status-function)))))
+    (display-battery-mode)))
+#+end_src
+
+*** Mozc (Japanese Input).
+
+I am learning japanese as a hobby, and I do most of my note taking in emacs. To
+input japanese text we use google's MOZC.
+
+#+begin_src elisp :tangle packages.el
+(package! mozc
+  :recipe (:files ("src/unix/emacs/*.el")))
+#+end_src
+
+Let's lazy load mozc, so it loads only when our entry function is called.
+
+#+begin_src elisp
+(use-package! mozc
+  :defer t
+#+end_src
+
+The overlay style is sluggish, the echo-area style is pretty and very functional, it even works in the minibuffer!
+
+#+begin_src elisp
+  :custom
+  (mozc-candidate-style 'echo-area))
+#+end_src
+
+Finally, we create a keybinding activate mozc-mode.
+
+#+begin_src elisp
+(map! :g "C-x j"  #'dan/toggle-mozc-mode
+      :ni "C-x j" #'dan/toggle-mozc-mode)
+#+end_src
+
+**** Autoloads
+
+Lexical binding.
+
+#+begin_src elisp :tangle autoload/mozc.el :mkdirp yes
+;;; $DOOMDIR/autoload/mozc.el -*- lexical-binding: t; -*-
+#+end_src
+
+First, let's define our toggle function and lazily load it. Activates mozc mode
+and changes the modeline to show it.
+
+#+begin_src elisp :tangle autoload/mozc.el :mkdirp yes
+;;;###autoload
+(defun dan/toggle-mozc-mode ()
+  "Toggle activation/deactivation of `mozc-mode'."
+  (interactive)
+  (let* ((active (mozc-mode))
+         (msg-modeline (if active
+                           '("Activated" . "日本語")
+                         '("Deactivated" . ""))))
+    (progn
+      (message "Mozc Mode %s" (car msg-modeline))
+      (setq-local global-mode-string (cdr msg-modeline))
+#+end_src
+
+This part of the function is a bit of hack so mozc plays nicely with Doom's
+configuration of evil-org.
+
+#+begin_src elisp :tangle autoload/mozc.el :mkdirp yes
+      (map! (:when (and (featurep 'evil-org) evil-org-mode) :map evil-org-mode-map
+             (:when mozc-mode    :i "<return>"   nil)
+             (:unless mozc-mode  :i "<return>"   (cmd! (org-return electric-indent-mode)))
+             (:when mozc-mode    :i "RET"        nil)
+             (:unless mozc-mode  :i "RET"        (cmd! (org-return electric-indent-mode))))))))
+#+end_src
+
+*** nvm
+
+=nvm= stands for "n.ode v.ersion m.anager". At it's core it's just a shell
+script that keeps versions of node/npm that can be activated on a per-project
+basis.  The =nvm.el= package offers a few non-interactive functions to interact
+with =nvm=. This functions change the ~PATH~ value inside =emacs=, so when =npm=
+or =node= are called from it, they are look in the directory =nvm.el= has set.
+
+#+begin_src elisp :tangle packages.el
+(package! nvm)
+#+end_src
+
+**** Autoloads
+
+=nvm.el= lacks functions to interactively activate or deactivate a version of
+node within emacs.  Luckily, emacs is extensible. We'll create our functions in
+a autoloaded file.
+
+#+begin_src elisp :tangle autoload/nvm.el :mkdirp yes
+;;; $DOOMDIR/autoload/nvm.el -*- lexical-binding: t; -*-
+#+end_src
+
+When loading the autoload file, load the nvm module. Essentially, we give
+access to the nvm package to the autoloaded functions.
+
+#+begin_src elisp :tangle autoload/nvm.el :mkdirp yes
+(require 'nvm)
+#+end_src
+
+A function to deactivate the current version of node, if it was activated by
+nvm. Essentially, it removes the modifications nvm may have done to PATH
+enviroment variable.
+
+#+begin_src  elisp :tangle autoload/nvm.el :mkdirp yes
+;;;###autoload
+(defun dan/nvm-deactivate ()
+  "Deactivate nvm.
+
+This function will restore the enviroment variable PATH to it's value before nvm
+was activated.
+
+If nvm wasn't activated previously, PATH will remain unchanged."
+  (interactive)
+  (when nvm-current-version
+    (let* ((path-re (concat "^" (f-join nvm-dir nvm-runtime-re) nvm-version-re "/bin/?$"))
+           (node-version-dir (expand-file-name "bin/" (-last-item nvm-current-version)))
+           (new-path-list (--reject (s-matches? path-re it) (parse-colon-path (getenv "PATH")))))
+      (setenv "PATH" (s-join path-separator new-path-list))
+      (setq nvm-current-version nil)
+      (message "NVM deactivated. Restored node version to system default."))))
+#+end_src
+
+An ~nvm-use-for~ interactive wrapper. If a .nvmrc can't be found in ~default-directory~, then prompt user.
+
+#+begin_src elisp :tangle autoload/nvm.el :mkdirp yes
+;;;###autoload
+(defun dan/nvm-use-for ()
+  "Activate a node version interactively.
+
+From `default-directory' upwards, a .nvmrc file will be searched to fix the nvm version.
+If none is found, the user will be prompted to select an available version of node."
+  (interactive)
+  (cl-flet ((announce ()
+                    (message "Node %s activated" (car nvm-current-version))))
+    (condition-case err
+        (progn
+          (nvm-use-for)
+          (announce))
+      ('error
+       (let* ((node-system-path "/usr/bin/node")
+              (node-system (and (file-exists-p node-system-path)
+                                (format "System (%s)"
+                                              (s-trim (with-temp-buffer
+                                                        (call-process-shell-command
+                                                         (concat node-system-path " -v") nil t)
+                                                        (buffer-string))))))
+              (choice (completing-read "Select a Node version:"
+                                       (append (nvm--installed-versions) (list node-system)) nil t)))
+         (cond
+          ((s-equals-p choice node-system) (dan/nvm-deactivate))
+          (t (nvm-use choice)
+             (announce))))))))
 #+end_src
 
 *** Org
@@ -1731,6 +1797,29 @@ This function is meant to be run as as part of `org-checkbox-statistics-hook`"
                   (org-todo 'todo)))))))))
 #+end_src
 
+*** Personal information
+
+Some functionality uses this to identify you, e.g. GPG configuration, email
+clients, file templates and snippets.
+
+#+begin_src elisp
+(setq user-full-name "Daniel Levy Moreno"
+      user-mail-address "daniellevymoreno@gmail.com")
+#+end_src
+
+***  Prescient
+
+Unfortunatly, =doom= doesn't integrate the excellent =prescient= with =company-mode= in it's modules like it does for =ivy-mode=. First, we get the =company-prescient= package.
+
+#+begin_src elisp :tangle packages.el
+(package! company-prescient)
+#+end_src
+
+#+begin_src elisp
+(after! company
+  (company-prescient-mode))
+#+end_src
+
 *** Pretending we are in vim? That's just plain EVIL!
 
 Bad puns aside, vim keybindings are hard to let go once you are used to them.
@@ -1774,53 +1863,21 @@ Remove highlighted items after a search.
         :m "C-l" #'evil-ex-nohighlight))
 #+end_src
 
-*** Line-numbers
+*** Projectile
 
-This determines the style of line numbers in effect. If set to ~nil~, line
-numbers are disabled. For relative line numbers, set this to ~relative~.
+Let's make projectile's life easier by giving it some paths where I normally
+store projects.
 
 #+begin_src elisp
-(setq display-line-numbers-type 'relative)
+(setq projectile-project-search-path '("~/Projects/" "~/.config/"))
 #+end_src
 
-*** Helpful
+*** Rainbow Delimeters
 
-Let's make an global keybinding to find something I don't understand about emacs
-quickly!
-
-#+begin_src elisp
-(map! :g "C-c C-d" #'helpful-at-point)
-#+end_src
-
-*** Which Key
-
-Doom emacs default config is too slow, lets speed it up.
+Matching pairs draw with the same face color, making them easily identifiable.
 
 #+begin_src elisp
-(use-package! which-key
-  :defer t
-  :custom
-  (which-key-idle-delay 0.1)
-  (which-key-idle-secondary-delay 0.2))
-#+end_src
-
-*** Customize Group
-
-An essential interface to know what to customize!
-
-#+begin_src elisp
-(use-package! cus-edit
-  :defer t
-#+end_src
-
-I mostly use it to know the customizable options in a package, chaging the
-values within this configuration. So, let's make it show the actual real values.
-
-#+begin_src elisp
-  :custom
-  (custom-unlispify-menu-entries nil)
-  (custom-unlispify-tag-names nil)
-  (custom-unlispify-remove-prefixes nil))
+(add-hook! prog-mode #'rainbow-delimiters-mode-enable)
 #+end_src
 
 *** RSS, or how to get news the old-way.
@@ -1889,73 +1946,6 @@ Keybinding to easily find the feeds file.
       :desc "News feed config" :m "o N" (cmd! (find-file (car rmh-elfeed-org-files))))
 #+end_src
 
-*** Mozc (Japanese Input).
-
-I am learning japanese as a hobby, and I do most of my note taking in emacs. To
-input japanese text we use google's MOZC.
-
-#+begin_src elisp :tangle packages.el
-(package! mozc
-  :recipe (:files ("src/unix/emacs/*.el")))
-#+end_src
-
-Let's lazy load mozc, so it loads only when our entry function is called.
-
-#+begin_src elisp
-(use-package! mozc
-  :defer t
-#+end_src
-
-The overlay style is sluggish, the echo-area style is pretty and very functional, it even works in the minibuffer!
-
-#+begin_src elisp
-  :custom
-  (mozc-candidate-style 'echo-area))
-#+end_src
-
-Finally, we create a keybinding activate mozc-mode.
-
-#+begin_src elisp
-(map! :g "C-x j"  #'dan/toggle-mozc-mode
-      :ni "C-x j" #'dan/toggle-mozc-mode)
-#+end_src
-
-**** Autoloads
-
-Lexical binding.
-
-#+begin_src elisp :tangle autoload/mozc.el :mkdirp yes
-;;; $DOOMDIR/autoload/mozc.el -*- lexical-binding: t; -*-
-#+end_src
-
-First, let's define our toggle function and lazily load it. Activates mozc mode
-and changes the modeline to show it.
-
-#+begin_src elisp :tangle autoload/mozc.el :mkdirp yes
-;;;###autoload
-(defun dan/toggle-mozc-mode ()
-  "Toggle activation/deactivation of `mozc-mode'."
-  (interactive)
-  (let* ((active (mozc-mode))
-         (msg-modeline (if active
-                           '("Activated" . "日本語")
-                         '("Deactivated" . ""))))
-    (progn
-      (message "Mozc Mode %s" (car msg-modeline))
-      (setq-local global-mode-string (cdr msg-modeline))
-#+end_src
-
-This part of the function is a bit of hack so mozc plays nicely with Doom's
-configuration of evil-org.
-
-#+begin_src elisp :tangle autoload/mozc.el :mkdirp yes
-      (map! (:when (and (featurep 'evil-org) evil-org-mode) :map evil-org-mode-map
-             (:when mozc-mode    :i "<return>"   nil)
-             (:unless mozc-mode  :i "<return>"   (cmd! (org-return electric-indent-mode)))
-             (:when mozc-mode    :i "RET"        nil)
-             (:unless mozc-mode  :i "RET"        (cmd! (org-return electric-indent-mode))))))))
-#+end_src
-
 *** Rust
 
 Seems like rls is more stable than rust-analyzer.
@@ -1973,6 +1963,125 @@ When using the rustic popup, be in emacs state.
   :config
   (when (featurep 'evil)
     (add-hook! 'rustic-popup-mode-hook #'evil-emacs-state)))
+#+end_src
+
+*** Splash Screen
+
+Default doom dashboard is pretty and welcoming, let's just give it a small personal touch.
+
+#+begin_src elisp
+(setq fancy-splash-image (expand-file-name "img/stallman.png" doom-private-dir))
+#+end_src
+
+Paying respects to both the spirit of emacs and its creator.
+
+#+HTML: <p align="center"><img src="https://raw.githubusercontent.com/danilevy1212/doom/master/img/stallman.png"/></p>
+
+But what if I am in the terminal? No worries:
+
+#+begin_src elisp
+(defun dan/my-weebery-is-always-greater ()
+  (mapc (lambda (line)
+          (insert (propertize (+doom-dashboard--center +doom-dashboard--width line)
+                              'face 'doom-dashboard-banner) " ")
+          (insert "\n"))
+        '("⢸⣿⣿⣿⣿⠃⠄⢀⣴⡾⠃⠄⠄⠄⠄⠄⠈⠺⠟⠛⠛⠛⠛⠻⢿⣿⣿⣿⣿⣶⣤⡀⠄"
+          "⢸⣿⣿⣿⡟⢀⣴⣿⡿⠁⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⣸⣿⣿⣿⣿⣿⣿⣿⣷"
+          "⢸⣿⣿⠟⣴⣿⡿⡟⡼⢹⣷⢲⡶⣖⣾⣶⢄⠄⠄⠄⠄⠄⢀⣼⣿⢿⣿⣿⣿⣿⣿⣿⣿"
+          "⢸⣿⢫⣾⣿⡟⣾⡸⢠⡿⢳⡿⠍⣼⣿⢏⣿⣷⢄⡀⠄⢠⣾⢻⣿⣸⣿⣿⣿⣿⣿⣿⣿"
+          "⡿⣡⣿⣿⡟⡼⡁⠁⣰⠂⡾⠉⢨⣿⠃⣿⡿⠍⣾⣟⢤⣿⢇⣿⢇⣿⣿⢿⣿⣿⣿⣿⣿"
+          "⣱⣿⣿⡟⡐⣰⣧⡷⣿⣴⣧⣤⣼⣯⢸⡿⠁⣰⠟⢀⣼⠏⣲⠏⢸⣿⡟⣿⣿⣿⣿⣿⣿"
+          "⣿⣿⡟⠁⠄⠟⣁⠄⢡⣿⣿⣿⣿⣿⣿⣦⣼⢟⢀⡼⠃⡹⠃⡀⢸⡿⢸⣿⣿⣿⣿⣿⡟"
+          "⣿⣿⠃⠄⢀⣾⠋⠓⢰⣿⣿⣿⣿⣿⣿⠿⣿⣿⣾⣅⢔⣕⡇⡇⡼⢁⣿⣿⣿⣿⣿⣿⢣"
+          "⣿⡟⠄⠄⣾⣇⠷⣢⣿⣿⣿⣿⣿⣿⣿⣭⣀⡈⠙⢿⣿⣿⡇⡧⢁⣾⣿⣿⣿⣿⣿⢏⣾"
+          "⣿⡇⠄⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⢻⠇⠄⠄⢿⣿⡇⢡⣾⣿⣿⣿⣿⣿⣏⣼⣿"
+          "⣿⣷⢰⣿⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⢰⣧⣀⡄⢀⠘⡿⣰⣿⣿⣿⣿⣿⣿⠟⣼⣿⣿"
+          "⢹⣿⢸⣿⣿⠟⠻⢿⣿⣿⣿⣿⣿⣿⣿⣶⣭⣉⣤⣿⢈⣼⣿⣿⣿⣿⣿⣿⠏⣾⣹⣿⣿"
+          "⢸⠇⡜⣿⡟⠄⠄⠄⠈⠙⣿⣿⣿⣿⣿⣿⣿⣿⠟⣱⣻⣿⣿⣿⣿⣿⠟⠁⢳⠃⣿⣿⣿"
+          "⠄⣰⡗⠹⣿⣄⠄⠄⠄⢀⣿⣿⣿⣿⣿⣿⠟⣅⣥⣿⣿⣿⣿⠿⠋⠄⠄⣾⡌⢠⣿⡿⠃"
+          "⠜⠋⢠⣷⢻⣿⣿⣶⣾⣿⣿⣿⣿⠿⣛⣥⣾⣿⠿⠟⠛⠉⠄⠄          ")))
+
+(when (not (display-graphic-p))
+  (setq +doom-dashboard-ascii-banner-fn #'dan/my-weebery-is-always-greater))
+#+end_src
+
+*** Treemacs
+
+=treemacs= integrates with =git=. By default it's set to a performace oriented
+configuration with limited capabilities. Let's change that.
+
+#+begin_src elisp
+(setq +treemacs-git-mode 'deferred)
+#+end_src
+
+I don't plan on using =treemacs= to explore directories beyond the project root
+directory, that's what dired is for. So let's change the default bindings to be
+more appropiate to my use case.
+
+=h= to go back up a node and =H= to go up the root.
+
+#+begin_src elisp
+(after! treemacs-evil
+  (evil-define-key 'treemacs treemacs-mode-map
+    "h" #'treemacs-collapse-parent-node
+    "H" #'treemacs-root-up
+#+end_src
+
+=l= to *expand* a node, =L= to go down the root.
+
+#+begin_src elisp
+    "l" #'treemacs-TAB-action
+    "L" #'treemacs-root-down))
+#+end_src
+
+Use =all-the-icons= theme in treemacs, for consistency.
+
+#+begin_src elisp
+(setq doom-themes-treemacs-theme "doom-colors")
+#+end_src
+
+When running ~treemacs-find-file~, the focus remains in the file instead of going
+to the treemacs buffer. Lets change that.
+
+#+begin_src elisp
+(defadvice! dan/treemacs-select-after-find-file (&rest args)
+  "Switch focus to the treemacs buffer after calling `treemacs-find-file'."
+  :after #'treemacs-find-file
+  (treemacs-select-window))
+#+end_src
+
+Let's switch the bindings for ~+treemacs/toggle~ and ~treemacs-find-file~.
+
+#+begin_src elisp
+(map! :leader
+      :desc "Find file in project sidebar" :mv "o p" #'treemacs-find-file
+      :desc "Project sidebar" :mv "o P" #'+treemacs/toggle)
+#+end_src
+
+*** vc-gutter
+
+Let's add some minor customizations to the =vc-gutter= module:
+
+First, diff the file while the buffer is changing, not just when it's saved.
+
+#+begin_src elisp
+(setq +vc-gutter-diff-unsaved-buffer t)
+#+end_src
+
+Lastly, let's activate =git-gutter= for remote files as well.
+
+#+begin_src elisp
+(setq +vc-gutter-in-remote-files t)
+#+end_src
+
+*** Vue
+
+The language server =VLS= does not analyse the templates of ~.vue~ files by default,
+let's change that!
+
+#+begin_src elisp
+(after! lsp-vetur
+  (setq lsp-vetur-experimental-template-interpolation-service t))
 #+end_src
 
 *** Web Mode
@@ -2002,113 +2111,26 @@ And no padding!
     web-mode-script-padding nil))
 #+end_src
 
-*** nvm
+*** Which Key
 
-=nvm= stands for "n.ode v.ersion m.anager". At it's core it's just a shell
-script that keeps versions of node/npm that can be activated on a per-project
-basis.  The =nvm.el= package offers a few non-interactive functions to interact
-with =nvm=. This functions change the ~PATH~ value inside =emacs=, so when =npm=
-or =node= are called from it, they are look in the directory =nvm.el= has set.
-
-#+begin_src elisp :tangle packages.el
-(package! nvm)
-#+end_src
-
-**** Autoloads
-
-=nvm.el= lacks functions to interactively activate or deactivate a version of
-node within emacs.  Luckily, emacs is extensible. We'll create our functions in
-a autoloaded file.
-
-#+begin_src elisp :tangle autoload/nvm.el :mkdirp yes
-;;; $DOOMDIR/autoload/nvm.el -*- lexical-binding: t; -*-
-#+end_src
-
-When loading the autoload file, load the nvm module. Essentially, we give
-access to the nvm package to the autoloaded functions.
-
-#+begin_src elisp :tangle autoload/nvm.el :mkdirp yes
-(require 'nvm)
-#+end_src
-
-A function to deactivate the current version of node, if it was activated by
-nvm. Essentially, it removes the modifications nvm may have done to PATH
-enviroment variable.
-
-#+begin_src  elisp :tangle autoload/nvm.el :mkdirp yes
-;;;###autoload
-(defun dan/nvm-deactivate ()
-  "Deactivate nvm.
-
-This function will restore the enviroment variable PATH to it's value before nvm
-was activated.
-
-If nvm wasn't activated previously, PATH will remain unchanged."
-  (interactive)
-  (when nvm-current-version
-    (let* ((path-re (concat "^" (f-join nvm-dir nvm-runtime-re) nvm-version-re "/bin/?$"))
-           (node-version-dir (expand-file-name "bin/" (-last-item nvm-current-version)))
-           (new-path-list (--reject (s-matches? path-re it) (parse-colon-path (getenv "PATH")))))
-      (setenv "PATH" (s-join path-separator new-path-list))
-      (setq nvm-current-version nil)
-      (message "NVM deactivated. Restored node version to system default."))))
-#+end_src
-
-An ~nvm-use-for~ interactive wrapper. If a .nvmrc can't be found in ~default-directory~, then prompt user.
-
-#+begin_src elisp :tangle autoload/nvm.el :mkdirp yes
-;;;###autoload
-(defun dan/nvm-use-for ()
-  "Activate a node version interactively.
-
-From `default-directory' upwards, a .nvmrc file will be searched to fix the nvm version.
-If none is found, the user will be prompted to select an available version of node."
-  (interactive)
-  (cl-flet ((announce ()
-                    (message "Node %s activated" (car nvm-current-version))))
-    (condition-case err
-        (progn
-          (nvm-use-for)
-          (announce))
-      ('error
-       (let* ((node-system-path "/usr/bin/node")
-              (node-system (and (file-exists-p node-system-path)
-                                (format "System (%s)"
-                                              (s-trim (with-temp-buffer
-                                                        (call-process-shell-command
-                                                         (concat node-system-path " -v") nil t)
-                                                        (buffer-string))))))
-              (choice (completing-read "Select a Node version:"
-                                       (append (nvm--installed-versions) (list node-system)) nil t)))
-         (cond
-          ((s-equals-p choice node-system) (dan/nvm-deactivate))
-          (t (nvm-use choice)
-             (announce))))))))
-#+end_src
-
-*** Vue
-
-The language server =VLS= does not analyse the templates of ~.vue~ files by default,
-let's change that!
+Doom emacs default config is too slow, lets speed it up.
 
 #+begin_src elisp
-(after! lsp-vetur
-  (setq lsp-vetur-experimental-template-interpolation-service t))
+(use-package! which-key
+  :defer t
+  :custom
+  (which-key-idle-delay 0.1)
+  (which-key-idle-secondary-delay 0.2))
 #+end_src
 
-*** Dotenv
+*** Word wrap
 
-Emacs is missing a mode to edit =.env= files. So let's add it one:
-
-#+begin_src elisp :tangle packages.el
-(package! dotenv-mode)
-#+end_src
-
-Now let's activate it when opening a =.env=:
+I work with lot's of files that have very long lines, which can be hard to read
+sometimes. ~+word-wrap-mode~ helps to make these files more readable without
+changing the buffer contents.
 
 #+begin_src elisp
-(use-package! dotenv-mode
-  :mode ("\\.env\\.?.*\\'" . dotenv-mode))
+(+global-word-wrap-mode +1)
 #+end_src
 
 ** Private modules.
