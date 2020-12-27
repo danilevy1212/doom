@@ -6,7 +6,14 @@
 + https://www.reddit.com/r/emacs/comments/9lv1fd/a_simple_guide_to_writing_publishing_emacs/
 
 * Inbox
+** TODO [0/4] Lots to document:
 
+- [ ] Keybindings
+- [ ] Dash integration
+- [ ] ex-commands
+- [ ] Integrate with cheat-sh.el
+
+[[file:~/.config/doom/config.org::*lookup][lookup]]
 ** TODO [#B] https://github.com/zevlg/telega.el?
 
 ** TODO Mozc package may need this... Either that or justify why download the entire mozc package...
@@ -14,8 +21,6 @@
 [[file:~/.config/doom/config.org::*How does packages.el work?][How does packages.el work?]]
 
 ** TODO https://github.com/folke/splashcii THIS BUT IN ELISP.
-
-** TODO WAIT Test display the battery IF there is one customization on desktop. Will have to test a work computer.
 
 ** TODO [#B] [[file:config.org::*Org]] https://github.com/m-cat/org-recur#time-of-day Utilizar esto para los schedule clases de japones.
 
@@ -53,6 +58,14 @@ First, we declare the package.
 
 If realiable, this could be added to the =japanese= module, as a =+mozc= flag.
 
+** TODO Cheatsheet? It might be rendant with the :tools lookup
+
+In software development, there is a lot of information to keep track off. There is no shame in sometimes forgetting some details. Luckily, [[https://github.com/chubin/cheat.sh][cheat.sh]] can help to quickly brush over a topic to refresh one's memory.
+
+#+begin_src elisp :tangle packages.el
+(package! cheat-sh)
+#+end_src
+
 ** TODO WAIT for HSLINER to refactor cli!
 
 *** defcli! to auto install this configuration.
@@ -62,7 +75,7 @@ and run doom sync, create script for that?
 
 *** HOLD Use [[doom-docs:getting_started.org][doctor.el]] to detect if nvm is installed.
 
-Unfortunatly, this feature cannot be implemented because there is no support for
+Unfortunately, this feature cannot be implemented because there is no support for
 it in doom emacs. However, I opened a [[https://github.com/hlissner/doom-emacs/issues/4190][issue]] in doom-emacs repo requesting this
 feature.
 
@@ -96,6 +109,5 @@ Inside @nvm.el
 
 ** TODO [[https://bunpro.jp/api#getting-started][Look into the bunpro API]], excuse to use the 'rest' module.
 ** TODO [#B] Add org-super-agenda and better divide my tasks headings..
-** TODO [#B] Tryout [[yt:vz9aLmxYJB0][org-slide-mode,]] the `+present` flag works badly.
 ** HOLD Create a eshell/alias with nvm-exec https://jloubert.com/blog/eshell-nvm/
 ** TODO Deprecated ~nvm~ since I don't really use it anymore.
