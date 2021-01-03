@@ -111,3 +111,4 @@ Inside @nvm.el
 ** TODO [#B] Add org-super-agenda and better divide my tasks headings..
 ** HOLD Create a eshell/alias with nvm-exec https://jloubert.com/blog/eshell-nvm/
 ** TODO Deprecated ~nvm~ since I don't really use it anymore.
+** TODO https://github.com/tecosaur/screenshot

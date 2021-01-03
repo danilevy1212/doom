@@ -105,6 +105,7 @@
     - [[#rss-or-how-to-get-news-the-old-way][RSS, or how to get news the old-way.]]
     - [[#rust-1][Rust]]
     - [[#splash-screen][Splash Screen]]
+    - [[#snow][Snow]]
     - [[#treemacs-1][Treemacs]]
     - [[#vc-gutter-1][vc-gutter]]
     - [[#vue][Vue]]
@@ -2059,6 +2060,21 @@ But what if I am in the terminal? No worries:
 
 (when (not (display-graphic-p))
   (setq +doom-dashboard-ascii-banner-fn #'dan/my-weebery-is-always-greater))
+#+end_src
+
+*** Snow
+
+A nice, comfy, useless package.
+
+#+begin_src elisp :tangle packages.el
+(package! snow)
+#+end_src
+
+We define an auto-load function as an entry point to the winter season.
+
+#+begin_src elisp
+(use-package! snow
+  :commands snow)
 #+end_src
 
 *** Treemacs
