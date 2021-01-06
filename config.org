@@ -92,7 +92,7 @@
     - [[#modeline][Modeline]]
     - [[#mozc-japanese-input][Mozc (Japanese Input).]]
       - [[#auto-loads-1][Auto-loads]]
-    - [[#nvm][nvm]]
+    - [[#nvm-deprecated][nvm (Deprecated)]]
       - [[#auto-loads-2][Auto-loads]]
     - [[#org][Org]]
       - [[#org-edna][org-edna]]
@@ -1625,7 +1625,11 @@ configuration of evil-org.
              (:unless mozc-mode  :i "RET"        (cmd! (org-return electric-indent-mode))))))))
 #+end_src
 
-*** nvm
+*** nvm (Deprecated)
+
+#+begin_quote
+NixOS has made this package redundant for me. However, somebody may find this configuration useful so I will keep it.
+#+end_quote
 
 =nvm= stands for =n.ode v.ersion m.anager=. At it's core it's just a shell
 script that keeps versions of node/npm that can be activated on a per-project
@@ -1633,7 +1637,7 @@ basis.  The =nvm.el= package offers non-interactive functions to interact
 with =nvm=. These functions change the ~PATH~ value inside =emacs=, so when =npm=
 or =node= are called from it, they are look in the directory =nvm.el= has set.
 
-#+begin_src elisp :tangle packages.el
+#+begin_src elisp :tangle no
 (package! nvm)
 #+end_src
 
@@ -1643,14 +1647,15 @@ or =node= are called from it, they are look in the directory =nvm.el= has set.
 node within Emacs.  Luckily, Emacs is extensible. We'll create our functions in
 an auto-loaded file.
 
-#+begin_src elisp :tangle autoload/nvm.el :mkdirp yes
+#+begin_src elisp :tangle no
 ;;; $DOOMDIR/autoload/nvm.el -*- lexical-binding: t; -*-
 #+end_src
 
 When loading the auto-load file, load the =nvm= module. Essentially, we give
+
 access to the =nvm= package to the auto-loaded functions.
 
-#+begin_src elisp :tangle autoload/nvm.el :mkdirp yes
+#+begin_src elisp :tangle no
 (require 'nvm)
 #+end_src
 
@@ -1658,7 +1663,7 @@ A function to deactivate the current version of node, if it was activated by
 =nvm=. Essentially, it removes the modifications =nvm= may have done to PATH
 environment variable.
 
-#+begin_src  elisp :tangle autoload/nvm.el :mkdirp yes
+#+begin_src  elisp :tangle no
 ;;;###autoload
 (defun dan/nvm-deactivate ()
   "Deactivate nvm.
@@ -1679,7 +1684,7 @@ If nvm wasn't activated previously, PATH will remain unchanged."
 
 A ~nvm-use-for~ interactive wrapper. If a =.nvmrc= can't be found in ~default-directory~, then prompt user.
 
-#+begin_src elisp :tangle autoload/nvm.el :mkdirp yes
+#+begin_src elisp :tangle no
 ;;;###autoload
 (defun dan/nvm-use-for ()
   "Activate a node version interactively.
