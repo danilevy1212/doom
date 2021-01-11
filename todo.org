@@ -19,10 +19,6 @@
 [[file:~/.config/doom/config.org::*lookup][lookup]]
 ** TODO [#B] https://github.com/zevlg/telega.el?
 
-** TODO Mozc package may need this... Either that or justify why download the entire mozc package...
-
-[[file:~/.config/doom/config.org::*How does packages.el work?][How does packages.el work?]]
-
 ** TODO https://github.com/folke/splashcii THIS BUT IN ELISP.
 
 ** TODO [#B] [[file:config.org::*Org]] https://github.com/m-cat/org-recur#time-of-day Utilizar esto para los schedule clases de japones.
@@ -56,10 +52,6 @@ First, we declare the package.
 (use-package! org-recur
   :defer t)
 #+end_src
-
-** TODO file:config.org::*Mozc Document [[https://github.com/rzl24ozi/mozc-emacs-helper-module][インストール]] instructions, maybe create elisp script for it? Checkout the recipe in [[https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mozc][AUR]].
-
-If realiable, this could be added to the =japanese= module, as a =+mozc= flag.
 
 ** TODO Cheatsheet? It might be rendant with the :tools lookup
 

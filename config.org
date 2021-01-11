@@ -90,9 +90,9 @@
     - [[#language-tool][Language Tool]]
     - [[#line-numbers][Line-numbers]]
     - [[#modeline][Modeline]]
-    - [[#mozc-japanese-input][Mozc (Japanese Input).]]
+    - [[#mozc-japanese-input-deprecated][Mozc (Japanese Input) DEPRECATED.]]
       - [[#auto-loads-1][Auto-loads]]
-    - [[#nvm-deprecated][nvm (Deprecated)]]
+    - [[#nvm-deprecated][nvm DEPRECATED]]
       - [[#auto-loads-2][Auto-loads]]
     - [[#org][Org]]
       - [[#org-edna][org-edna]]
@@ -1558,33 +1558,37 @@ a laptop:
     (display-battery-mode)))
 #+end_src
 
-*** Mozc (Japanese Input).
+*** Mozc (Japanese Input) DEPRECATED.
+
+#+begin_quote
+Nowadays I use Ibus with the XIM overlay for this, which gets rid of the dependency with mozc_emacs_helper.
+#+end_quote
 
 I am learning Japanese as a hobby, and I do most of my note taking in Emacs. To
 input Japanese text we use Google's Mozc.
 
-#+begin_src elisp :tangle packages.el
+#+begin_src elisp :tangle no
 (package! mozc
   :recipe (:files ("src/unix/emacs/*.el")))
 #+end_src
 
 Let's lazy load Mozc, so it loads only when our entry function is called.
 
-#+begin_src elisp
+#+begin_src elisp :tangle no
 (use-package! mozc
   :defer t
 #+end_src
 
 The overlay style is sluggish, the echo-area style is pretty and functional, it even works in the mini-buffer!
 
-#+begin_src elisp
+#+begin_src elisp :tangle no
   :custom
   (mozc-candidate-style 'echo-area))
 #+end_src
 
 Finally, we create a keybinding activate ~mozc-mode~.
 
-#+begin_src elisp
+#+begin_src elisp :tangle no
 (map! :g "C-x j"  #'dan/toggle-mozc-mode
       :ni "C-x j" #'dan/toggle-mozc-mode)
 #+end_src
@@ -1593,14 +1597,14 @@ Finally, we create a keybinding activate ~mozc-mode~.
 
 Lexical binding.
 
-#+begin_src elisp :tangle autoload/mozc.el :mkdirp yes
+#+begin_src elisp :tangle no
 ;;; $DOOMDIR/autoload/mozc.el -*- lexical-binding: t; -*-
 #+end_src
 
 First, let's define our toggle function and lazily load it. Activates ~mozc-mode~
 and changes the mode line to show it.
 
-#+begin_src elisp :tangle autoload/mozc.el :mkdirp yes
+#+begin_src elisp :tangle no
 ;;;###autoload
 (defun dan/toggle-mozc-mode ()
   "Toggle activation/deactivation of `mozc-mode'."
@@ -1617,7 +1621,7 @@ and changes the mode line to show it.
 This part of the function is a bit of hack so mozc plays nicely with Doom's
 configuration of evil-org.
 
-#+begin_src elisp :tangle autoload/mozc.el :mkdirp yes
+#+begin_src elisp :tangle no
       (map! (:when (and (featurep 'evil-org) evil-org-mode) :map evil-org-mode-map
              (:when mozc-mode    :i "<return>"   nil)
              (:unless mozc-mode  :i "<return>"   (cmd! (org-return electric-indent-mode)))
@@ -1625,7 +1629,7 @@ configuration of evil-org.
              (:unless mozc-mode  :i "RET"        (cmd! (org-return electric-indent-mode))))))))
 #+end_src
 
-*** nvm (Deprecated)
+*** nvm DEPRECATED
 
 #+begin_quote
 NixOS has made this package redundant for me. However, somebody may find this configuration useful so I will keep it.
