@@ -7,7 +7,7 @@
 
 * Inbox
 ** TODO [#A] Divide my org-agenda in multiple files within a 'agenda' directory.
-** TODO [#A] Try out org-super-agenda, after customizing org module.
+** TODO [#A] Try out org-super-agenda, after customizing org module. https://github.com/alphapapa/org-super-agenda
 ** TODO Make =brave= the default browser.
 ** TODO [0/4] Lots to document:
 

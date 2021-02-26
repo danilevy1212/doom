@@ -1974,26 +1974,32 @@ Show me entries from within a month that I haven't read and that I have 'starred
 Some entries are worth preserving. By 'starring' them we don't lose them.
 
 #+begin_src elisp
-(defalias 'dan/elfeed-search-tag-all-star
-         (elfeed-expose #'elfeed-search-tag-all 'star)
-         "Add the `star' tag to all selected entries.")
+  (defalias 'dan/elfeed-search-tag-all-star
+          (elfeed-expose #'elfeed-search-tag-all 'star)
+          "Add the `star' tag to all selected entries.")
 
-(defalias 'dan/elfeed-search-untag-all-star
-         (elfeed-expose #'elfeed-search-untag-all 'star)
-         "Remove the `star' tag from all selected entries.")
+  (defalias 'dan/elfeed-search-untag-all-star
+          (elfeed-expose #'elfeed-search-untag-all 'star)
+          "Remove the `star' tag from all selected entries.")
 #+end_src
 
 Expose the aliases to the =x= keybinding.
 
+    #+begin_src elisp
+  (map! :map 'elfeed-search-mode-map :nv "x" #'dan/elfeed-search-tag-all-star
+                                  :nv "X" #'dan/elfeed-search-untag-all-star)
+#+end_src
+
+Automatically updating feed when opening elfeed.
+
 #+begin_src elisp
-(map! :map 'elfeed-search-mode-map :nv "x" #'dan/elfeed-search-tag-all-star
-                                   :nv "X" #'dan/elfeed-search-untag-all-star))
+  (add-hook! 'elfeed-search-mode-hook 'elfeed-update)
 #+end_src
 
 Give it an easy keybinding to access it:
 
 #+begin_src elisp
-(map! :leader :desc "News feed" :m "o n" #'elfeed)
+(map! :leader :desc "News feed" :m "o n" #'=rss)
 #+end_src
 
 And point elfeed to the org configuration file.
