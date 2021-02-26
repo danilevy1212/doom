@@ -1993,7 +1993,7 @@ Expose the aliases to the =x= keybinding.
 Automatically updating feed when opening elfeed.
 
 #+begin_src elisp
-  (add-hook! 'elfeed-search-mode-hook 'elfeed-update)
+  (add-hook! 'elfeed-search-mode-hook 'elfeed-update))
 #+end_src
 
 Give it an easy keybinding to access it:
