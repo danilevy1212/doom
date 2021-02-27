@@ -43,7 +43,6 @@
         - [[#file-templates][file-templates]]
         - [[#fold][fold]]
         - [[#lispy][lispy]]
-        - [[#parinfer][parinfer]]
         - [[#snippets][snippets]]
         - [[#word-wrap][word-wrap]]
       - [[#emacs][:emacs]]
@@ -794,30 +793,6 @@ work with =lispyville='s commands. Bummer.
        lispy             ; vim for lisp, for people who don't like vim
 #+end_src
 
-***** parinfer
-
-#+begin_quote
-Parinfer is a proof-of-concept editor mode for Lisp programming languages. It
-will infer some changes to keep Parens and Indentation inline with one another.
-
-https://raw.githubusercontent.com/DogLooksGood/parinfer/a7c041454e05ec2b88333a73e72debaa671ed596/images/demo.gif
-#+end_quote
-
-Basically, it's a another editing helper package for lisp, in particular:
-
-- Emacs Lisp
-- Clojure
-- Scheme
-- Lisp
-- Racket
-- Hy
-
-#+begin_src elisp :tangle init.el
-       ;;multiple-cursors    ; editing in many places at once
-       ;;objed               ; text object editing for the innocent
-       parinfer              ; turn lisp into python, sort of
-#+end_src
-
 ***** snippets
 
 #+begin_quote
@@ -825,6 +800,9 @@ This module adds snippets to Emacs, powered by yasnippet.
 #+end_quote
 
 #+begin_src elisp :tangle init.el
+       ;;multiple-cursors    ; editing in many places at once
+       ;;objed               ; text object editing for the innocent
+       ;;parinfer              ; turn lisp into python, sort of
        ;;rotate-text     ; cycle region at point between text candidates
        snippets          ; my elves. They type so I don't have to
 #+end_src
