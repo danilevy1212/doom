@@ -1,119 +1,7 @@
-# -*- eval: (progn (when (and (fboundp #'toc-org-mode) (not toc-org-mode)) (toc-org-mode)) (writeroom-mode +1)); -*-
+# -*- eval: (writeroom-mode +1); -*-
 
 #+TITLE: Dan's DOOM Emacs configuration
-#+OPTIONS: toc:nil tags:nil todo:nil
-
-* Table Of Contents :TOC_9:
-- [[#rationale][Rationale]]
-  - [[#message-hello-s-emacs][~(message "Hello, %s!" "emacs")~]]
-  - [[#distro-hopping-in-emacs][Distro-hopping in Emacs]]
-  - [[#back-to-vanilla][Back to vanilla.]]
-  - [[#why-doom][Why DOOM?]]
-  - [[#tldr][TL;DR:]]
-- [[#installation][Installation]]
-  - [[#prerequisites][Prerequisites]]
-  - [[#steps][Steps]]
-- [[#configuration][Configuration]]
-  - [[#initel][init.el]]
-    - [[#lexical-binding][Lexical binding.]]
-    - [[#doom-modules][~doom!~ modules]]
-      - [[#input][:input]]
-      - [[#completion][:completion]]
-        - [[#company-mode][Company Mode]]
-        - [[#ivy][Ivy]]
-      - [[#ui][:ui]]
-        - [[#that-doom-feel][That *DOOM* feel.]]
-        - [[#emoji][emoji]]
-        - [[#hl-todo][hl-todo]]
-        - [[#hydra][hydra]]
-        - [[#ligatures][ligatures]]
-        - [[#mode-line][Mode line]]
-        - [[#nav-flash][nav-flash]]
-        - [[#ophints][ophints]]
-        - [[#popup][popup]]
-        - [[#treemacs][treemacs]]
-        - [[#unicode][unicode]]
-        - [[#vc-gutter][vc-gutter]]
-        - [[#vi-tilde-fringe][vi-tilde-fringe]]
-        - [[#window-select][window select]]
-        - [[#workspaces][workspaces]]
-        - [[#zen][zen]]
-      - [[#editor][:editor]]
-        - [[#evil][evil]]
-        - [[#file-templates][file-templates]]
-        - [[#fold][fold]]
-        - [[#lispy][lispy]]
-        - [[#multiple-cursors][Multiple cursors]]
-        - [[#parinfer][parinfer]]
-        - [[#snippets][snippets]]
-        - [[#word-wrap][word-wrap]]
-      - [[#emacs][:emacs]]
-        - [[#editor-1][editor]]
-        - [[#electric][electric]]
-        - [[#ibuffer][ibuffer]]
-        - [[#undo][undo]]
-        - [[#vc][vc]]
-      - [[#term][:term]]
-        - [[#eshell][eshell]]
-        - [[#vterm][vterm]]
-      - [[#checkers][:checkers]]
-        - [[#syntax][syntax]]
-        - [[#spell][spell]]
-        - [[#grammar][grammar]]
-      - [[#tools][:tools]]
-        - [[#lookup][lookup]]
-      - [[#os][:os]]
-        - [[#tty][tty]]
-      - [[#lang][:lang]]
-        - [[#rust][rust]]
-          - [[#dependencies][Dependencies:]]
-        - [[#sh][sh]]
-        - [[#web][web]]
-      - [[#email][:email]]
-      - [[#app][:app]]
-      - [[#config][:config]]
-        - [[#literate][literate]]
-        - [[#better-defaults][Better Defaults]]
-  - [[#packagesel][packages.el]]
-    - [[#how-does-packagesel-work][How does packages.el work?]]
-    - [[#declarations][Declarations]]
-  - [[#auto-load-folder][Auto-load folder]]
-  - [[#configel][config.el]]
-    - [[#customize-group][Customize Group]]
-    - [[#default-font][Default font]]
-    - [[#default-theme][Default theme]]
-      - [[#nord-powered-aesthetics][Nord powered aesthetics.]]
-    - [[#dired][Dired]]
-    - [[#dotenv][Dotenv]]
-    - [[#eshell-1][eshell]]
-      - [[#auto-loads][Auto-loads]]
-    - [[#hydra-1][Hydra]]
-    - [[#language-tool][Language Tool]]
-    - [[#line-numbers][Line-numbers]]
-    - [[#modeline][Modeline]]
-    - [[#mozc-japanese-input-deprecated][Mozc (Japanese Input) DEPRECATED.]]
-      - [[#auto-loads-1][Auto-loads]]
-    - [[#nvm-deprecated][nvm DEPRECATED]]
-      - [[#auto-loads-2][Auto-loads]]
-    - [[#org][Org]]
-      - [[#org-edna][org-edna]]
-      - [[#auto-loads-3][Auto-loads]]
-    - [[#personal-information][Personal information]]
-    -  [[#prescient][Prescient]]
-    - [[#pretending-we-are-in-vim-thats-just-plain-evil][Pretending we are in vim? That's just plain EVIL!]]
-    - [[#projectile][Projectile]]
-    - [[#rainbow-delimiters][Rainbow Delimiters]]
-    - [[#rss-or-how-to-get-news-the-old-way][RSS, or how to get news the old-way.]]
-    - [[#rust-1][Rust]]
-    - [[#splash-screen][Splash Screen]]
-    - [[#snow][Snow]]
-    - [[#treemacs-1][Treemacs]]
-    - [[#vc-gutter-1][vc-gutter]]
-    - [[#vue][Vue]]
-    - [[#web-mode][Web Mode]]
-    - [[#which-key][Which Key]]
-    - [[#word-wrap-1][Word wrap]]
-  - [[#private-modules][Private modules.]]
+#+OPTIONS: tags:nil todo:nil
 
 * Rationale
 
@@ -1133,6 +1021,8 @@ Requires [[https://github.com/rust-lang/rls][rls]] or [[https://rust-analyzer.gi
 #+begin_src elisp :tangle init.el
        :app
        ;;calendar
+       ;;emms
+       everywhere        ; *leave* Emacs!? You must be joking
        ;;irc               ; how neckbeards socialize
        (rss +org)        ; Emacs as an RSS reader
        ;;twitter           ; twitter client https://twitter.com/vnought
@@ -1400,7 +1290,7 @@ available. You can either set ~doom-theme~ or manually load a theme with the
 
 **** Nord powered aesthetics.
 
-Let's add some small customizations to make everything a bit brighter and bigger:
+Let's add some small customization to make everything a bit brighter and bigger:
 
 #+begin_src elisp
 (use-package! doom-nord-theme
@@ -1453,8 +1343,8 @@ an external program.
   (dired-open-functions (list #'dired-open-guess-shell-alist
                               #'dired-open-by-extension
                               #'dired-open-subdir))
-  (dired-guess-shell-alist-user '(("\\.\\(?:docx\\|pdf\\|djvu\\|eps\\)\\'" "xdg-open")
-                                  ("\\.\\(?:jpe?g\\|png\\|gif\\|xpm\\)\\'" "xdg-open")
+  (dired-guess-shell-alist-user '(("\\.\\(?:docx\\|djvu\\|eps\\)\\'" "xdg-open")
+                                  ("\\.\\(?:\\|gif\\|xpm\\)\\'" "xdg-open")
                                   ("\\.\\(?:xcf\\)\\'" "xdg-open")
                                   ("\\.csv\\'" "xdg-open")
                                   ("\\.tex\\'" "xdg-open")
@@ -1507,6 +1397,15 @@ Here I define the slightly modified version of ~eshell-insert-buffer-name~.
 The BUFFER-NAME is given as string surrounded by \"\"."
   (interactive "BName of buffer: ")
   (insert-and-inherit "\"" buffer-name "\""))
+#+end_src
+
+*** evil-snipe
+
+~evil-snipe~ is a simple but powerful plugin, that adds a =snipe= two character motion, plus the possibility of make builtin motions work further than a single line.
+
+#+begin_src elisp
+(after! evil-snipe
+  (setq! evil-snipe-scope 'buffer))
 #+end_src
 
 *** Hydra
@@ -1948,6 +1847,15 @@ store projects.
 (setq projectile-project-search-path '("~/Projects/" "~/.config/"))
 #+end_src
 
+*** pdf-tools
+
+Prefer the NixOS provide binary to the one compiled by the package.
+
+#+begin_src elisp :tangle packages.el
+(package! pdf-tools
+  :built-in 'prefer)
+#+end_src
+
 *** Rainbow Delimiters
 
 Matching pairs draw with the same face color, making them easily identifiable.
@@ -2085,6 +1993,33 @@ But what if I am in the terminal? No worries:
 
 (when (not (display-graphic-p))
   (setq +doom-dashboard-ascii-banner-fn #'dan/my-weebery-is-always-greater))
+#+end_src
+
+*** Spotify
+
+#+begin_quote
+Spotify.el is a collection of extensions that allows you to control the Spotify application from within your favorite text editor.
+#+end_quote
+
+#+begin_quote
+   * Spotify client integration for GNU/Linux (via D-Bus) and OS X (via AppleScript)
+   * Device playback display & selection using the Spotify Connect API (requires premium)
+   * Communicates with the Spotify API via Oauth2
+   * Displays the current track in mode line or title bar
+   * Create playlists (public or private)
+   * Browse the Spotify featured playlists, your own playlists, and their tracks
+   * Search for tracks and playlists that match the given keywords
+   * Easily control basic Spotify player features like, play/pause, previous, next, shuffle, and repeat with the Spotify Remote minor mode
+#+end_quote
+
+#+begin_src elisp :tangle packages.el
+(package! spotify.el
+  :recipe (:host github
+           :repo "danielfm/spotify.el"))
+#+end_src
+
+#+begin_src elisp
+(use-package! spotify.el)
 #+end_src
 
 *** Snow
