@@ -1,4 +1,4 @@
-# -*- eval: (when (fboundp writeroom) writeroom-mode +1); -*-
+# -*- eval: (when (fboundp #'+zen/toggle) (+zen/toggle)); -*-
 
 #+TITLE: Dan's DOOM Emacs configuration
 #+OPTIONS: tags:nil todo:nil
