@@ -8,13 +8,11 @@
 * Inbox
 ** TODO [#A] Divide my org-agenda in multiple files within a 'agenda' directory.
 ** TODO [#A] Try out org-super-agenda, after customizing org module. https://github.com/alphapapa/org-super-agenda
-** TODO Make =brave= the default browser.
 ** TODO [0/4] Lots to document:
 
 - [ ] Keybindings
 - [ ] Dash integration
 - [ ] ex-commands
-- [ ] Integrate with cheat-sh.el
 
 [[file:~/.config/doom/config.org::*lookup][lookup]]
 ** TODO [#B] https://github.com/zevlg/telega.el?
@@ -53,13 +51,7 @@ First, we declare the package.
   :defer t)
 #+end_src
 
-** TODO Cheatsheet? It might be rendant with the :tools lookup
 
-In software development, there is a lot of information to keep track off. There is no shame in sometimes forgetting some details. Luckily, [[https://github.com/chubin/cheat.sh][cheat.sh]] can help to quickly brush over a topic to refresh one's memory.
-
-#+begin_src elisp :tangle packages.el
-(package! cheat-sh)
-#+end_src
 
 ** TODO WAIT for HSLINER to refactor cli!
 
@@ -102,7 +94,5 @@ Inside @nvm.el
 #   (warn! "Can't find the nvm directory, nvm package won't work."))
 # #+end_src
 
-** TODO [[https://bunpro.jp/api#getting-started][Look into the bunpro API]], excuse to use the 'rest' module.
 ** TODO [#B] Add org-super-agenda and better divide my tasks headings..
-** HOLD Create a eshell/alias with nvm-exec https://jloubert.com/blog/eshell-nvm/
 ** TODO https://github.com/tecosaur/screenshot

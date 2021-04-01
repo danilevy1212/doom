@@ -1195,6 +1195,34 @@ binding:
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 #+END_SRC
 
+*** Browse Url
+
+Make ~browse-url~ aware of my default browser, =brave=.
+
+#+begin_src elisp
+(use-package! browse-url
+  :defer t
+  :custom
+  (browse-url-browser-function #'browse-url-chromium)
+  (browse-url-chromium-program "brave")
+#+end_src
+
+Some of my RSS feeds offer links to =lbry=, which cannot be open directly with a
+browser. The following advice takes care of this edge case.
+
+#+begin_src elisp
+  :config
+  (defadvice! dan/browse-url-chromium--parse-url (args)
+    "Process a `lbry://' link so it can be opened with `browse-url-chromium'."
+    :filter-args #'browse-url-chromium
+    (let ((url (car args))
+          (window (cdr-safe args)))
+      (flatten-list
+       (list (replace-regexp-in-string "^lbry:\/\/" "https://odysee.com/" url)
+             window)))))
+
+#+end_src
+
 *** Customize Group
 
 An essential interface to know what to customize!
@@ -1229,20 +1257,20 @@ font string. You generally only need these two:
 
 ie:
 #+begin_src elisp :tangle no
-(setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
+(setq! doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 #+end_src
 
 Let's _choose_ our *monospaced* font, /Hack/ goodness:
 
 #+begin_src elisp
-(setq doom-font (font-spec :family "Hack" :size 16))
+(setq! doom-font (font-spec :family "Hack" :size 16))
 #+end_src
 
 And our =variable pitch= +font+, ~DejaVu Sans~:
 
 #+begin_src elisp :tangle no
-(setq doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 20))
+(setq! doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 20))
 #+end_src
 
 Comments and keywords should pop more...
@@ -1257,7 +1285,7 @@ When in zen mode, scale text just a bit.
 
 #+begin_src elisp
 (after! writeroom-mode
-  (setq +zen-text-scale 1.25))
+  (setq! +zen-text-scale 1.25))
 #+end_src
 
 Not everything fits in the =mode line=, so let's make fonts and icons smaller:
@@ -1268,14 +1296,14 @@ Not everything fits in the =mode line=, so let's make fonts and icons smaller:
   '(mode-line-inactive :family "Hack" :height 0.95))
 
 (after! all-the-icons
-  (setq all-the-icons-scale-factor 1.1))
+  (setq! all-the-icons-scale-factor 1.1))
 #+end_src
 
 The filename in the =mode line= occupies way too much space.
 
 #+begin_src elisp
 (after! doom-modeline
-  (setq doom-modeline-buffer-file-name-style 'truncate-with-project))
+  (setq! doom-modeline-buffer-file-name-style 'truncate-with-project))
 #+end_src
 
 *** Default theme
@@ -1285,7 +1313,7 @@ available. You can either set ~doom-theme~ or manually load a theme with the
 ~load-theme~ function. This is the default:
 
 #+begin_src elisp
-(setq doom-theme 'doom-nord)
+(setq! doom-theme 'doom-nord)
 #+end_src
 
 **** Nord powered aesthetics.
@@ -1423,13 +1451,13 @@ Let's make the =hydra= module's functions easily accessible:
 Do not run the jar file! Run the binary.
 
 #+begin_src elisp
-(setq langtool-bin "languagetool-commandline")
+(setq! langtool-bin "languagetool-commandline")
 #+end_src
 
 Most of the time, assume I speak English.
 
 #+begin_src elisp
-(setq langtool-mother-tongue "en")
+(setq! langtool-mother-tongue "en")
 #+end_src
 
 *** Line-numbers
@@ -1438,7 +1466,7 @@ This determines the style of line numbers in effect. If set to ~nil~, line
 numbers are disabled. For relative line numbers, set this to ~relative~.
 
 #+begin_src elisp
-(setq display-line-numbers-type 'relative)
+(setq! display-line-numbers-type 'relative)
 #+end_src
 
 *** Modeline
@@ -1591,7 +1619,7 @@ If nvm wasn't activated previously, PATH will remain unchanged."
            (node-version-dir (expand-file-name "bin/" (-last-item nvm-current-version)))
            (new-path-list (--reject (s-matches? path-re it) (parse-colon-path (getenv "PATH")))))
       (setenv "PATH" (s-join path-separator new-path-list))
-      (setq nvm-current-version nil)
+      (setq! nvm-current-version nil)
       (message "NVM deactivated. Restored node version to system default."))))
 #+end_src
 
@@ -1752,9 +1780,9 @@ This function is meant to be run as as part of `org-checkbox-statistics-hook`"
     (unless (not todo-state)
       (save-excursion
         (org-back-to-heading t)
-        (setq beg (point))
+        (setq! beg (point))
         (end-of-line)
-        (setq end (point))
+        (setq! end (point))
         (goto-char beg)
         (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
                                end t)
@@ -1778,7 +1806,7 @@ Some functionality uses this to identify you, e.g. GPG configuration, email
 clients, file templates and snippets.
 
 #+begin_src elisp
-(setq user-full-name "Daniel Levy Moreno"
+(setq! user-full-name "Daniel Levy Moreno"
       user-mail-address "daniellevymoreno@gmail.com")
 #+end_src
 
@@ -1844,7 +1872,7 @@ Let's make projectile's life easier by giving it some paths where I normally
 store projects.
 
 #+begin_src elisp
-(setq projectile-project-search-path '("~/Projects/" "~/.config/"))
+(setq! projectile-project-search-path '("~/Projects/" "~/.config/"))
 #+end_src
 
 *** pdf-tools
@@ -1886,7 +1914,7 @@ Show me entries from within a month that I haven't read and that I have 'starred
 
 #+begin_src elisp
   :config
-  (setq elfeed-search-filter "@4-week-ago +unread ")
+  (setq! elfeed-search-filter "@4-week-ago +unread ")
 #+end_src
 
 Some entries are worth preserving. By 'starring' them we don't lose them.
@@ -1960,7 +1988,7 @@ When using the rustic popup, be in Emacs state.
 Default doom dashboard is pretty and welcoming, let's just give it a small personal touch.
 
 #+begin_src elisp
-(setq fancy-splash-image (expand-file-name "img/stallman.png" doom-private-dir))
+(setq! fancy-splash-image (expand-file-name "img/stallman.png" doom-private-dir))
 #+end_src
 
 Paying respects to both the spirit of Emacs and its creator.
@@ -1992,7 +2020,7 @@ But what if I am in the terminal? No worries:
           "⠜⠋⢠⣷⢻⣿⣿⣶⣾⣿⣿⣿⣿⠿⣛⣥⣾⣿⠿⠟⠛⠉⠄⠄          ")))
 
 (when (not (display-graphic-p))
-  (setq +doom-dashboard-ascii-banner-fn #'dan/my-weebery-is-always-greater))
+  (setq! +doom-dashboard-ascii-banner-fn #'dan/my-weebery-is-always-greater))
 #+end_src
 
 *** Spotify
@@ -2043,7 +2071,7 @@ We define an auto-load function as an entry point to the winter season.
 configuration with limited capabilities. Let's change that.
 
 #+begin_src elisp
-(setq +treemacs-git-mode 'deferred)
+(setq! +treemacs-git-mode 'deferred)
 #+end_src
 
 I don't plan on using =treemacs= to explore directories beyond the project root
@@ -2069,7 +2097,7 @@ more appropriate to my use case.
 Use =all-the-icons= theme in =treemacs=, for consistency.
 
 #+begin_src elisp
-(setq doom-themes-treemacs-theme "doom-colors")
+(setq! doom-themes-treemacs-theme "doom-colors")
 #+end_src
 
 When running ~treemacs-find-file~, the focus remains in the file instead of going
@@ -2092,18 +2120,18 @@ Let's switch the bindings for ~+treemacs/toggle~ and ~treemacs-find-file~.
 
 *** vc-gutter
 
-Let's add some minor customizations to the =vc-gutter= module:
+Let's add minor customization to the =vc-gutter= module:
 
 First, diff the file while the buffer is changing, not just when it's saved.
 
 #+begin_src elisp
-(setq +vc-gutter-diff-unsaved-buffer t)
+(setq! +vc-gutter-diff-unsaved-buffer t)
 #+end_src
 
 Lastly, let's activate =git-gutter= for remote files as well.
 
 #+begin_src elisp
-(setq +vc-gutter-in-remote-files t)
+(setq! +vc-gutter-in-remote-files t)
 #+end_src
 
 *** Vue
@@ -2113,7 +2141,7 @@ let's change that!
 
 #+begin_src elisp
 (after! lsp-vetur
-  (setq lsp-vetur-experimental-template-interpolation-service t))
+  (setq! lsp-vetur-experimental-template-interpolation-service t))
 #+end_src
 
 *** Web Mode
@@ -2125,7 +2153,7 @@ First, text at the beginning of line should not be indented by default.
 
 #+begin_src elisp
 (after! web-mode
-  (setq web-mode-indent-style 1
+  (setq! web-mode-indent-style 1
 #+end_src
 
 The default indentation is of 2 spaces.
