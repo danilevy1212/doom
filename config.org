@@ -2130,7 +2130,7 @@ Tree-sitter is a general programming language parser that efficiently builds and
 Activate =tree-sitter= for programming modes.
 
 #+begin_src elisp
-(add-hook! prog-mode
+(add-transient-hook! 'prog-mode-hook
   (require 'tree-sitter-langs)
   (global-tree-sitter-mode))
 #+end_src
