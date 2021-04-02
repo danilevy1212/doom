@@ -1211,16 +1211,12 @@ Some of my RSS feeds offer links to =lbry=, which cannot be open directly with a
 browser. The following advice takes care of this edge case.
 
 #+begin_src elisp
-  :config
-  (defadvice! dan/browse-url-chromium--parse-url (args)
-    "Process a `lbry://' link so it can be opened with `browse-url-chromium'."
-    :filter-args #'browse-url-chromium
-    (let ((url (car args))
-          (window (cdr-safe args)))
-      (flatten-list
-       (list (replace-regexp-in-string "^lbry:\/\/" "https://odysee.com/" url)
-             window)))))
-
+:config
+(defadvice! dan/browse-url-encode-url--parse-lbry-url (args)
+  "Process a `lbry://' link so it can be opened with `browse-url'."
+  :filter-args #'browse-url-encode-url
+  (list
+   (replace-regexp-in-string "^lbry:\/\/" "https://odysee.com/" (car args)))))
 #+end_src
 
 *** Customize Group
@@ -2116,6 +2112,34 @@ Let's switch the bindings for ~+treemacs/toggle~ and ~treemacs-find-file~.
 (map! :leader
       :desc "Find file in project sidebar" :mv "o p" #'treemacs-find-file
       :desc "Project sidebar" :mv "o P" #'+treemacs/toggle)
+#+end_src
+
+*** Tree-sitter
+
+#+begin_quote
+Tree-sitter is a general programming language parser that efficiently builds and updates Abstract Syntax Trees (AST) for your code. Basically, it can read programming languages and understand the structure and meaning of code without having to execute it. Among many amazing things, one of its best and simplest features to take advantage of is richer syntax highlighting, which is what I use it for in Emacs.
+
+    ---https://hungyi.net/posts/use-emacs-tree-sitter-doom-emacs/
+#+end_quote
+
+#+begin_src elisp :tangle packages.el
+(package! tree-sitter)
+(package! tree-sitter-langs)
+#+end_src
+
+Activate =tree-sitter= for programming modes.
+
+#+begin_src elisp
+(add-hook! prog-mode
+  (require 'tree-sitter-langs)
+  (global-tree-sitter-mode))
+#+end_src
+
+Activate syntax highlighting based on the AST.
+
+#+begin_src elisp
+(add-hook! 'tree-sitter-after-on-hook
+           #'tree-sitter-hl-mode)
 #+end_src
 
 *** vc-gutter
