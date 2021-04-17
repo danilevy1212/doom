@@ -19,6 +19,10 @@
 
 ** TODO https://github.com/folke/splashcii THIS BUT IN ELISP.
 
+https://ostechnix.com/how-to-convert-images-into-ascii-format-in-linux/
+
+This is also interesting, probably won't use it though. https://github.com/EnotionZ/jscii
+
 ** TODO [#B] [[file:config.org::*Org]] https://github.com/m-cat/org-recur#time-of-day Utilizar esto para los schedule clases de japones.
 
 MEJORAR mis diary s-exp con ~let~. ~current-time~ y las funciones en =time-date.el=,
@@ -51,48 +55,12 @@ First, we declare the package.
   :defer t)
 #+end_src
 
-
-
 ** TODO WAIT for HSLINER to refactor cli!
 
 *** defcli! to auto install this configuration.
 
 Installation of the config may require to manually uncomment 'literate' module
 and run doom sync, create script for that?
-
-*** HOLD Use [[doom-docs:getting_started.org][doctor.el]] to detect if nvm is installed.
-
-Unfortunately, this feature cannot be implemented because there is no support for
-it in doom emacs. However, I opened a [[https://github.com/hlissner/doom-emacs/issues/4190][issue]] in doom-emacs repo requesting this
-feature.
-
-I would love to make it myself!
-
-Here is the headings I would have to put after the feature comes to fruition:
-
-Before @config.el heading
-# ** doctor.el
-
-# In this file we can check for missing dependencies or incorrect configuration,
-# which will be shown to the user when he runs ~doom doctor~.
-
-# #+begin_src elisp :tangle doctor.el
-# ;;; $DOOMDIR/doctor.el -*- lexical-binding: t; -*-
-# #+end_src
-
-Inside @nvm.el
-
-# **** Doctor
-
-# This package needs =nvm= to work, so let's warn the user if we detect that nvm is
-# not installed.
-
-# #+begin_src elisp :tangle doctor.el
-# (error! "Test")
-
-# (unless (or (file-directory-p "~/.nvm") (getenv "NVM_DIR"))
-#   (warn! "Can't find the nvm directory, nvm package won't work."))
-# #+end_src
 
 ** TODO [#B] Add org-super-agenda and better divide my tasks headings..
 ** TODO https://github.com/tecosaur/screenshot

@@ -489,7 +489,7 @@ arbitrarily extend it.
 A modern, beautiful and extensible project file editor, what is not to love?
 
 #+begin_src elisp :tangle init.el
-       treemacs          ; a project drawer, like neotree but cooler
+       (treemacs +lsp)          ; a project drawer, like neotree but cooler
 #+end_src
 
 ***** unicode
@@ -926,7 +926,7 @@ Better integration of Emacs with the terminal emulator, particularly:
        :lang
        ;;agda              ; types of types of types of types...
        ;;cc                ; C/C++/Obj-C madness
-       (clojure +lsp)      ; java with a lisp
+       ;;(clojure +lsp)      ; java with a lisp
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
@@ -948,7 +948,7 @@ Better integration of Emacs with the terminal emulator, particularly:
        ;;idris             ;
        (json +lsp)              ; At least it ain't XML
        ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
-       (javascript +lsp)   ; all(hope(abandon(ye(who(enter(here)))))
+       (javascript +lsp)          ; all(hope(abandon(ye(who(enter(here)))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        ;;latex             ; writing papers in Emacs has never been so fun
@@ -964,7 +964,7 @@ Better integration of Emacs with the terminal emulator, particularly:
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       (python +lsp +pyright) ; beautiful is better than ugly
+       ;;(python +lsp +pyright) ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
@@ -1404,7 +1404,9 @@ representation. So let's make an extra keybinding for said case:
   (map! :map eshell-mode-map
         (:localleader
          :desc "Insert Symbolic Buffer Name" "B" #'eshell-insert-buffer-name
-         :desc "Insert String Buffer Name" "b" #'dan/eshell-insert-buffer-name)))
+         :desc "Insert String Buffer Name" "b" #'dan/eshell-insert-buffer-name))
+  (setq! fish-completion-fallback-on-bash-p nil))
+
 #+end_src
 
 **** Auto-loads
@@ -1806,7 +1808,7 @@ clients, file templates and snippets.
       user-mail-address "daniellevymoreno@gmail.com")
 #+end_src
 
-***  Prescient
+*** Prescient
 
 Unfortunately, =doom= doesn't integrate the excellent =prescient= with =company-mode= in its modules like it does for =ivy-mode=. First, we get the =company-prescient= package.
 
@@ -1847,6 +1849,13 @@ Don't continue commented lines with o/O.
 
 #+begin_src elisp
    (+evil-want-o/O-to-continue-comments nil)
+#+end_src
+
+Yank by actual lines of text and not by screen lines, less confusing.
+
+#+begin_src elisp
+   :init
+   (setq! evil-respect-visual-line-mode nil)
 #+end_src
 
 Universal argument mapped to M-u instead.
@@ -2019,33 +2028,6 @@ But what if I am in the terminal? No worries:
   (setq! +doom-dashboard-ascii-banner-fn #'dan/my-weebery-is-always-greater))
 #+end_src
 
-*** Spotify
-
-#+begin_quote
-Spotify.el is a collection of extensions that allows you to control the Spotify application from within your favorite text editor.
-#+end_quote
-
-#+begin_quote
-   * Spotify client integration for GNU/Linux (via D-Bus) and OS X (via AppleScript)
-   * Device playback display & selection using the Spotify Connect API (requires premium)
-   * Communicates with the Spotify API via Oauth2
-   * Displays the current track in mode line or title bar
-   * Create playlists (public or private)
-   * Browse the Spotify featured playlists, your own playlists, and their tracks
-   * Search for tracks and playlists that match the given keywords
-   * Easily control basic Spotify player features like, play/pause, previous, next, shuffle, and repeat with the Spotify Remote minor mode
-#+end_quote
-
-#+begin_src elisp :tangle packages.el
-(package! spotify.el
-  :recipe (:host github
-           :repo "danielfm/spotify.el"))
-#+end_src
-
-#+begin_src elisp
-(use-package! spotify.el)
-#+end_src
-
 *** Snow
 
 A nice, comfy, useless package.
@@ -2119,7 +2101,7 @@ Let's switch the bindings for ~+treemacs/toggle~ and ~treemacs-find-file~.
 #+begin_quote
 Tree-sitter is a general programming language parser that efficiently builds and updates Abstract Syntax Trees (AST) for your code. Basically, it can read programming languages and understand the structure and meaning of code without having to execute it. Among many amazing things, one of its best and simplest features to take advantage of is richer syntax highlighting, which is what I use it for in Emacs.
 
-    ---https://hungyi.net/posts/use-emacs-tree-sitter-doom-emacs/
+    --- https://hungyi.net/posts/use-emacs-tree-sitter-doom-emacs/
 #+end_quote
 
 #+begin_src elisp :tangle packages.el
