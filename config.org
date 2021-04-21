@@ -1810,7 +1810,7 @@ clients, file templates and snippets.
 
 *** Prescient
 
-Unfortunately, =doom= doesn't integrate the excellent =prescient= with =company-mode= in its modules like it does for =ivy-mode=. First, we get the =company-prescient= package.
+Unfortunately, =doom= doesn't integrate =prescient= with =company-mode= in its modules like it does for =ivy-mode=. First, we get the =company-prescient= package.
 
 #+begin_src elisp :tangle packages.el
 (package! company-prescient)
