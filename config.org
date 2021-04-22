@@ -1257,10 +1257,10 @@ ie:
       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 #+end_src
 
-Let's _choose_ our *monospaced* font, /Hack/ goodness:
+Let's _choose_ our *monospaced* font, /Fira Code/ goodness:
 
 #+begin_src elisp
-(setq! doom-font (font-spec :family "Hack" :size 16))
+(setq! doom-font (font-spec :family "Fira Code" :size 16))
 #+end_src
 
 And our =variable pitch= +font+, ~DejaVu Sans~:
@@ -1288,8 +1288,8 @@ Not everything fits in the =mode line=, so let's make fonts and icons smaller:
 
 #+begin_src elisp
 (custom-set-faces!
-  '(mode-line :family "Hack" :height 0.95)
-  '(mode-line-inactive :family "Hack" :height 0.95))
+  '(mode-line :family "Fira Code" :height 0.95)
+  '(mode-line-inactive :family "Fira Code" :height 0.95))
 
 (after! all-the-icons
   (setq! all-the-icons-scale-factor 1.1))
