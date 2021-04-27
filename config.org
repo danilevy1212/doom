@@ -1821,6 +1821,13 @@ Unfortunately, =doom= doesn't integrate =prescient= with =company-mode= in its m
   (company-prescient-mode))
 #+end_src
 
+The default builder of ~ivy-prescient~ makes it impossible to use regex with ~counsel-rg~. Let's change it.
+
+#+begin_src elisp
+(after! (counsel ivy-prescient)
+  (setf (alist-get 'counsel-rg ivy-re-builders-alist) #'ivy--regex-plus))
+#+end_src
+
 *** Pretending we are in vim? That's just plain EVIL!
 
 Bad puns aside, vim keybindings are hard to let go once you are used to them.
