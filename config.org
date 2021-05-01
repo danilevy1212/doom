@@ -1405,8 +1405,12 @@ representation. So let's make an extra keybinding for said case:
         (:localleader
          :desc "Insert Symbolic Buffer Name" "B" #'eshell-insert-buffer-name
          :desc "Insert String Buffer Name" "b" #'dan/eshell-insert-buffer-name))
-  (setq! fish-completion-fallback-on-bash-p nil))
+#+end_src
 
+Do not use bash for auto-completion backend.
+
+#+begin_src elisp
+  (setq! fish-completion-fallback-on-bash-p nil))
 #+end_src
 
 **** Auto-loads
