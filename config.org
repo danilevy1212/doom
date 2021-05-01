@@ -1878,6 +1878,27 @@ Remove highlighted items after a search.
         :m "C-l" #'evil-ex-nohighlight))
 #+end_src
 
+*** Proced
+
+A builtin hidden gem, which has substituted =htop= for me.
+
+#+begin_quote
+Mode for displaying system processes and sending signals to them.
+#+end_quote
+
+#+begin_src elisp
+(use-package! proced
+  :defer t
+#+end_src
+
+By default, =proced= doesn't auto update the process list, which is a bummer. Luckily, we can change that.
+
+#+begin_src elisp
+  :custom
+  (proced-auto-update-flag t)
+  (proced-auto-update-interval 1))
+#+end_src
+
 *** Projectile
 
 Let's make projectile's life easier by giving it some paths where I normally
