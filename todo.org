@@ -15,7 +15,6 @@
 - [ ] ex-commands
 
 [[file:~/.config/doom/config.org::*lookup][lookup]]
-** TODO [#B] https://github.com/zevlg/telega.el?
 
 ** TODO https://github.com/folke/splashcii THIS BUT IN ELISP.
 
@@ -55,7 +54,7 @@ First, we declare the package.
   :defer t)
 #+end_src
 
-** TODO WAIT for HSLINER to refactor cli!
+** WAIT for HSLINER to refactor cli!
 
 *** defcli! to auto install this configuration.
 

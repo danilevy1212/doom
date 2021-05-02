@@ -572,6 +572,8 @@ benefits of both Emacs and vim.
        (evil +everywhere); come to the dark side, we have cookies
 #+end_src
 
+Evil is quite complex, and customizing it beyond the default settings can be tricky, as it's finer details are not well documented. Luckily, the community [[https://github.com/noctuid/evil-guide][has covered some of these points]], which make the source code of evil much more bearable.
+
 =doom= comes with emulation for some popular vim plugins:
 
 
