@@ -944,8 +944,8 @@ Better integration of Emacs with the terminal emulator, particularly:
        ;;fsharp            ; ML stands for Microsoft's Language
        ;;fstar             ; (dependent) types and (monadic) effects and Z3
        ;;gdscript          ; the language you waited for
-       ;;(go +lsp)         ; the hipster dialect
-       (haskell +lsp)      ; a language that's lazier than I am
+       (go +lsp)           ; the hipster dialect
+       ;;(haskell +lsp)      ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ;
        (json +lsp)              ; At least it ain't XML
@@ -983,7 +983,7 @@ reasonable and with the =+lsp= it integrates nicely with ~lsp-mode~, what's not 
 love?
 
 #+begin_src elisp :tangle init.el
-       (rust +lsp)         ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       ;;(rust +lsp)         ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
 #+end_src
 
 ****** Dependencies:
@@ -2221,6 +2221,30 @@ Doom Emacs default configuration is too slow, lets speed it up.
   :custom
   (which-key-idle-delay 0.1)
   (which-key-idle-secondary-delay 0.2))
+#+end_src
+
+*** Work Stuff
+
+These are some quality of life hacks for my job. The first wraps a yanked text in a URL, so I can easily paste it into a browser or our internal chat. Bind it to =gb= (g.o b.ackoffice).
+
+#+begin_src elisp
+(after! evil
+  (evil-define-operator dan/awesome-yank (beg end type register yank-handler)
+    "Create an awesome link out of a yanked text object."
+    (interactive "<R><x><y>")
+    (evil-yank beg end type register yank-handler)
+    (let* ((yanked (if register
+                       (evil-get-register register)
+                     (current-kill 0)))
+           (text (format "https://v2.awesome.rebellionpay.com/#/lusers/%s/show" yanked)))
+      (when register
+        (evil-set-register register text))
+      (when evil-was-yanked-without-register
+        (evil-set-register ?0 text))      ; "0 register contains last yanked text
+      (unless (eq register ?_)
+        (kill-new text t)))
+    (message "Yanked awesome URL: %s" text))
+  (map! :nm "gb" #'dan/awesome-yank))
 #+end_src
 
 *** Word wrap
