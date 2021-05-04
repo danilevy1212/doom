@@ -2225,7 +2225,7 @@ Doom Emacs default configuration is too slow, lets speed it up.
 
 *** Work Stuff
 
-These are some quality of life hacks for my job. The first wraps a yanked text in a URL, so I can easily paste it into a browser or our internal chat. Bind it to =gb= (g.o b.ackoffice).
+These are some quality of life hacks for my job. The first wraps a yanked text in a URL, so I can easily paste it into a browser or our internal chat. Bind it to =gb= (_g_.o _b_.ackoffice).
 
 #+begin_src elisp
 (after! evil
@@ -2240,10 +2240,10 @@ These are some quality of life hacks for my job. The first wraps a yanked text i
       (when register
         (evil-set-register register text))
       (when evil-was-yanked-without-register
-        (evil-set-register ?0 text))      ; "0 register contains last yanked text
+        (evil-set-register ?0 text))    ; "0 register contains last yanked text
       (unless (eq register ?_)
-        (kill-new text t)))
-    (message "Yanked awesome URL: %s" text))
+        (kill-new text t))
+      (message "Yanked awesome URL: %s" text)))
   (map! :nm "gb" #'dan/awesome-yank))
 #+end_src
 
