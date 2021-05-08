@@ -663,6 +663,35 @@ Some keybindings include:
 | =z j=     | Jump to next fold         |
 | =z k=     | Jump to previous fold     |
 
+***** format
+
+#+begin_quote
+This module integrates code formatters into Emacs.
+#+end_quote
+
+For setting my own formatter, there are two options:
+
+- Use the ~set-formatter!~ macro.
+- Set the buffer-local variable ~+format-with~ to the name of the formatter to
+use. e.g.
+
+#+BEGIN_SRC elisp :tangle no
+(setq-hook! 'python-mode-hook +format-with 'html-tidy)
+
+;; Or set it to `:none' to disable formatting
+(setq-hook! 'python-mode-hook +format-with :none)
+#+END_SRC
+
+#+begin_quote
+Formatters are referred to by the name they were defined with. They can be
+looked up in the ~format-all-mode-table~ hash table or in format-all's [[https://github.com/lassik/emacs-format-all-the-code/blob/master/format-all.el#L512][source
+code]].
+#+end_quote
+
+#+begin_src elisp :tangle init.el
+       format          ; automated prettiness
+#+end_src
+
 ***** lispy
 
 Lisp aware vim, brought to you by [[https://github.com/noctuid/lispyville][lispyville]]. It brings changes to evil's
@@ -680,11 +709,9 @@ work with =lispyville='s commands. Bummer.
 - Clojure
 
 #+begin_src elisp :tangle init.el
-       ;;format          ; automated prettiness
        ;;god             ; run Emacs commands without modifier keys
        lispy             ; vim for lisp, for people who don't like vim
 #+end_src
-
 
 ***** Multiple cursors
 
@@ -716,7 +743,6 @@ Basically, it's a another editing helper package for lisp, in particular:
        ;;objed               ; text object editing for the innocent
        (parinfer +rust)      ; turn lisp into python, sort of
 #+end_src
-
 
 ***** snippets
 
@@ -859,17 +885,40 @@ My english is not the best, neither is my spanish or my 日本語 for that matte
 
 **** TODO :tools
 
+***** TODO debugger
+
+Fixing that code, on step at a time.
+
 #+begin_src elisp :tangle init.el
        :tools
        ;;ansible
-       ;;debugger          ; FIXME stepping through code, to help you add bugs
-       ;;direnv
+       (debugger +lsp)          ; FIXME stepping through code, to help you add bugs
+#+end_src
+
+***** TODO direnv
+
+#+begin_src elisp :tangle init.el
+       direnv
+#+end_src
+
+***** TODO docker
+
+#+begin_src elisp :tangle init.el
        (docker +lsp)
+#+end_src
+
+***** TODO editorconfig
+
+#+begin_src elisp :tangle init.el
        editorconfig        ; let someone else argue about tabs vs spaces
        ;;ein               ; tame Jupyter notebooks with emacs
+#+end_src
+
+***** TODO eval
+
+#+begin_src elisp :tangle init.el
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
-
 #+end_src
 
 ***** TODO lookup
@@ -889,7 +938,17 @@ or synonyms.
 
 #+begin_src elisp :tangle init.el
        (lookup +docsets +dictionary +offline)              ; navigate your code and its documentation
+#+end_src
+
+***** TODO lsp
+
+#+begin_src elisp :tangle init.el
        (lsp +peek)
+#+end_src
+
+***** TODO magit
+
+#+begin_src elisp :tangle init.el
        magit             ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
@@ -957,7 +1016,7 @@ Better integration of Emacs with the terminal emulator, particularly:
        ;;lean
        ;;factor
        ;;ledger            ; an accounting system in Emacs
-       ;;lua               ; one-based indices? one-based indices
+       (lua +lsp)               ; one-based indices? one-based indices
        markdown          ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
        nix               ; I hereby declare "nix geht mehr!"
@@ -983,7 +1042,7 @@ reasonable and with the =+lsp= it integrates nicely with ~lsp-mode~, what's not 
 love?
 
 #+begin_src elisp :tangle init.el
-       ;;(rust +lsp)         ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       (rust +lsp)         ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
 #+end_src
 
 ****** Dependencies:
@@ -1290,8 +1349,8 @@ Not everything fits in the =mode line=, so let's make fonts and icons smaller:
 
 #+begin_src elisp
 (custom-set-faces!
-  '(mode-line :family "Fira Code" :height 0.95)
-  '(mode-line-inactive :family "Fira Code" :height 0.95))
+  '(mode-line :family "Victor Mono" :height 0.95)
+  '(mode-line-inactive :family "Victor Mono" :height 0.95))
 
 (after! all-the-icons
   (setq! all-the-icons-scale-factor 1.1))
@@ -1453,7 +1512,6 @@ Let's make the =hydra= module's functions easily accessible:
 *** Language Tool
 
 Do not run the jar file! Run the binary.
-
 #+begin_src elisp
 (setq! langtool-bin "languagetool-commandline")
 #+end_src
@@ -1471,6 +1529,33 @@ numbers are disabled. For relative line numbers, set this to ~relative~.
 
 #+begin_src elisp
 (setq! display-line-numbers-type 'relative)
+#+end_src
+
+*** Lua
+
+Search for the ~lsp-server~ in path:
+
+#+begin_src elisp
+(after! lsp-lua
+   (setq! lsp-clients-lua-language-server-bin (executable-find "lua-language-server")))
+#+end_src
+
+Set the formatter to =lua-format=.
+
+#+begin_src elisp
+(after! lua-mode
+  (set-formatter! 'lua-format "lua-format" :modes 'lua-mode)
+#+end_src
+
+And let me change =lsp-lua-diagnostics-globals= on each project as a safe local variable.
+
+#+begin_src elisp
+   (put 'lsp-lua-diagnostics-globals 'safe-local-variable (lambda (elt)
+                                                            (and (vectorp elt)
+                                                                 (--all?
+                                                                  (and (stringp it)
+                                                                       (not (string-empty-p it)))
+                                                                  (seq-concatenate 'list elt))))))
 #+end_src
 
 *** Modeline
@@ -1914,15 +1999,6 @@ store projects.
 (setq! projectile-project-search-path '("~/Projects/" "~/.config/"))
 #+end_src
 
-*** pdf-tools
-
-Prefer the NixOS provide binary to the one compiled by the package.
-
-#+begin_src elisp :tangle packages.el
-(package! pdf-tools
-  :built-in 'prefer)
-#+end_src
-
 *** Rainbow Delimiters
 
 Matching pairs draw with the same face color, making them easily identifiable.
@@ -2022,6 +2098,21 @@ When using the rustic popup, be in Emacs state.
     (add-hook! 'rustic-popup-mode-hook #'evil-emacs-state)))
 #+end_src
 
+*** Snow
+
+A nice, comfy, useless package.
+
+#+begin_src elisp :tangle packages.el
+(package! snow)
+#+end_src
+
+We define an auto-load function as an entry point to the winter season.
+
+#+begin_src elisp
+(use-package! snow
+  :commands snow)
+#+end_src
+
 *** Splash Screen
 
 Default doom dashboard is pretty and welcoming, let's just give it a small personal touch.
@@ -2060,21 +2151,6 @@ But what if I am in the terminal? No worries:
 
 (when (not (display-graphic-p))
   (setq! +doom-dashboard-ascii-banner-fn #'dan/my-weebery-is-always-greater))
-#+end_src
-
-*** Snow
-
-A nice, comfy, useless package.
-
-#+begin_src elisp :tangle packages.el
-(package! snow)
-#+end_src
-
-We define an auto-load function as an entry point to the winter season.
-
-#+begin_src elisp
-(use-package! snow
-  :commands snow)
 #+end_src
 
 *** Treemacs
@@ -2223,6 +2299,16 @@ Doom Emacs default configuration is too slow, lets speed it up.
   (which-key-idle-secondary-delay 0.2))
 #+end_src
 
+*** Word wrap
+
+I work with lots of files that have long lines, which can be hard to read
+sometimes. ~+word-wrap-mode~ helps to make these files more readable without
+changing the buffer contents.
+
+#+begin_src elisp
+(+global-word-wrap-mode +1)
+#+end_src
+
 *** Work Stuff
 
 These are some quality of life hacks for my job. The first wraps a yanked text in a URL, so I can easily paste it into a browser or our internal chat. Bind it to =gb= (_g_.o _b_.ackoffice).
@@ -2245,16 +2331,6 @@ These are some quality of life hacks for my job. The first wraps a yanked text i
         (kill-new text t))
       (message "Yanked awesome URL: %s" text)))
   (map! :nm "gb" #'dan/awesome-yank))
-#+end_src
-
-*** Word wrap
-
-I work with lots of files that have long lines, which can be hard to read
-sometimes. ~+word-wrap-mode~ helps to make these files more readable without
-changing the buffer contents.
-
-#+begin_src elisp
-(+global-word-wrap-mode +1)
 #+end_src
 
 ** Private modules.

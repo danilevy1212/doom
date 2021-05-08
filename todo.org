@@ -63,3 +63,5 @@ and run doom sync, create script for that?
 
 ** TODO [#B] Add org-super-agenda and better divide my tasks headings..
 ** TODO https://github.com/tecosaur/screenshot
+** TODO proced is lit yo! customize. Create a popup rule, similar to vterms/eshell.
+** TODO https://code.visualstudio.com/docs/nodejs/nodejs-debugging
