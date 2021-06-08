@@ -1079,11 +1079,28 @@ Requires [[https://github.com/rust-lang/rls][rls]] or [[https://rust-analyzer.gi
 
 **** TODO :app
 
+***** calendar
+
+#+begin_quote
+This module adds a calendar view for Emacs, with org and google calendar sync
+support.
+#+end_quote
+
 #+begin_src elisp :tangle init.el
        :app
-       ;;calendar
+       calendar
+#+end_src
+
+***** TODO everywhere
+
+#+begin_src elisp :tangle init.el
        ;;emms
        everywhere        ; *leave* Emacs!? You must be joking
+#+end_src
+
+***** TODO rss
+
+#+begin_src elisp :tangle init.el
        ;;irc               ; how neckbeards socialize
        (rss +org)        ; Emacs as an RSS reader
        ;;twitter           ; twitter client https://twitter.com/vnought
