@@ -885,13 +885,15 @@ My english is not the best, neither is my spanish or my 日本語 for that matte
 
 **** TODO :tools
 
-***** TODO debugger
+***** TODO ansible
+#+begin_src elisp :tangle init.el
+       :tools
+       ansible
+#+end_src
 
 Fixing that code, on step at a time.
 
 #+begin_src elisp :tangle init.el
-       :tools
-       ;;ansible
        (debugger +lsp)          ; FIXME stepping through code, to help you add bugs
 #+end_src
 
@@ -1025,7 +1027,7 @@ Better integration of Emacs with the terminal emulator, particularly:
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       ;;(python +lsp +pyright) ; beautiful is better than ugly
+       (python +lsp +pyright) ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
@@ -1055,16 +1057,16 @@ Requires [[https://github.com/rust-lang/rls][rls]] or [[https://rust-analyzer.gi
        ;;scala             ; java, but good
        ;;scheme            ; a fully conniving family of lisps
        sh                  ; she sells {ba,z,fi}sh shells on the C xor
-#+end_src
-
-***** TODO web
-
-#+begin_src elisp :tangle init.el
        ;;sml
        ;;solidity          ; do you need a blockchain? No.
        ;;swift             ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
-       (web +lsp)          ; the tubes
+       ;;(web +lsp)          ; the tubes
+#+end_src
+
+***** TODO yaml
+
+#+begin_src elisp :tangle init.el
        (yaml +lsp)         ; JSON, but readable
 #+end_src
 
@@ -1554,25 +1556,35 @@ Search for the ~lsp-server~ in path:
 
 #+begin_src elisp
 (after! lsp-lua
-   (setq! lsp-clients-lua-language-server-bin (executable-find "lua-language-server")))
-#+end_src
-
-Set the formatter to =lua-format=.
-
-#+begin_src elisp
-(after! lua-mode
-  (set-formatter! 'lua-format "lua-format" :modes 'lua-mode)
+   (setq! lsp-clients-lua-language-server-command "lua-language-server"))
 #+end_src
 
 And let me change =lsp-lua-diagnostics-globals= on each project as a safe local variable.
 
 #+begin_src elisp
-   (put 'lsp-lua-diagnostics-globals 'safe-local-variable (lambda (elt)
-                                                            (and (vectorp elt)
-                                                                 (--all?
-                                                                  (and (stringp it)
-                                                                       (not (string-empty-p it)))
-                                                                  (seq-concatenate 'list elt))))))
+(after! lua-mode
+  (put 'lsp-lua-diagnostics-globals 'safe-local-variable (lambda (elt)
+                                                           (and (vectorp elt)
+                                                                (--all?
+                                                                 (and (stringp it)
+                                                                      (not (string-empty-p it)))
+                                                                 (seq-concatenate 'list elt)))))
+  ;; TODO List of alist, head is dir, last is t or dir.
+  (put 'lsp-lua-workspace-library 'safe-local-variable (lambda (elt) t)))
+#+end_src
+
+**** awesome-client
+
+A hidden feature of the =eval= module is that any function whose name matches
+with the regex ~^\\(?:\\+\\)?\\([^/]+\\)/open-\\(?:\\(.+\\)-\\)?repl$~, will appear as an option in the ~+eval-open-repl~.
+
+With this, we can create a repl for the =awesome-client=.
+
+#+begin_src elisp :tangle autoload/awesomewm.el
+;;;###autoload
+(defun +lua/open-awesome-client-repl ()
+   (interactive)
+   (pop-to-buffer (make-comint "repl:awesome-client" "awesome-client" nil)))
 #+end_src
 
 *** Modeline
@@ -2276,31 +2288,31 @@ Lastly, let's activate =git-gutter= for remote files as well.
 (setq! +vc-gutter-in-remote-files t)
 #+end_src
 
-*** Vue
+*** Vue DEPRECATED
 
 The language server =VLS= does not analyze the templates of ~.vue~ files by default,
 let's change that!
 
-#+begin_src elisp
+#+begin_src elisp :tangle no
 (after! lsp-vetur
   (setq! lsp-vetur-experimental-template-interpolation-service t))
 #+end_src
 
-*** Web Mode
+*** Web Mode DEPRECATED
 
 ~web-mode~, as customized in the ~web~ module, has more features that I could
 wish for. Indentation is the only sore point I wish to change.
 
 First, text at the beginning of line should not be indented by default.
 
-#+begin_src elisp
+#+begin_src elisp :tangle no
 (after! web-mode
   (setq! web-mode-indent-style 1
 #+end_src
 
 The default indentation is of 2 spaces.
 
-#+begin_src elisp
+#+begin_src elisp  :tangle no
     web-mode-code-indent-offset 2
     web-mode-css-indent-offset 2
     web-mode-markup-indent-offset 2
@@ -2308,21 +2320,19 @@ The default indentation is of 2 spaces.
 
 And no padding!
 
-#+begin_src elisp
+#+begin_src elisp  :tangle no
     web-mode-part-padding nil
     web-mode-script-padding nil))
 #+end_src
 
 *** Which Key
 
-Doom Emacs default configuration is too slow, lets speed it up.
+Doom Emacs default configuration is too slow, let's speed it up.
 
 #+begin_src elisp
-(use-package! which-key
-  :defer t
-  :custom
-  (which-key-idle-delay 0.1)
-  (which-key-idle-secondary-delay 0.2))
+(after! which-key
+  (setq! which-key-idle-delay 0.1
+         which-key-idle-secondary-delay 0.2))
 #+end_src
 
 *** Word wrap
