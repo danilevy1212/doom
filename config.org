@@ -1027,7 +1027,7 @@ Better integration of Emacs with the terminal emulator, particularly:
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       (python +lsp +pyright) ; beautiful is better than ugly
+       (python +lsp +pyright +poetry) ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
@@ -1796,10 +1796,10 @@ Set ~org-attach-id-dir~ back to default value.
     (org-attach-id-dir  "data")
 #+end_src
 
-I only use one agenda file, that has all my routine stuff in it.
+Any file in the ~agenda~ directory is part of the agenda view.
 
 #+begin_src elisp
-    (org-agenda-files  `(,(expand-file-name "agenda.org" org-directory)))
+    (org-agenda-files (list (expand-file-name "agenda/" org-directory)))
 #+end_src
 
 Make emphasis markers auto-hide.
@@ -1812,6 +1812,12 @@ Modules for keeping track of habits and completing checklists.
 
 #+begin_src elisp
     (org-module  '(org-habit org-checklist))
+#+end_src
+
+Don't show TODOs which are scheduled in the future.
+
+#+begin_src elisp
+    (org-agenda-todo-ignore-scheduled 'future)
 #+end_src
 
 Add custom functions to some org hooks. First, a function that runs when
@@ -1898,9 +1904,9 @@ This function is meant to be run as as part of `org-checkbox-statistics-hook`"
     (unless (not todo-state)
       (save-excursion
         (org-back-to-heading t)
-        (setq! beg (point))
+        (setq beg (point))
         (end-of-line)
-        (setq! end (point))
+        (setq end (point))
         (goto-char beg)
         (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
                                end t)
@@ -2271,6 +2277,24 @@ Activate syntax highlighting based on the AST.
 (add-hook! 'tree-sitter-after-on-hook
            #'tree-sitter-hl-mode)
 #+end_src
+
+*** xonsh
+
+#+begin_quote
+Xonsh is a Python-powered, cross-platform, Unix-gazing shell language and command prompt. The language is a superset of Python 3.6+ with additional shell primitives that you are used to from Bash and IPython. It works on all major systems including Linux, OSX, and Windows. Xonsh is meant for the daily use of experts and novices.
+#+end_quote
+
+#+begin_src elisp :tangle packages.el
+(package! xonsh-mode)
+#+end_src
+
+Only activate it in ~.xsh~ files.
+
+#+begin_src elisp
+(use-package! xonsh-mode
+   :mode "\\.xsh\\'")
+#+end_src
+
 
 *** vc-gutter
 
