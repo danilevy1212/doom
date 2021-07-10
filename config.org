@@ -2009,8 +2009,6 @@ With the package installed, we are ready to define ~org-agenda-custom-commands~ 
                             :todo "NEXT")
                            (:name "Important"
                             :priority "A")
-                           (:name "Habit"
-                            :habit t)
                            (:name "Incoming Events"
                             :todo "EVENT"
                             :date t)
