@@ -1023,7 +1023,15 @@ Better integration of Emacs with the terminal emulator, particularly:
        ;;nim               ; python + lisp at the speed of c
        nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
-       org               ; organize your plain life in plain text
+#+end_src
+
+***** org
+
+#+begin_src elisp :tangle init.el
+       (org +dragndrop +pretty)               ; organize your plain life in plain text
+#+end_src
+
+#+begin_src elisp :tangle init.el
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
@@ -1820,6 +1828,12 @@ Don't show TODOs which are scheduled in the future.
     (org-agenda-todo-ignore-scheduled 'future)
 #+end_src
 
+Default priority is lowest priority
+
+#+begin_src elisp
+    (org-priority-default org-priority-lowest)
+#+end_src
+
 Add custom functions to some org hooks. First, a function that runs when
 subheading change KEYWORD state.
 
@@ -1839,6 +1853,97 @@ otherwise
 
 #+begin_src elisp
     (add-hook! 'org-checkbox-statistics-hook  #'dan/org-checkbox-statistics-change-to-done-when-all-ticked))
+#+end_src
+
+Skip sub-tasks whose parents are scheduled in the future. The function ~org-agenda-skip-function~ can be used in individual commands instead.
+
+#+begin_src elisp
+(after! org
+  (setq! org-agenda-skip-function-global
+         (defun dan/org-agenda-skip-if-inherited-timestamp ()
+           "Skip item with an inherited timestamp according to the org-agenda settings..
+Uses built-in `org-agenda-check-for-timestamp-as-reason-to-ignore-todo-item'."
+           (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+                 (ignore-item-p (org-agenda-check-for-timestamp-as-reason-to-ignore-todo-item)))
+             (while (and (org-up-heading-safe)
+                         (null ignore-item-p))
+               (setq ignore-item-p (org-agenda-check-for-timestamp-as-reason-to-ignore-todo-item)))
+             (when ignore-item-p
+               subtree-end)))))
+#+end_src
+
+Use the TODO keywords that suit my workflow.
+
+- TODO :: Self-explanatory
+- NEXT :: Within a PROJ, what needs to be done next.
+- PROJ :: Indicated a PROJECT, personal or work related.
+- WAIT :: Tasks that are in WAIT of another.
+- EVENT :: Indicates an event.
+- IDEA :: Indicates a potential idea, for a task or project, in the future. A backlog of sorts.
+- DONE :: Self-explanatory
+- CANCELLED :: Self-explanatory. It's better if they have a note explaining why.
+
+Also, add them faces so they stick out more:
+
+#+begin_src elisp
+(after! org
+  (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "PROJ(p)" "WAIT(w)" "IDEA(i)" "EVENT(e)" "|"
+                                      "DONE(d)" "CANCELLED(c)"))
+        org-todo-keyword-faces '(("NEXT"      . +org-todo-active)
+                                 ("WAIT"      . +org-todo-onhold)
+                                 ("EVENT"     . +org-todo-onhold)
+                                 ("PROJ"      . +org-todo-project)
+                                 ("CANCELLED" . +org-todo-cancel))))
+#+end_src
+
+~org-capture-templates~ are task templates that help automate the process of automating tasks. The defaults in =doom= are a bit over-kill for me and make assumptions that are not fit for my workflow flow.
+
+The key files of the capture template are:
+
+- ~+org-capture-projects-file~ :: Project related todos.
+- ~+org-capture-todo-file~ :: Unplanned or emergent todos, tend to be resolved quickly.
+- ~+org-capture-journal-file~ :: Scheduled todos or events.
+- ~+org-capture-notes-file~ :: Ideas file.
+
+#+begin_src elisp
+(after! org
+  (setq +org-capture-projects-file (expand-file-name "projects.org" (car org-agenda-files))
+        +org-capture-todo-file (expand-file-name "diary.org" (car org-agenda-files))
+        +org-capture-journal-file (expand-file-name "schedule.org" (car org-agenda-files))
+        +org-capture-notes-file (expand-file-name "ideas.org" (car org-agenda-files))))
+#+end_src
+
+And the templates that use those files:
+
+#+begin_src elisp
+(after! org
+  (setq org-capture-templates '(("t" "Quick todo" entry
+                                 (file+headline +org-capture-todo-file "Quick errands")
+                                 "* TODO %?\n%i\n" :prepend t)
+                                ("e" "Event" entry
+                                 (file+olp +org-capture-journal-file "Events")
+                                 "* EVENT %?\n%i\n" :prepend nil)
+                                ("i" "Random idea" entry
+                                 (file+olp +org-capture-notes-file "Inbox")
+                                 "* IDEA %?\n%i\n" :prepend t)
+                                ("p" "Centralized templats for projects")
+                                ("pt" "Project todo" entry
+                                 #'+org-capture-central-project-todo-file
+                                 "* TODO %?\n %i\n %a" :heading "Tasks" :prepend t)
+                                ("pe""Project event" entry
+                                 #'+org-capture-central-project-todo-file
+                                 "* EVENT %?\n %i\n" :heading "Events" :prepend nil)
+                                ("pi" "Project idea" entry
+                                 #'+org-capture-central-project-todo-file
+                                 "* IDEA %?\n %i\n %a" :heading "Ideas" :prepend t))))
+#+end_src
+
+Now we specify the ~org-refile-targets~. Any open org file and the files that are part of the agenda.
+
+#+begin_src elisp
+(after! org
+  (setq org-refile-targets '((nil :maxlevel              . 9)
+                             (org-agenda-files :maxlevel . 9))))
 #+end_src
 
 **** org-edna
@@ -1862,6 +1967,70 @@ Make =org-edna= to trigger in any state change except done.
 #+begin_src elisp
   :custom
   (org-edna-from-todo-states 'not-done))
+#+end_src
+
+**** org-super-agenda
+
+#+begin_quote
+This package lets you “supercharge” your Org daily/weekly agenda. The idea is to group items into sections, rather than having them all in one big list.
+#+end_quote
+
+#+begin_src elisp :tangle packages.el
+(package! org-super-agenda)
+#+end_src
+
+#+begin_quote
+So this package filters the results from org-agenda-finalize-entries, which runs just before items are inserted into agenda views. It runs them through a set of filters that separate them into groups. Then the groups are inserted into the agenda buffer, and any remaining items are inserted at the end. Empty groups are not displayed.
+
+The end result is your standard daily/weekly agenda, but arranged into groups defined by you. You might put items with certain tags in one group, habits in another group, items with certain todo keywords in another, and items with certain priorities in another. The possibilities are only limited by the grouping functions.
+u
+The primary use of this package is for the daily/weekly agenda, made by the org-agenda-list command, but it also works for other agenda views, like org-tags-view, org-todo-list, org-search-view, etc.
+#+end_quote
+
+#+begin_src elisp
+(use-package! org-super-agenda
+  :after org
+  :config
+  (org-super-agenda-mode)
+#+end_src
+
+With the package installed, we are ready to define ~org-agenda-custom-commands~ as well as the ~org-super-agenda-groups~. For extra visibility, we tweak the agenda sorting strategy to make priority hight tasks appear early.
+
+#+begin_src elisp
+:custom
+(org-agenda-sorting-strategy '((agenda priority-down habit-down time-up  category-keep)
+                               (todo priority-down category-keep)
+                               (tags priority-down category-keep)
+                               (search category-keep)))
+(org-super-agenda-groups '((:name "Today"
+                            :date today
+                            :discard (:todo ("IDEA")))
+                           (:name "Next Items"
+                            :todo "NEXT")
+                           (:name "Important"
+                            :priority "A")
+                           (:name "Habit"
+                            :habit t)
+                           (:name "Incoming Events"
+                            :todo "EVENT"
+                            :date t)
+                           (:name "Active projects"
+                            :todo "PROJ")
+                           (:name "Misc"
+                            :priority<= "B"
+                            :scheduled future)
+                           (:name "In hold"
+                            :todo "WAIT")
+                           (:name "Ideas"
+                            :todo "IDEA"))))
+#+end_src
+
+There are a few clashes between ~evil-org-agenda-mode-map~ and ~org-super-agenda-header-map~. To remove them, we simply override the latter keymap, after loading both ~evil-org-agenda~ and ~org-super-agenda~.
+
+#+begin_src elisp
+(after! (evil-org-agenda org-super-agenda)
+  (setq org-super-agenda-header-map
+        (copy-keymap evil-org-agenda-mode-map)))
 #+end_src
 
 **** Auto-loads
