@@ -2026,7 +2026,8 @@ With the package installed, we are ready to define ~org-agenda-custom-commands~ 
                             :and (:priority<= "B"
                                   :scheduled future))
                            (:name "Candidates"
-                            :priority "B")
+                            :and (:priority "B"
+                                  :not  (:todo ("EVENT" "WAIT"))))
                            (:name "Active projects"
                             :todo "PROJ")
                            (:name "Ideas"
