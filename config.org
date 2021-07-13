@@ -1014,7 +1014,7 @@ Better integration of Emacs with the terminal emulator, particularly:
        (javascript +lsp)          ; all(hope(abandon(ye(who(enter(here)))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
-       ;;latex             ; writing papers in Emacs has never been so fun
+       (latex +lsp)               ; writing papers in Emacs has never been so fun
        ;;lean
        ;;factor
        ;;ledger            ; an accounting system in Emacs
@@ -2008,7 +2008,7 @@ With the package installed, we are ready to define ~org-agenda-custom-commands~ 
 
 #+begin_src elisp
 :custom
-(org-agenda-sorting-strategy '((agenda priority-down habit-down time-up  category-keep)
+(org-agenda-sorting-strategy '((agenda priority-down habit-down time-up category-keep)
                                (todo priority-down category-keep)
                                (tags priority-down category-keep)
                                (search category-keep)))
@@ -2077,9 +2077,9 @@ Custom function that switches heading from 'TODO' to 'DONE' when all checkboxes 
 #+begin_src elisp :tangle autoload/org.el :mkdirp yes
 ;;;###autoload
 (defun dan/org-checkbox-statistics-change-to-done-when-all-ticked ()
-  "Change KEYWORD state to `DONE` if all checkboxes of the heading are ticked.
+  "Change KEYWORD state to `DONE' if all checkboxes of the heading are ticked.
 
-This function is meant to be run as as part of `org-checkbox-statistics-hook`"
+This function is meant to be run as as part of `org-checkbox-statistics-hook'"
   (let ((todo-state (org-get-todo-state)) beg end)
     (unless (not todo-state)
       (save-excursion
@@ -2091,17 +2091,13 @@ This function is meant to be run as as part of `org-checkbox-statistics-hook`"
         (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
                                end t)
             (if (match-end 1)
-                (if (equal (match-string 1) "100%")
+                (when (equal (match-string 1) "100%")
                     (unless (string-equal todo-state "DONE")
-                      (org-todo 'done))
-                  (unless (string-equal todo-state "TODO")
-                    (org-todo 'todo)))
-              (if (and (> (match-end 2) (match-beginning 2))
-                       (equal (match-string 2) (match-string 3)))
+                      (org-todo 'done)))
+              (when (and (> (match-end 2) (match-beginning 2))
+                         (equal (match-string 2) (match-string 3)))
                   (unless (string-equal todo-state "DONE")
-                    (org-todo 'done))
-                (unless (string-equal todo-state "TODO")
-                  (org-todo 'todo)))))))))
+                    (org-todo 'done)))))))))
 #+end_src
 
 *** PDF Tools
