@@ -1837,6 +1837,12 @@ Don't show TODOs which are scheduled in the future.
     (org-agenda-todo-ignore-scheduled 'future)
 #+end_src
 
+A project with no NEXT subheads is stuck.
+
+#+begin_src elisp
+    (org-stuck-projects '("TODO=\"PROJ\"" ("NEXT") nil ""))
+#+end_src
+
 Default priority is lowest priority
 
 #+begin_src elisp
