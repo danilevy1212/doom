@@ -1961,6 +1961,22 @@ Now we specify the ~org-refile-targets~. Any open org file and the files that ar
                              (org-agenda-files :maxlevel . 9))))
 #+end_src
 
+To prevent unnecessary scrolling when calling the agenda buffer, we automate the cursor position on agenda views:
+
+#+begin_src elisp
+(after! org-agenda
+ (defun dan/org-agenda-set-focus-h ()
+  "Hook to appended to `org-agenda-finalize-hook', to prevent scrolling to the important parts of the buffer.'"
+  (case org-agenda-type
+     ('agenda (org-agenda-goto-today))
+     ('todo   (progn
+                 (evil-goto-first-line 3) ;; Skip heading.
+                 (evil-scroll-line-to-center
+                    (count-lines (point-min) (point))) ;; recenter.
+                 (org-agenda-next-item 1))))) ;; Jump to first item.
+ (add-hook! 'org-agenda-finalize-hook :append #'dan/org-agenda-set-focus-h))
+#+end_src
+
 **** org-edna
 
 =org-edna= offers more control over how and when tasks change state and manages
