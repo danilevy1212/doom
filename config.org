@@ -1965,15 +1965,13 @@ To prevent unnecessary scrolling when calling the agenda buffer, we automate the
 
 #+begin_src elisp
 (after! org-agenda
- (defun dan/org-agenda-set-focus-h ()
-  "Hook to appended to `org-agenda-finalize-hook', to prevent scrolling to the important parts of the buffer.'"
-  (case org-agenda-type
-     ('agenda (org-agenda-goto-today))
-     ('todo   (progn
-                 (evil-goto-first-line 3) ;; Skip heading.
-                 (evil-scroll-line-to-center
-                    (count-lines (point-min) (point))) ;; recenter.
-                 (org-agenda-next-item 1))))) ;; Jump to first item.
+  (defun dan/org-agenda-set-focus-h ()
+     "Hook to appended to `org-agenda-finalize-hook', to prevent scrolling to the important parts of the buffer.'"
+     (progn
+         (evil-goto-first-line 3) ;; Skip heading.
+         (evil-scroll-line-to-center
+          (count-lines (point-min) (point))) ;; recenter.
+         (org-agenda-next-item 1))) ;; Jump to first item.
  (add-hook! 'org-agenda-finalize-hook :append #'dan/org-agenda-set-focus-h))
 #+end_src
 
@@ -1986,7 +1984,7 @@ dependencies between tasks through extra heading properties.
 (package! org-edna)
 #+end_src
 
-Load and activate =org-edna= together with org-mode.
+Load and activate ~org-edna~ together with ~org~.
 
 #+begin_src elisp
 (use-package! org-edna
