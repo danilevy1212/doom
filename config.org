@@ -2239,6 +2239,17 @@ store projects.
 (setq! projectile-project-search-path '("~/Projects/" "~/.config/"))
 #+end_src
 
+Projectile can slow down remote connections when trying to find a remote name.
+
+#+begin_src elisp
+(defadvice! dan/disable-projectile-project-root-on-remote (org-fun &rest args)
+  "Disable search of the projectile root name on remote hosts."
+  :around projectile-project-root
+  (if (file-remote-p default-directory)
+      (setq-local projectile-mode-line "Projectile")
+    (apply 'org-fun args)))
+#+end_src
+
 *** Rainbow Delimiters
 
 Matching pairs draw with the same face color, making them easily identifiable.
@@ -2391,6 +2402,21 @@ But what if I am in the terminal? No worries:
 
 (when (not (display-graphic-p))
   (setq! +doom-dashboard-ascii-banner-fn #'dan/my-weebery-is-always-greater))
+#+end_src
+
+*** Tramp
+
+With the default settings, tramp can be a bit slow. Here's some hacks to fix it:
+
+#+begin_src elisp
+(after! tramp
+  (setq remote-file-name-inhibit-cache 60 ;; Less frequent cache write on remote host
+        tramp-completion-reread-directory-timeout 60 ;; Less frequent cache write on remote host
+        tramp-verbose 1                              ;; Remove verbosity
+        vc-ignore-dir-regexp (format "%s\\|%s\\|%s"
+                                           vc-ignore-dir-regexp
+                                           tramp-file-name-regexp
+                                           "[/\\\\]node_modules"))) ;; Disable remote VC
 #+end_src
 
 *** Treemacs
