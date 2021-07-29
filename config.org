@@ -384,6 +384,7 @@ We take icons with the flags:
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        (ivy +icons +prescient)        ; a search engine for love and life
+       ;;vertico           ; the search engine of the future
 #+end_src
 
 **** :ui
@@ -988,6 +989,7 @@ Better integration of Emacs with the terminal emulator, particularly:
 #+begin_src elisp :tangle init.el
        :lang
        ;;agda              ; types of types of types of types...
+       ;;beancount
        ;;cc                ; C/C++/Obj-C madness
        ;;(clojure +lsp)      ; java with a lisp
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
@@ -1039,7 +1041,7 @@ Better integration of Emacs with the terminal emulator, particularly:
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
-       ;;rest              ; Emacs as a REST client
+       rest                ; Emacs as a REST client
        ;;rst               ; ReST in peace
        ;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
 #+end_src
@@ -2126,7 +2128,14 @@ We reduce the default zoom factor to have more leeway between zoom levels.
 
 #+begin_src elisp
 (after! pdf-tools
-  (setq! pdf-view-resize-factor 1.05))
+  (setq! pdf-view-resize-factor 1.05)
+#+end_src
+
+We also auto install the ~pdf-info-epdfinfo-program~ in case it's not present already.
+
+#+begin_src elisp
+  (unless (file-executable-p pdf-info-epdfinfo-program)
+    (pdf-tools-install t)))
 #+end_src
 
 *** Personal information
@@ -2429,24 +2438,7 @@ configuration with limited capabilities. Let's change that.
 #+end_src
 
 I don't plan on using =treemacs= to explore directories beyond the project root
-directory, that's what =dired= is for. So let's change the default bindings to be
-more appropriate to my use case.
-
-=h= to go back up a node and =H= to go up the root.
-
-#+begin_src elisp
-(after! treemacs-evil
-  (evil-define-key 'treemacs treemacs-mode-map
-    "h" #'treemacs-collapse-parent-node
-    "H" #'treemacs-root-up
-#+end_src
-
-=l= to *expand* a node, =L= to go down the root.
-
-#+begin_src elisp
-    "l" #'treemacs-TAB-action
-    "L" #'treemacs-root-down))
-#+end_src
+directory, that's what =dired= is for.
 
 Use =all-the-icons= theme in =treemacs=, for consistency.
 
