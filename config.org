@@ -1084,7 +1084,7 @@ Requires [[https://github.com/rust-lang/rls][rls]] or [[https://rust-analyzer.gi
 
 #+begin_src elisp :tangle init.el
        :email
-       ;;(mu4e +gmail)
+       ;;(mu4e +org +gmail)
        ;;notmuch
        ;;(wanderlust +gmail)
 #+end_src
@@ -2596,7 +2596,7 @@ These are some quality of life hacks for my job. The first wraps a yanked text i
     (let* ((yanked (if register
                        (evil-get-register register)
                      (current-kill 0)))
-           (text (format "https://v2.awesome.rebellionpay.com/#/lusers/%s/show" yanked)))
+           (text (format "https://v2.awesome.rebellionpay.com/#/lusers/%s/show @maria @marco" yanked)))
       (when register
         (evil-set-register register text))
       (when evil-was-yanked-without-register
