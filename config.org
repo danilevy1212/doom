@@ -998,6 +998,7 @@ Better integration of Emacs with the terminal emulator, particularly:
        ;;csharp            ; unity, .NET, and mono shenanigans
        ;;data              ; config/data formats
        ;;(dart +flutter)   ; paint ui and not much else
+       ;;dhall
        ;;elixir            ; erlang done right
        ;;elm               ; care for a cup of TEA?
        emacs-lisp          ; drown in parentheses
@@ -2045,11 +2046,10 @@ With the package installed, we are ready to define ~org-agenda-custom-commands~ 
                                  :and (:priority<= "B"
                                        :scheduled future))
                                 (:name "Incoming Events"
-                                 :discard (:date today)
-                                 :and (:todo "EVENT"))
+                                 :and (:todo "EVENT" :not (:date today)))
                                 (:name "Candidates"
-                                 :and (:priority "B"
-                                       :discard  (:todo ("EVENT" "WAIT"))))
+                                 :and (:not (:todo ("EVENT" "WAIT"))
+                                       :priority "B"))
                                 (:name "Active projects"
                                  :todo "PROJ")
                                 (:name "Ideas"
