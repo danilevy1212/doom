@@ -354,37 +354,71 @@ the value of a ~company-backends~ for a specific major/minor mode locally in the
 buffer.  Some examples of how to use it can be found in the
 ~set-company-backend!~ documentation.
 
-***** Ivy
+***** vertico
 
-Another super useful package. Ivy is a completion engine that looks deceptively
-simple. Creating new search types is simple through it's [[https://oremacs.com/swiper/#api][API]] and has a lot of
-community packages that extend it. Ivy also comes with its own Info node where
-it details more of its functionality.
+This module is a combination of several modular packages that enhanced =emacs= built-in completion capabilities. This approach is different to those of =ivy= or =helm=, which offer their own separate ecosystem.
+
+#+begin_quote
++ Vertico, which provides the vertical completion user interface
++ Consult, which provides a suite of useful commands using ~completing-read~
++ Embark, which provides a set of minibuffer actions
++ Marginalia, which provides annotations to completion candidates
++ Orderless, which provides better filtering methods
+#+end_quote
+
+Some important keybindings.
+
+#+begin_quote
+When in an active Vertico completion session, the following doom added
+keybindings are available:
+
+| Keybind               | Description                                        |
+|-----------------------+----------------------------------------------------|
+| =C-p=                 | Go to previous candidate                           |
+| =C-n=                 | Go to next candidate                               |
+| =C-k=                 | (evil) Go to previous candidate                    |
+| =C-j=                 | (evil) Go to next candidate                        |
+| =C-;= or =<leader> a= | Open an ~embark-act~ menu to chose a useful action |
+| =C-c C-;=             | export the current candidate list to a buffer      |
+| =C-SPC=               | Preview the current candidate                      |
+| =C-M-k=               | (evil) Go to previous candidate and preview.       |
+| =C-M-j=               | (evil) Go to next candidate and preview.           |
+
+~embark-act~ will prompt you with a =which-key= menu with useful commands on the
+selected candidate or candidate list, depending on the completion category. Note
+that you can press =C-h= instead of choosing a command to filter through the
+options with a Vertico buffer, that also has slightly more detailed descriptions
+due to Marginalia annotations.
+#+end_quote
 
 This module offers a lot unique search commands through the =SPC s= and =SPC f=
 prefixes. If the commands come prefixed with the universal command (=SPC u=),
 their result with include hidden files.
 
-For use evil users, it also offers a nice ex-command:
+Marginalia toggle:
+#+begin_quote
+| Keybind | Description                     |
+|---------+---------------------------------|
+| =M-A=   | Cycle between annotation levels |
+#+end_quote
 
-| ex command             | description                                                      |
-|------------------------+------------------------------------------------------------------|
-| ~:pg[rep][!] [query]~  | search project (if ~!~, include hidden files)                    |
-| ~:pg[rep]d[!] [query]~ | search from current directory (if ~!~, don't search recursively) |
+#+begin_quote
+If you want to further configure this module, here are some good places to start:
 
-The optional `!` is equivalent to the universal argument for the previous
-commands.
++ Vertico provides several [[https://github.com/minad/vertico#extensions][extentions]] that can be used to extend it's interface
++ You can add more Marginalia annotation levels and change the existing ones by
+  editing ~marginalia-annotator-registry~
++ You can change the available commands in Embark for category ~$cat~ by editing
+  ~embark-$cat-map~, and even add new categories. Note that you add categories
+  by defining them [[https://github.com/minad/marginalia/#adding-custom-annotators-or-classifiers][through marginalia]], and embark picks up on them.
+#+end_quote
 
-We take icons with the flags:
-
-+ +icons :: all-the-icons niceties in the ivy buffer.
-+ +prescient :: Order candidate by selection frequency.
+#+begin_quote
++ =+icons= Adds icons to =file= and =buffer= category completion selections.
+#+end_quote
 
 #+begin_src elisp :tangle init.el
-       ;;helm              ; the *other* search engine for love and life
-       ;;ido               ; the other *other* search engine...
-       (ivy +icons +prescient)        ; a search engine for love and life
-       ;;vertico           ; the search engine of the future
+       (vertico +icons)           ; the search engine of the future
 #+end_src
 
 **** :ui
@@ -2055,7 +2089,7 @@ With the package installed, we are ready to define ~org-agenda-custom-commands~ 
                                 (:name "Ideas"
                                  :and (:not (:tag ("consume")) :todo "IDEA"))
                                 (:name "In hold"
-                                 :todo "WAIT")
+                                 :and (:not (:tag ("consume")) :todo "WAIT"))
                                 (:name "Consumerism"
                                  :tag  ("consume")))))
 #+end_src
@@ -2161,13 +2195,6 @@ Unfortunately, =doom= doesn't integrate =prescient= with =company-mode= in its m
 #+begin_src elisp
 (after! company
   (company-prescient-mode))
-#+end_src
-
-The default builder of ~ivy-prescient~ makes it impossible to use regex with ~counsel-rg~. Let's change it.
-
-#+begin_src elisp
-(after! (counsel ivy-prescient)
-  (setf (alist-get 'counsel-rg ivy-re-builders-alist) #'ivy--regex-plus))
 #+end_src
 
 *** Pretending we are in vim? That's just plain EVIL!
@@ -2511,6 +2538,27 @@ Only activate it in ~.xsh~ files.
    :mode "\\.xsh\\'")
 #+end_src
 
+*** vertico
+
+The default ~completion-category-overrides~ messes with remote name completion. Until [[https://github.com/hlissner/doom-emacs/pull/5313][this PR]] is merged, this little hack will have to do.
+
+#+begin_src elisp
+(after! vertico
+  (defun +vertico-basic-remote-try-completion (string table pred point)
+    (and (vertico--remote-p string)
+         (completion-basic-try-completion string table pred point)))
+  (defun +vertico-basic-remote-all-completions (string table pred point)
+    (and (vertico--remote-p string)
+         (completion-basic-all-completions string table pred point)))
+  (add-to-list
+   'completion-styles-alist
+   '(+vertico-basic-remote
+     +vertico-basic-remote-try-completion
+     +vertico-basic-remote-all-completions
+     "Use basic completion on remote files only"))
+
+  (setq completion-category-overrides '((file (styles +vertico-basic-remote orderless partial-completion)))))
+#+end_src
 
 *** vc-gutter
 
