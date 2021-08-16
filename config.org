@@ -746,14 +746,7 @@ work with =lispyville='s commands. Bummer.
 #+begin_src elisp :tangle init.el
        ;;god             ; run Emacs commands without modifier keys
        lispy             ; vim for lisp, for people who don't like vim
-#+end_src
-
-***** Multiple cursors
-
-This module add =evil-mc= and more importantly, the awesome =evil-multiedit=, which can save a bit of time when editing multiple occurrences of text in a file.
-
-#+begin_src elisp :tangle init.el
-       multiple-cursors    ; editing in many places at once
+       ;; multiple-cursors    ; editing in many places at once
 #+end_src
 
 ***** parinfer
@@ -1322,26 +1315,16 @@ binding:
 
 *** Browse Url
 
-Make ~browse-url~ aware of my default browser, =brave=.
-
-#+begin_src elisp
-(use-package! browse-url
-  :defer t
-  :custom
-  (browse-url-browser-function #'browse-url-chromium)
-  (browse-url-chromium-program "brave")
-#+end_src
-
 Some of my RSS feeds offer links to =lbry=, which cannot be open directly with a
 browser. The following advice takes care of this edge case.
 
 #+begin_src elisp
-:config
-(defadvice! dan/browse-url-encode-url--parse-lbry-url (args)
-  "Process a `lbry://' link so it can be opened with `browse-url'."
-  :filter-args #'browse-url-encode-url
-  (list
-   (replace-regexp-in-string "^lbry:\/\/" "https://odysee.com/" (car args)))))
+(after! browse-url
+  (defadvice! dan/browse-url-encode-url--parse-lbry-url (args)
+    "Process a `lbry://' link so it can be opened with `browse-url'."
+    :filter-args #'browse-url-xdg-open
+    (list
+     (replace-regexp-in-string "^lbry:\/\/" "https://odysee.com/" (car args)))))
 #+end_src
 
 *** Customize Group
