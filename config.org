@@ -1327,6 +1327,16 @@ browser. The following advice takes care of this edge case.
      (replace-regexp-in-string "^lbry:\/\/" "https://odysee.com/" (car args)))))
 #+end_src
 
+*** company-mode
+
+Begin giving candidates as soon as something is typed. This can be slow sometimes, so it might be a good idea to change it back to it's default value of ~2~. Also reduce the idle delay so it *feels* more responsive.
+
+#+begin_src elisp
+(after! company
+  (setq company-minimum-prefix-length 1
+        company-idle-delay 0.05))
+#+end_src
+
 *** Customize Group
 
 An essential interface to know what to customize!
@@ -2478,21 +2488,20 @@ Activate syntax highlighting based on the AST.
            #'tree-sitter-hl-mode)
 #+end_src
 
-*** xonsh
+*** vc-gutter
 
-#+begin_quote
-Xonsh is a Python-powered, cross-platform, Unix-gazing shell language and command prompt. The language is a superset of Python 3.6+ with additional shell primitives that you are used to from Bash and IPython. It works on all major systems including Linux, OSX, and Windows. Xonsh is meant for the daily use of experts and novices.
-#+end_quote
+Let's add minor customization to the =vc-gutter= module:
 
-#+begin_src elisp :tangle packages.el
-(package! xonsh-mode)
-#+end_src
-
-Only activate it in ~.xsh~ files.
+First, diff the file while the buffer is changing, not just when it's saved.
 
 #+begin_src elisp
-(use-package! xonsh-mode
-   :mode "\\.xsh\\'")
+(setq! +vc-gutter-diff-unsaved-buffer t)
+#+end_src
+
+Lastly, let's activate =git-gutter= for remote files as well.
+
+#+begin_src elisp
+(setq! +vc-gutter-in-remote-files t)
 #+end_src
 
 *** vertico
@@ -2515,22 +2524,6 @@ The default ~completion-category-overrides~ messes with remote name completion. 
      "Use basic completion on remote files only"))
 
   (setq completion-category-overrides '((file (styles +vertico-basic-remote orderless partial-completion)))))
-#+end_src
-
-*** vc-gutter
-
-Let's add minor customization to the =vc-gutter= module:
-
-First, diff the file while the buffer is changing, not just when it's saved.
-
-#+begin_src elisp
-(setq! +vc-gutter-diff-unsaved-buffer t)
-#+end_src
-
-Lastly, let's activate =git-gutter= for remote files as well.
-
-#+begin_src elisp
-(setq! +vc-gutter-in-remote-files t)
 #+end_src
 
 *** Vue DEPRECATED
@@ -2612,6 +2605,23 @@ These are some quality of life hacks for my job. The first wraps a yanked text i
         (kill-new text t))
       (message "Yanked awesome URL: %s" text)))
   (map! :nm "gb" #'dan/awesome-yank))
+#+end_src
+
+*** xonsh
+
+#+begin_quote
+Xonsh is a Python-powered, cross-platform, Unix-gazing shell language and command prompt. The language is a superset of Python 3.6+ with additional shell primitives that you are used to from Bash and IPython. It works on all major systems including Linux, OSX, and Windows. Xonsh is meant for the daily use of experts and novices.
+#+end_quote
+
+#+begin_src elisp :tangle packages.el
+(package! xonsh-mode)
+#+end_src
+
+Only activate it in ~.xsh~ files.
+
+#+begin_src elisp
+(use-package! xonsh-mode
+   :mode "\\.xsh\\'")
 #+end_src
 
 ** Private modules.
