@@ -1099,7 +1099,14 @@ Requires [[https://github.com/rust-lang/rls][rls]] or [[https://rust-analyzer.gi
        ;;solidity          ; do you need a blockchain? No.
        ;;swift             ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
-       ;;(web +lsp)          ; the tubes
+#+end_src
+
+***** web
+
+May not like it, but cannot escape it. The frontend is here.
+
+#+begin_src elisp :tangle init.el
+       (web +lsp)          ; the tubes
 #+end_src
 
 ***** TODO yaml
@@ -2177,19 +2184,6 @@ clients, file templates and snippets.
        user-mail-address "daniellevymoreno@gmail.com")
 #+end_src
 
-*** Prescient
-
-Unfortunately, =doom= doesn't integrate =prescient= with =company-mode= in its modules like it does for =ivy-mode=. First, we get the =company-prescient= package.
-
-#+begin_src elisp :tangle packages.el
-(package! company-prescient)
-#+end_src
-
-#+begin_src elisp
-(after! company
-  (company-prescient-mode))
-#+end_src
-
 *** Pretending we are in vim? That's just plain EVIL!
 
 Bad puns aside, vim keybindings are hard to let go once you are used to them.
@@ -2488,6 +2482,14 @@ Activate syntax highlighting based on the AST.
            #'tree-sitter-hl-mode)
 #+end_src
 
+*** uniquify
+
+Uniquify makes buffers with the same name easier to distinguish. The ~'forward~ configuration shows the file path of the buffer.
+
+#+begin_src elisp
+(setq uniquify-buffer-name-style 'forward)
+#+end_src
+
 *** vc-gutter
 
 Let's add minor customization to the =vc-gutter= module:
@@ -2526,7 +2528,7 @@ The default ~completion-category-overrides~ messes with remote name completion. 
   (setq completion-category-overrides '((file (styles +vertico-basic-remote orderless partial-completion)))))
 #+end_src
 
-*** Vue DEPRECATED
+*** Vue
 
 The language server =VLS= does not analyze the templates of ~.vue~ files by default,
 let's change that!
@@ -2536,7 +2538,7 @@ let's change that!
   (setq! lsp-vetur-experimental-template-interpolation-service t))
 #+end_src
 
-*** Web Mode DEPRECATED
+*** Web Mode
 
 ~web-mode~, as customized in the ~web~ module, has more features that I could
 wish for. Indentation is the only sore point I wish to change.
