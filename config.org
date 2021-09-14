@@ -976,7 +976,9 @@ or synonyms.
        (lsp +peek)
 #+end_src
 
-***** TODO magit
+***** magit
+
+The best porcelain for ~git~, in =emacs=!
 
 #+begin_src elisp :tangle init.el
        magit             ; a git porcelain for Emacs
@@ -1630,6 +1632,20 @@ With this, we can create a repl for the =awesome-client=.
 (defun +lua/open-awesome-client-repl ()
    (interactive)
    (pop-to-buffer (make-comint "repl:awesome-client" "awesome-client" nil)))
+#+end_src
+
+*** magit-delta
+
+This =emacs= package provides a minor mode which configures =magit= to use delta when displaying diffs.
+
+#+begin_src elisp :tangle packages.el
+(package! magit-delta)
+#+end_src
+
+#+begin_src elisp
+(use-package! magit-delta
+  :ensure t
+  :hook (magit-mode . magit-delta-mode))
 #+end_src
 
 *** Modeline
