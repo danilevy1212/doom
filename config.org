@@ -1575,6 +1575,28 @@ Let's make the =hydra= module's functions easily accessible:
       :desc "Text-Zoom/Hydra" :m "w f" #'+hydra/text-zoom/body)
 #+end_src
 
+*** kubernetes
+
+=kubernetes.el= is a ~kubectl~ porcelain to manage all your cluster comfortably from emacs. It is what =magit= is to ~git~.
+
+#+begin_src elisp :tangle packages.el
+(package! kubernetes)
+#+end_src
+
+We define an =autoload= command to lazily require this package on request.
+
+#+begin_src elisp
+(use-package! kubernetes
+  :commands (kubernetes-overview)
+  :config
+  (setq kubernetes-poll-frequency 3600
+        kubernetes-redraw-frequency 3600)
+  (require 'kubernetes-evil))
+
+(map! :leader
+      :desc "k8s Dashboard" "o k" #'kubernetes-overview)
+#+end_src
+
 *** Language Tool
 
 Do not run the jar file! Run the binary.
@@ -2520,28 +2542,6 @@ Lastly, let's activate =git-gutter= for remote files as well.
 
 #+begin_src elisp
 (setq! +vc-gutter-in-remote-files t)
-#+end_src
-
-*** vertico
-
-The default ~completion-category-overrides~ messes with remote name completion. Until [[https://github.com/hlissner/doom-emacs/pull/5313][this PR]] is merged, this little hack will have to do.
-
-#+begin_src elisp
-(after! vertico
-  (defun +vertico-basic-remote-try-completion (string table pred point)
-    (and (vertico--remote-p string)
-         (completion-basic-try-completion string table pred point)))
-  (defun +vertico-basic-remote-all-completions (string table pred point)
-    (and (vertico--remote-p string)
-         (completion-basic-all-completions string table pred point)))
-  (add-to-list
-   'completion-styles-alist
-   '(+vertico-basic-remote
-     +vertico-basic-remote-try-completion
-     +vertico-basic-remote-all-completions
-     "Use basic completion on remote files only"))
-
-  (setq completion-category-overrides '((file (styles +vertico-basic-remote orderless partial-completion)))))
 #+end_src
 
 *** Vue
