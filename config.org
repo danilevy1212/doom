@@ -2302,6 +2302,31 @@ store projects.
 (setq! projectile-project-search-path '("~/Projects/" "~/.config/"))
 #+end_src
 
+*** QR encode
+
+#+begin_quote
+QR Code encoder written in pure Emacs Lisp.
+#+end_quote
+
+#+begin_src elisp :tangle packages.el
+(package! qrencode)
+#+end_src
+
+#+begin_quote
+This package provides two user facing interactive functions, that will encode text into a QR Code and show it in a separate buffer.
+
+~qrencode-region~
+    Shows the current selection as a QR Code.
+
+~qrencode-url-at-point~
+    Encode URL at point as QR Code.
+#+end_quote
+
+#+begin_src elisp
+(use-package! qrencode
+    :defer t)
+#+end_src
+
 *** Rainbow Delimiters
 
 Matching pairs draw with the same face color, making them easily identifiable.
