@@ -1583,15 +1583,22 @@ Let's make the =hydra= module's functions easily accessible:
 (package! kubernetes)
 #+end_src
 
-We define an =autoload= command to lazily require this package on request.
+We also bring along a =evil= keybind package for convenience.
+
+#+begin_src elisp :tangle packages.el
+(package! kubernetes-evil)
+#+end_src
+
+Finally, lazily load the package and it's =evil= keybindings when calling an entry command, ~kubernetes-overview~.
 
 #+begin_src elisp
 (use-package! kubernetes
-  :commands (kubernetes-overview)
   :config
   (setq kubernetes-poll-frequency 3600
-        kubernetes-redraw-frequency 3600)
-  (require 'kubernetes-evil))
+        kubernetes-redraw-frequency 3600))
+
+(use-package! kubernetes-evil
+  :after (kubernetes))
 
 (map! :leader
       :desc "k8s Dashboard" "o k" #'kubernetes-overview)
