@@ -1322,6 +1322,15 @@ binding:
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 #+END_SRC
 
+*** ~after-save-hook~ to make scripts executable.
+
+Here's a simple trick to make =she-banged= scripts executable auto-magically by default.
+
+#+begin_src elisp
+(add-hook! 'after-save-hook
+           #'executable-make-buffer-file-executable-if-script-p)
+#+end_src
+
 *** Browse Url
 
 Some of my RSS feeds offer links to =lbry=, which cannot be open directly with a
