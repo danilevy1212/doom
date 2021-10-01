@@ -472,13 +472,20 @@ zoom level.
        hydra
 #+end_src
 
+***** indent-guides
+
+Some visual help to quickly understand the indent levels in your code.
+
+#+begin_src elisp :tangle init.el
+       indent-guides     ; highlighted indent columns
+#+end_src
+
 ***** ligatures
 
 When using ~emacs-major-version >= 28~, enable ligatures, since they can be
 composed by =hardfuzz=.
 
 #+begin_src elisp :tangle init.el
-       ;; indent-guides     ; highlighted indent columns
        (:if (>= emacs-major-version 28) ligatures)         ; ligatures and symbols to make your code pretty again
 #+end_src
 
@@ -1582,6 +1589,18 @@ Let's make the =hydra= module's functions easily accessible:
 (map! :leader
       :desc "Navigate/Hydra"  :m "w N" #'+hydra/window-nav/body
       :desc "Text-Zoom/Hydra" :m "w f" #'+hydra/text-zoom/body)
+#+end_src
+
+*** indent-guides
+
+Use the bitmap to display the indent level if we are in a graphic interface.
+
+#+begin_src elisp
+(after! highlight-indent-guides
+  (setq highlight-indent-guides-method (if (display-graphic-p)
+                                           'bitmap
+                                         'character)
+        highlight-indent-guides-responsive 'top))
 #+end_src
 
 *** kubernetes
