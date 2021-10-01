@@ -2099,7 +2099,7 @@ Load and activate ~org-edna~ together with ~org~.
 #+begin_src elisp
 (use-package! org-edna
   :hook
-  '(org-mode . org-edna-mode)
+  '(org-load . org-edna-mode)
 #+end_src
 
 Make =org-edna= to trigger in any state change except done.
