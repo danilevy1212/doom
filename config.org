@@ -2198,9 +2198,7 @@ headings that are not done. This function is meant to be run as part of
   (let (org-log-done org-log-states)
     (org-todo (if (= n-not-done 0)
                   "DONE"
-                (pcase (org-get-todo-state) ;; Keeps the keyword state.
-                  ('nil "")
-                  (todo todo))))))
+                (concat (org-get-todo-state))))))
 #+end_src
 
 Custom function that switches heading from 'TODO' to 'DONE' when all checkboxes are ticked.
