@@ -2189,8 +2189,8 @@ Define the custom function, switch entry to 'DONE' when all sub-entries are
 #+begin_src elisp :tangle autoload/org.el :mkdirp yes
 ;;;###autoload
 (defun dan/org-after-todo-statistics-preserve-todo-state (n-done n-not-done)
-  "Change KEYWORD state to `DONE` if all subheadings are also `DONE`, otherwise
-KEYWORD state is conserved.
+  "Change `TODO' state to `DONE' if all subheadings are also `DONE', otherwise
+conserve `TODO' state.
 
 N-DONE are the number of subheadings that are done and N-NOT-DONE the number of
 headings that are not done. This function is meant to be run as part of
@@ -2206,7 +2206,7 @@ Custom function that switches heading from 'TODO' to 'DONE' when all checkboxes 
 #+begin_src elisp :tangle autoload/org.el :mkdirp yes
 ;;;###autoload
 (defun dan/org-checkbox-statistics-change-to-done-when-all-ticked ()
-  "Change KEYWORD state to `DONE' if all checkboxes of the heading are ticked.
+  "Change `TODO' state to `DONE' if all checkboxes of the heading are ticked.
 
 This function is meant to be run as as part of `org-checkbox-statistics-hook'"
   (let ((todo-state (org-get-todo-state)) beg end)
