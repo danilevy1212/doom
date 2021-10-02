@@ -1621,12 +1621,13 @@ Finally, lazily load the package and it's =evil= keybindings when calling an ent
 
 #+begin_src elisp
 (use-package! kubernetes
+  :defer t
   :config
   (setq kubernetes-poll-frequency 3600
         kubernetes-redraw-frequency 3600))
 
 (use-package! kubernetes-evil
-  :after (kubernetes))
+  :after kubernetes-overview)
 
 (map! :leader
       :desc "k8s Dashboard" "o k" #'kubernetes-overview)
