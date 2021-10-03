@@ -1536,6 +1536,94 @@ Now let's activate it when opening a =.env=:
   :mode ("\\.env\\.?.*\\'" . dotenv-mode))
 #+end_src
 
+*** Elfeed
+
+First, lets bring our feeds into the cloud.
+
+#+begin_src elisp
+(use-package! elfeed
+  :defer t
+  :custom
+  (elfeed-db-directory "~/Cloud/elfeed/")
+#+end_src
+
+Special faces for special tags.
+
+#+begin_src elisp
+  (elfeed-search-face-alist '((unread    elfeed-search-unread-title-face)
+                              (star      elfeed-search-unread-count-face)))
+#+end_src
+
+Show me entries from within a month that I haven't read and that I have 'starred'.
+
+#+begin_src elisp
+  :config
+  (setq! elfeed-search-filter "@4-week-ago +unread ")
+#+end_src
+
+Some entries are worth preserving. By 'starring' them we don't lose them.
+
+#+begin_src elisp
+  (defalias 'dan/elfeed-search-tag-all-star
+          (elfeed-expose #'elfeed-search-tag-all 'star)
+          "Add the `star' tag to all selected entries.")
+
+  (defalias 'dan/elfeed-search-untag-all-star
+          (elfeed-expose #'elfeed-search-untag-all 'star)
+          "Remove the `star' tag from all selected entries.")
+#+end_src
+
+Expose the aliases to the =x= keybinding.
+
+    #+begin_src elisp
+  (map! :map 'elfeed-search-mode-map
+        :nv "x" #'dan/elfeed-search-tag-all-star
+        :nv "X" #'dan/elfeed-search-untag-all-star)
+#+end_src
+
+Automatically updating feed when opening elfeed.
+
+#+begin_src elisp
+  (add-hook! 'elfeed-search-mode-hook #'elfeed-update))
+#+end_src
+
+Give it an easy keybinding to access it:
+
+#+begin_src elisp
+(map! :leader :desc "News feed" :m "o n" #'=rss)
+#+end_src
+
+*** Elfeed Goodies
+
+#+begin_quote
+Various bits and pieces to enhance the Elfeed user experience.
+#+end_quote
+
+#+begin_src elisp
+(after! elfeed-goodies
+  (setq elfeed-goodies/feed-source-column-width 24
+        elfeed-goodies/tag-column-width 40
+        elfeed-goodies/entry-pane-position 'bottom))
+#+end_src
+
+*** Elfeed Org
+
+And point elfeed to the org configuration file.
+
+#+begin_src elisp
+(after! elfeed
+  (setq rmh-elfeed-org-files (list (expand-file-name "elfeed.org" org-directory))))
+#+end_src
+
+Keybinding to easily find the feeds file.
+
+#+begin_src elisp
+(map! :leader
+      :desc "News feed config" :m "o N" (cmd! (unless (featurep 'elfeed-org)
+                                                (require 'elfeed-org))
+                                              (find-file (car rmh-elfeed-org-files))))
+#+end_src
+
 *** eshell
 
 The keybinding =M-SPC m b= inserts the name of a buffer in the =eshell= syntax.
@@ -2367,78 +2455,6 @@ Matching pairs draw with the same face color, making them easily identifiable.
 
 #+begin_src elisp
 (add-hook! prog-mode #'rainbow-delimiters-mode-enable)
-#+end_src
-
-*** RSS, or how to get news the old-way.
-
-First, lets bring our feeds into the cloud.
-
-#+begin_src elisp
-(use-package! elfeed
-  :defer t
-  :custom
-  (elfeed-db-directory "~/Cloud/elfeed/")
-#+end_src
-
-Special faces for special tags.
-
-#+begin_src elisp
-  (elfeed-search-face-alist '((unread    elfeed-search-unread-title-face)
-                              (star      elfeed-search-unread-count-face)))
-#+end_src
-
-Show me entries from within a month that I haven't read and that I have 'starred'.
-
-#+begin_src elisp
-  :config
-  (setq! elfeed-search-filter "@4-week-ago +unread ")
-#+end_src
-
-Some entries are worth preserving. By 'starring' them we don't lose them.
-
-#+begin_src elisp
-  (defalias 'dan/elfeed-search-tag-all-star
-          (elfeed-expose #'elfeed-search-tag-all 'star)
-          "Add the `star' tag to all selected entries.")
-
-  (defalias 'dan/elfeed-search-untag-all-star
-          (elfeed-expose #'elfeed-search-untag-all 'star)
-          "Remove the `star' tag from all selected entries.")
-#+end_src
-
-Expose the aliases to the =x= keybinding.
-
-    #+begin_src elisp
-  (map! :map 'elfeed-search-mode-map :nv "x" #'dan/elfeed-search-tag-all-star
-                                  :nv "X" #'dan/elfeed-search-untag-all-star)
-#+end_src
-
-Automatically updating feed when opening elfeed.
-
-#+begin_src elisp
-  (add-hook! 'elfeed-search-mode-hook 'elfeed-update))
-#+end_src
-
-Give it an easy keybinding to access it:
-
-#+begin_src elisp
-(map! :leader :desc "News feed" :m "o n" #'=rss)
-#+end_src
-
-And point elfeed to the org configuration file.
-
-#+begin_src elisp
-(use-package! elfeed-org
-  :defer t
-  :custom
-  (rmh-elfeed-org-files (list (expand-file-name "elfeed.org" org-directory))))
-#+end_src
-
-Keybinding to easily find the feeds file.
-
-#+begin_src elisp
-(map! :leader
-      :desc "News feed config" :m "o N" (cmd! (find-file (car rmh-elfeed-org-files))))
 #+end_src
 
 *** Rust
