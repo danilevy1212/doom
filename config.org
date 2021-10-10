@@ -1354,11 +1354,11 @@ browser. The following advice takes care of this edge case.
 
 *** company-mode
 
-Begin giving candidates as soon as something is typed. This can be slow sometimes, so it might be a good idea to change it back to it's default value of ~2~. Also reduce the idle delay so it *feels* more responsive.
+Begin giving candidates as soon as something is typed. This can be slow sometimes, so it might be a good idea to change it back to it's default value of ~3~. Also reduce the idle delay so it *feels* more responsive.
 
 #+begin_src elisp
 (after! company
-  (setq company-minimum-prefix-length 1
+  (setq company-minimum-prefix-length 2
         company-idle-delay 0.05))
 #+end_src
 
