@@ -2700,6 +2700,16 @@ These are some quality of life hacks for my job. The first wraps a yanked text i
   (map! :nm "gb" #'dan/awesome-yank))
 #+end_src
 
+*** xref
+
+A recent change in ~emacs~ master branch broke =xref= package for the ~Pgtk~ branch. Pin it to the last known working commit as a temporary solution.
+
+#+begin_src elisp :tangle packages.el
+(package! xref
+  :pin (when (= emacs-major-version 28)
+         "a82f459b37b31546bf274388baf8aca79e9c30d9"))
+#+end_src
+
 *** xonsh
 
 #+begin_quote
