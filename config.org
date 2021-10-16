@@ -1362,6 +1362,23 @@ Begin giving candidates as soon as something is typed. This can be slow sometime
         company-idle-delay 0.05))
 #+end_src
 
+**** consult-company
+
+A _consult_ing-read interface for ~company-mode~.
+
+#+begin_src elisp :tangle packages.el
+(package! consult-company)
+#+end_src
+
+This package remaps ~completion-at-point~ to use =consult='s interface instead, bind to =C-M-i=.
+
+#+begin_src elisp
+(use-package! consult-company
+  :after (company consult)
+  :init
+  (map! :g "C-M-i" #'consult-company))
+#+end_src
+
 *** Customize Group
 
 An essential interface to know what to customize!
