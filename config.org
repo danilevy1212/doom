@@ -1738,6 +1738,21 @@ Finally, lazily load the package and it's =evil= keybindings when calling an ent
       :desc "k8s Dashboard" "o k" #'kubernetes-overview)
 #+end_src
 
+*** kubedoc
+
+=kubedoc.el= provides Kubernetes API documentation in Emacs.
+
+#+begin_src elisp :tangle packages.el
+(package! kubedoc)
+#+end_src
+
+Lazy load with the command ~kubedoc~.
+
+#+begin_src elisp
+(use-package! kubedoc
+  :defer t)
+#+end_src
+
 *** Language Tool
 
 Do not run the jar file! Run the binary.
