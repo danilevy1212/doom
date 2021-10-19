@@ -1713,6 +1713,21 @@ Use the bitmap to display the indent level if we are in a graphic interface.
         highlight-indent-guides-responsive 'top))
 #+end_src
 
+*** kubedoc
+
+=kubedoc.el= provides Kubernetes API documentation in Emacs.
+
+#+begin_src elisp :tangle packages.el
+(package! kubedoc)
+#+end_src
+
+Lazy load with the command ~kubedoc~.
+
+#+begin_src elisp
+(use-package! kubedoc
+  :defer t)
+#+end_src
+
 *** kubernetes
 
 =kubernetes.el= is a ~kubectl~ porcelain to manage all your cluster comfortably from emacs. It is what =magit= is to ~git~.
@@ -1741,21 +1756,6 @@ Finally, lazily load the package and it's =evil= keybindings when calling an ent
 
 (map! :leader
       :desc "k8s Dashboard" "o k" #'kubernetes-overview)
-#+end_src
-
-*** kubedoc
-
-=kubedoc.el= provides Kubernetes API documentation in Emacs.
-
-#+begin_src elisp :tangle packages.el
-(package! kubedoc)
-#+end_src
-
-Lazy load with the command ~kubedoc~.
-
-#+begin_src elisp
-(use-package! kubedoc
-  :defer t)
 #+end_src
 
 *** Language Tool
@@ -2737,16 +2737,6 @@ These are some quality of life hacks for my job. The first wraps a yanked text i
   (map! :nm "gb" #'dan/awesome-yank))
 #+end_src
 
-*** xref
-
-A recent change in ~emacs~ master branch broke =xref= package for the ~Pgtk~ branch. Pin it to the last known working commit as a temporary solution.
-
-#+begin_src elisp :tangle packages.el
-(package! xref
-  :pin (when (= emacs-major-version 28)
-         "a82f459b37b31546bf274388baf8aca79e9c30d9"))
-#+end_src
-
 *** xonsh
 
 #+begin_quote
@@ -2762,6 +2752,16 @@ Only activate it in ~.xsh~ files.
 #+begin_src elisp
 (use-package! xonsh-mode
    :mode "\\.xsh\\'")
+#+end_src
+
+*** xref
+
+A recent change in ~emacs~ master branch broke =xref= package for the ~Pgtk~ branch. Pin it to the last known working commit as a temporary solution.
+
+#+begin_src elisp :tangle packages.el
+(package! xref
+  :pin (when (= emacs-major-version 28)
+         "a82f459b37b31546bf274388baf8aca79e9c30d9"))
 #+end_src
 
 ** Private modules.
