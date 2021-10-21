@@ -2569,6 +2569,32 @@ But what if I am in the terminal? No worries:
   (setq! +doom-dashboard-ascii-banner-fn #'dan/my-weebery-is-always-greater))
 #+end_src
 
+*** Topsy
+
+This library shows a sticky header at the top of the window. The header shows which definition the top line of the window is within.
+
+#+begin_src elisp :tangle packages.el
+(package! topsy)
+#+end_src
+
+We activate ~topsy-mode~ only in programming contexts.
+
+#+begin_src elisp
+(use-package! topsy
+  :hook (prog-mode . (lambda ()
+                      (unless (eq major-mode '+doom-dashboard-mode)
+                        (topsy-mode +1))))
+#+end_src
+
+To make the ~header-line~ a little more noticeable while consistent with the buffer style, we change it's font and inherit from the ~default~ style.
+
+#+begin_src elisp
+  :config
+  (custom-set-faces!
+    '(header-line :family "Victor Mono"
+                  :inherit default)))
+#+end_src
+
 *** Treemacs
 
 =treemacs= integrates with =git=. By default, its set to a performance oriented
