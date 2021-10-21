@@ -1377,11 +1377,12 @@ First, let's ensure the package is only loaded on demand, by creating a ~consult
   :commands consult-company)
 #+end_src
 
-This package remaps ~completion-at-point~ to use =consult='s interface. Keybind to =C-M-i=.
+This package remaps ~completion-at-point~ to use =consult='s interface. Keybind to =C-S-s=.
 
 #+begin_src elisp
 (after! (company consult)
-  (map! :g "C-M-i" #'consult-company))
+  (map! :map company-active-map
+        "C-S-s" #'consult-company))
 #+end_src
 
 *** Customize Group
