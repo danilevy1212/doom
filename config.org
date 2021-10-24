@@ -2236,6 +2236,22 @@ Make =org-edna= to trigger in any state change except done.
   (org-edna-from-todo-states 'not-done))
 #+end_src
 
+**** org-sticky-header
+
+Like =topsy=, for org mode.
+
+#+begin_src elisp :tangle packages.el
+(package! org-sticky-header)
+#+end_src
+
+Automatically start it in ~org-mode~ buffers.
+
+#+begin_src elisp
+(use-package! org-sticky-header
+  :after org
+  :hook (org-mode . org-sticky-header-mode))
+#+end_src
+
 **** org-super-agenda
 
 #+begin_quote
@@ -2762,6 +2778,15 @@ These are some quality of life hacks for my job. The first wraps a yanked text i
         (kill-new text t))
       (message "Yanked awesome URL: %s" text)))
   (map! :nm "gb" #'dan/awesome-yank))
+#+end_src
+
+*** Writeroom
+
+Keep header lines for ~+zen-mode~, so ~org-sticky-header-mode~ works as intended.
+
+#+begin_src elisp
+(add-hook! org-mode
+  (setq-local writeroom-header-line t))
 #+end_src
 
 *** xonsh
