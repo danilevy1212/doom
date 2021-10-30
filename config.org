@@ -1352,6 +1352,24 @@ browser. The following advice takes care of this edge case.
      (replace-regexp-in-string "^lbry:\/\/" "https://odysee.com/" (car args)))))
 #+end_src
 
+*** calfw
+
+As part of the ~calendar~ module, we get the excellent ~calfw~ package, which displays a calendar view in the emacs buffer.
+
+Europeans start the week on monday!
+
+#+begin_src elisp
+(after! calfw
+  (setq calendar-week-start-day 1))
+#+end_src
+
+Finally, we create an entrance point to the calendar view.
+
+#+begin_src elisp
+(map! :leader
+      :desc "Calfw" :mv "o a c" #'cfw:open-org-calendar)
+#+end_src
+
 *** company-mode
 
 Begin giving candidates as soon as something is typed. This can be slow sometimes, so it might be a good idea to change it back to it's default value of ~3~. Also reduce the idle delay so it *feels* more responsive.
