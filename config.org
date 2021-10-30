@@ -1947,6 +1947,16 @@ configuration of evil-org.
              (:unless mozc-mode  :i "RET"        (cmd! (org-return electric-indent-mode))))))))
 #+end_src
 
+*** New Lines
+
+Emacs aggressively adds a ~\n~ to files, which is technically a good practice. However, lots of other IDEs don't do this. In collaborative version controlled projects, this can result in emacs stubbornly adding a hunk at the end of the file, which can lead to problems, from strange commits diffs to tests failing because files where not expected to have a trailing new line.
+
+We change it so emacs simply asks us first if we want to add the ~\n~ before saving.
+
+#+begin_src elisp
+(setq require-final-newline 'ask)
+#+end_src
+
 *** nodejs
 
 ~nodejs-repl~ is a super useful package. However, it's missing a comfortable way to interact with promises. We can change that with an experimental =nodejs=.
