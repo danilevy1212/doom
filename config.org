@@ -2615,9 +2615,11 @@ We activate ~topsy-mode~ only in programming contexts.
 
 #+begin_src elisp
 (use-package! topsy
-  :hook (prog-mode . (lambda ()
-                      (unless (eq major-mode '+doom-dashboard-mode)
-                        (topsy-mode +1))))
+  :defer t
+  :init
+  (add-hook! prog-mode
+    (unless (memq major-mode '(+doom-dashboard-mode org-mode))
+      (topsy-mode +1)))
 #+end_src
 
 To make the ~header-line~ a little more noticeable while consistent with the buffer style, we change it's font and inherit from the ~default~ style.
