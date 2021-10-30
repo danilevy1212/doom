@@ -2230,7 +2230,61 @@ To prevent unnecessary scrolling when calling the agenda buffer, we automate the
  (add-hook! 'org-agenda-finalize-hook :append #'dan/org-agenda-set-focus-h))
 #+end_src
 
-**** org-edna
+**** Auto-loads
+
+Lexical Binding.
+
+#+begin_src elisp :tangle autoload/org.el :mkdirp yes
+;;; $DOOMDIR/autoload/org.el -*- lexical-binding: t; -*-
+#+end_src
+
+Define the custom function, switch entry to 'DONE' when all sub-entries are
+'DONE', else keep entry original todo state.
+
+#+begin_src elisp :tangle autoload/org.el :mkdirp yes
+;;;###autoload
+(defun dan/org-after-todo-statistics-preserve-todo-state (n-done n-not-done)
+  "Change `TODO' state to `DONE' if all subheadings are also `DONE', otherwise
+conserve `TODO' state.
+
+N-DONE are the number of subheadings that are done and N-NOT-DONE the number of
+headings that are not done. This function is meant to be run as part of
+`org-after-todo-statistics-hook'."
+  (let (org-log-done org-log-states)
+    (org-todo (if (= n-not-done 0)
+                  "DONE"
+                (concat (org-get-todo-state))))))
+#+end_src
+
+Custom function that switches heading from 'TODO' to 'DONE' when all checkboxes are ticked.
+
+#+begin_src elisp :tangle autoload/org.el :mkdirp yes
+;;;###autoload
+(defun dan/org-checkbox-statistics-change-to-done-when-all-ticked ()
+  "Change `TODO' state to `DONE' if all checkboxes of the heading are ticked.
+
+This function is meant to be run as as part of `org-checkbox-statistics-hook'"
+  (let ((todo-state (org-get-todo-state)) beg end)
+    (unless (not todo-state)
+      (save-excursion
+        (org-back-to-heading t)
+        (setq beg (point))
+        (end-of-line)
+        (setq end (point))
+        (goto-char beg)
+        (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
+                               end t)
+            (if (match-end 1)
+                (when (equal (match-string 1) "100%")
+                    (unless (string-equal todo-state "DONE")
+                      (org-todo 'done)))
+              (when (and (> (match-end 2) (match-beginning 2))
+                         (equal (match-string 2) (match-string 3)))
+                  (unless (string-equal todo-state "DONE")
+                    (org-todo 'done)))))))))
+#+end_src
+
+*** org-edna
 
 =org-edna= offers more control over how and when tasks change state and manages
 dependencies between tasks through extra heading properties.
@@ -2254,7 +2308,7 @@ Make =org-edna= to trigger in any state change except done.
   (org-edna-from-todo-states 'not-done))
 #+end_src
 
-**** org-sticky-header
+*** org-sticky-header
 
 Like =topsy=, for org mode.
 
@@ -2262,15 +2316,22 @@ Like =topsy=, for org mode.
 (package! org-sticky-header)
 #+end_src
 
-Automatically start it in ~org-mode~ buffers.
+Lazy load only in ~org-mode~ buffers
 
 #+begin_src elisp
 (use-package! org-sticky-header
-  :after org
-  :hook (org-mode . org-sticky-header-mode))
+  :defer t)
 #+end_src
 
-**** org-super-agenda
+And do not activate in ~org-capture~ mode.
+
+#+begin_src elisp
+(add-hook! org-mode
+  (unless org-capture-mode
+    (org-sticky-header-mode)))
+#+end_src
+
+*** org-super-agenda
 
 #+begin_quote
 This package lets you “supercharge” your Org daily/weekly agenda. The idea is to group items into sections, rather than having them all in one big list.
@@ -2334,60 +2395,6 @@ There are a few clashes between ~evil-org-agenda-mode-map~ and ~org-super-agenda
 (after! (evil-org-agenda org-super-agenda)
   (setq org-super-agenda-header-map
         (copy-keymap evil-org-agenda-mode-map)))
-#+end_src
-
-**** Auto-loads
-
-Lexical Binding.
-
-#+begin_src elisp :tangle autoload/org.el :mkdirp yes
-;;; $DOOMDIR/autoload/org.el -*- lexical-binding: t; -*-
-#+end_src
-
-Define the custom function, switch entry to 'DONE' when all sub-entries are
-'DONE', else keep entry original todo state.
-
-#+begin_src elisp :tangle autoload/org.el :mkdirp yes
-;;;###autoload
-(defun dan/org-after-todo-statistics-preserve-todo-state (n-done n-not-done)
-  "Change `TODO' state to `DONE' if all subheadings are also `DONE', otherwise
-conserve `TODO' state.
-
-N-DONE are the number of subheadings that are done and N-NOT-DONE the number of
-headings that are not done. This function is meant to be run as part of
-`org-after-todo-statistics-hook'."
-  (let (org-log-done org-log-states)
-    (org-todo (if (= n-not-done 0)
-                  "DONE"
-                (concat (org-get-todo-state))))))
-#+end_src
-
-Custom function that switches heading from 'TODO' to 'DONE' when all checkboxes are ticked.
-
-#+begin_src elisp :tangle autoload/org.el :mkdirp yes
-;;;###autoload
-(defun dan/org-checkbox-statistics-change-to-done-when-all-ticked ()
-  "Change `TODO' state to `DONE' if all checkboxes of the heading are ticked.
-
-This function is meant to be run as as part of `org-checkbox-statistics-hook'"
-  (let ((todo-state (org-get-todo-state)) beg end)
-    (unless (not todo-state)
-      (save-excursion
-        (org-back-to-heading t)
-        (setq beg (point))
-        (end-of-line)
-        (setq end (point))
-        (goto-char beg)
-        (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
-                               end t)
-            (if (match-end 1)
-                (when (equal (match-string 1) "100%")
-                    (unless (string-equal todo-state "DONE")
-                      (org-todo 'done)))
-              (when (and (> (match-end 2) (match-beginning 2))
-                         (equal (match-string 2) (match-string 3)))
-                  (unless (string-equal todo-state "DONE")
-                    (org-todo 'done)))))))))
 #+end_src
 
 *** PDF Tools
