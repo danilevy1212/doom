@@ -2327,8 +2327,8 @@ And do not activate in ~org-capture~ mode.
 
 #+begin_src elisp
 (add-hook! org-mode
-  (unless org-capture-mode
-    (org-sticky-header-mode)))
+  (unless (bound-and-true-p org-capture-mode)
+    (org-sticky-header-mode +1)))
 #+end_src
 
 *** org-super-agenda
