@@ -1986,6 +1986,21 @@ We change it so emacs simply asks us first if we want to add the ~\n~ before sav
 (setq require-final-newline 'ask)
 #+end_src
 
+This little hack prevents ~persp-mode~ to bother me when saving its =autosave= file. We advice ~basic-save-buffer~ so files in ~persp-save-dir~ insert a breakline if missing one.
+
+#+begin_src elisp
+(after! persp-mode
+  (defadvice! dan/persp-autosave--add-breakline (&rest _)
+    :before #'basic-save-buffer
+    (when (and
+           (/= (char-after (1- (point-max))) ?\n)
+           (string-equal (file-name-directory
+                          (or (buffer-file-name (current-buffer)) ""))
+                         persp-save-dir))
+      (goto-char (point-max))
+      (insert ?\n))))
+#+end_src
+
 *** nodejs
 
 ~nodejs-repl~ is a super useful package. However, it's missing a comfortable way to interact with promises. We can change that with an experimental =nodejs=.
