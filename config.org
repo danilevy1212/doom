@@ -1403,6 +1403,35 @@ This package remaps ~completion-at-point~ to use =consult='s interface. Keybind 
         "C-S-s" #'consult-company))
 #+end_src
 
+*** consult-projectile
+
+#+begin_quote
+A package to incorporate projectile into consult. This allows to choose a project, when none is selected or choose a project buffer/file.
+#+end_quote
+
+#+begin_src elisp :tangle packages.el
+(package! consult-projectile)
+#+end_src
+
+~consult-projectile~ also allows for narrowing in ~emacs >= 28~, making it more useful than the default projectile command in =doom=. Narrow selection with B for buffer, F for file or P for project.
+
+#+begin_src elisp
+(use-package! consult-projectile
+  :defer t
+  :init
+  (map! :leader
+        :desc "Project find" "SPC" #'consult-projectile))
+#+end_src
+
+To incorporate the same  behavior as ~projectile-switch-project~ when changing project:
+
+#+begin_src elisp
+(after! consult-projectile
+  (setq +workspaces-switch-project-function #'consult-projectile--file)
+  (plist-put! consult-projectile--source-projectile-project
+              :action #'projectile-switch-project-by-name))
+#+end_src
+
 *** Customize Group
 
 An essential interface to know what to customize!
