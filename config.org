@@ -1360,7 +1360,16 @@ Europeans start the week on monday!
 
 #+begin_src elisp
 (after! calfw
-  (setq calendar-week-start-day 1))
+  (setq calendar-week-start-day 1)
+#+end_src
+
+For the =calendar= view, it's useful to be able to see when a task is scheduled.
+
+#+begin_src elisp
+  (defadvice! dan/org-agenda--show-scheduled-in-calfw (fn &rest args)
+    :around #'cfw:org-collect-schedules-period
+    (let ((org-agenda-todo-ignore-scheduled nil))
+      (apply fn args))))
 #+end_src
 
 Finally, we create an entrance point to the calendar view.
