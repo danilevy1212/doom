@@ -2000,8 +2000,10 @@ This little hack prevents ~persp-mode~ to bother me when saving its =autosave= f
 #+begin_src elisp
 (after! persp-mode
   (defadvice! dan/persp-autosave--add-breakline (&rest _)
+    "Automatically add breakline for certain buffers before saving to file."
     :before #'basic-save-buffer
     (when (and
+           (/= (point-max) (point-min))
            (/= (char-after (1- (point-max))) ?\n)
            (string-equal (file-name-directory
                           (or (buffer-file-name (current-buffer)) ""))
