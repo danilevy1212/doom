@@ -2381,19 +2381,19 @@ Like =topsy=, for org mode.
 (package! org-sticky-header)
 #+end_src
 
-Lazy load only in ~org-mode~ buffers
+Lazy load only in ~org-mode~ buffers.
 
 #+begin_src elisp
-(use-package! org-sticky-header
-  :defer t)
+(after! org
+  (add-hook! org-mode #'org-sticky-header-mode))
 #+end_src
 
-And do not activate in ~org-capture~ mode.
+Do not activate in ~org-capture~ mode but leave it on after finalizing capture.
 
 #+begin_src elisp
-(add-hook! org-mode
-  (unless (bound-and-true-p org-capture-mode)
-    (org-sticky-header-mode +1)))
+(after! org-capture
+  (add-hook! org-capture-mode (lambda () (org-sticky-header-mode -1)))
+  (add-hook! 'org-capture-prepare-finalize-hook (lambda () (org-sticky-header-mode +1))))
 #+end_src
 
 *** org-super-agenda
