@@ -1884,7 +1884,6 @@ This =emacs= package provides a minor mode which configures =magit= to use delta
 
 #+begin_src elisp
 (use-package! magit-delta
-  :ensure t
   :hook (magit-mode . magit-delta-mode))
 #+end_src
 
