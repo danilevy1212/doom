@@ -2852,7 +2852,7 @@ sometimes. ~+word-wrap-mode~ helps to make these files more readable without
 changing the buffer contents.
 
 #+begin_src elisp
-(+global-word-wrap-mode +1)
+(add-hook! 'doom-first-first-buffer #'+global-word-wrap-mode)
 #+end_src
 
 *** Work Stuff
