@@ -2435,21 +2435,21 @@ With the package installed, we are ready to define ~org-agenda-custom-commands~ 
                                 (:name "Next Items"
                                  :and (:todo "NEXT" :not (:tag ("consume"))))
                                 (:name "Important"
-                                 :priority "A")
+                                 :and (:priority "A" :not (:todo "WAIT")))
+                                (:name "In hold"
+                                 :and (:not (:tag ("consume")) :todo "WAIT"))
                                 (:name "Scheduled"
                                  :and (:priority<= "B"
                                        :scheduled future))
-                                (:name "Incoming Events"
-                                 :and (:todo "EVENT" :not (:date today)))
                                 (:name "Candidates"
                                  :and (:not (:todo ("EVENT" "WAIT"))
                                        :priority "B"))
-                                (:name "Active projects"
-                                 :todo "PROJ")
                                 (:name "Ideas"
                                  :and (:not (:tag ("consume")) :todo "IDEA"))
-                                (:name "In hold"
-                                 :and (:not (:tag ("consume")) :todo "WAIT"))
+                                (:name "Incoming Events"
+                                 :and (:todo "EVENT" :not (:date today)))
+                                (:name "Active projects"
+                                 :todo "PROJ")
                                 (:name "Consumerism"
                                  :tag  ("consume")))))
 #+end_src
