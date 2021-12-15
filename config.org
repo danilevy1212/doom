@@ -2640,12 +2640,10 @@ We define an auto-load function as an entry point to the winter season.
 Default doom dashboard is pretty and welcoming, let's just give it a small personal touch.
 
 #+begin_src elisp
-(setq! fancy-splash-image (expand-file-name "img/stallman.png" doom-private-dir))
+(setq! fancy-splash-image (expand-file-name "img/qs.png" doom-private-dir))
 #+end_src
 
-Paying respects to both the spirit of Emacs and its creator.
-
-#+HTML: <p align="center"><img src="https://raw.githubusercontent.com/danilevy1212/doom/master/img/stallman.png"/></p>
+#+HTML: <p align="center"><img src="https://raw.githubusercontent.com/danilevy1212/doom/master/img/qs.png"/></p>
 
 But what if I am in the terminal? No worries:
 
