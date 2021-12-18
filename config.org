@@ -1914,77 +1914,6 @@ a laptop:
     (display-battery-mode)))
 #+end_src
 
-*** Mozc (Japanese Input) DEPRECATED.
-
-#+begin_quote
-Nowadays I use Ibus with the XIM overlay for this, which gets rid of the dependency with mozc_emacs_helper.
-#+end_quote
-
-I am learning Japanese as a hobby, and I do most of my note taking in Emacs. To
-input Japanese text we use Google's Mozc.
-
-#+begin_src elisp :tangle no
-(package! mozc
-  :recipe (:files ("src/unix/emacs/*.el")))
-#+end_src
-
-Let's lazy load Mozc, so it loads only when our entry function is called.
-
-#+begin_src elisp :tangle no
-(use-package! mozc
-  :defer t
-#+end_src
-
-The overlay style is sluggish, the echo-area style is pretty and functional, it even works in the mini-buffer!
-
-#+begin_src elisp :tangle no
-  :custom
-  (mozc-candidate-style 'echo-area))
-#+end_src
-
-Finally, we create a keybinding activate ~mozc-mode~.
-
-#+begin_src elisp :tangle no
-(map! :g "C-x j"  #'dan/toggle-mozc-mode
-      :ni "C-x j" #'dan/toggle-mozc-mode)
-#+end_src
-
-**** Auto-loads
-
-Lexical binding.
-
-#+begin_src elisp :tangle no
-;;; $DOOMDIR/autoload/mozc.el -*- lexical-binding: t; -*-
-#+end_src
-
-First, let's define our toggle function and lazily load it. Activates ~mozc-mode~
-and changes the mode line to show it.
-
-#+begin_src elisp :tangle no
-;;;###autoload
-(defun dan/toggle-mozc-mode ()
-  "Toggle activation/deactivation of `mozc-mode'."
-  (interactive)
-  (let* ((active (mozc-mode))
-         (msg-modeline (if active
-                           '("Activated" . "日本語")
-                         '("Deactivated" . ""))))
-    (progn
-      (message "Mozc Mode %s" (car msg-modeline))
-      (setq-local global-mode-string (cdr msg-modeline))
-#+end_src
-
-This part of the function is a bit of hack so mozc plays nicely with Doom's
-configuration of evil-org.
-
-#+begin_src elisp :tangle no
-      (map! (:when (and (featurep 'evil-org) evil-org-mode) :map evil-org-mode-map
-             (:when mozc-mode    :i "<return>"   nil)
-             (:unless mozc-mode  :i "<return>"   (cmd! (org-return electric-indent-mode)))
-             (:when mozc-mode    :i "RET"        nil)
-             (:unless mozc-mode  :i "RET"        (cmd! (org-return electric-indent-mode))))))))
-#+end_src
-
 *** New Lines
 
 Emacs aggressively adds a ~\n~ to files, which is technically a good practice. However, lots of other IDEs don't do this. In collaborative version controlled projects, this can result in emacs stubbornly adding a hunk at the end of the file, which can lead to problems, from strange commits diffs to tests failing because files where not expected to have a trailing new line.
@@ -2019,95 +1948,6 @@ This little hack prevents ~persp-mode~ to bother me when saving its =autosave= f
 #+begin_src elisp
 (after! nodejs-repl
   (setq nodejs-repl-arguments '("--experimental-repl-await")))
-#+end_src
-
-*** nvm DEPRECATED
-
-#+begin_quote
-NixOS has made this package redundant for me. However, somebody may find this configuration useful so I will keep it.
-#+end_quote
-
-=nvm= stands for =n.ode v.ersion m.anager=. At it's core it's just a shell
-script that keeps versions of node/npm that can be activated on a per-project
-basis.  The =nvm.el= package offers non-interactive functions to interact
-with =nvm=. These functions change the ~PATH~ value inside =emacs=, so when =npm=
-or =node= are called from it, they are look in the directory =nvm.el= has set.
-
-#+begin_src elisp :tangle no
-(package! nvm)
-#+end_src
-
-**** Auto-loads
-
-=nvm.el= lacks functions to interactively activate or deactivate a version of
-node within Emacs.  Luckily, Emacs is extensible. We'll create our functions in
-an auto-loaded file.
-
-#+begin_src elisp :tangle no
-;;; $DOOMDIR/autoload/nvm.el -*- lexical-binding: t; -*-
-#+end_src
-
-When loading the auto-load file, load the =nvm= module. Essentially, we give
-
-access to the =nvm= package to the auto-loaded functions.
-
-#+begin_src elisp :tangle no
-(require 'nvm)
-#+end_src
-
-A function to deactivate the current version of node, if it was activated by
-=nvm=. Essentially, it removes the modifications =nvm= may have done to PATH
-environment variable.
-
-#+begin_src  elisp :tangle no
-;;;###autoload
-(defun dan/nvm-deactivate ()
-  "Deactivate nvm.
-
-This function will restore the enviroment variable PATH to it's value before nvm
-was activated.
-
-If nvm wasn't activated previously, PATH will remain unchanged."
-  (interactive)
-  (when nvm-current-version
-    (let* ((path-re (concat "^" (f-join nvm-dir nvm-runtime-re) nvm-version-re "/bin/?$"))
-           (node-version-dir (expand-file-name "bin/" (-last-item nvm-current-version)))
-           (new-path-list (--reject (s-matches? path-re it) (parse-colon-path (getenv "PATH")))))
-      (setenv "PATH" (s-join path-separator new-path-list))
-      (setq! nvm-current-version nil)
-      (message "NVM deactivated. Restored node version to system default."))))
-#+end_src
-
-A ~nvm-use-for~ interactive wrapper. If a =.nvmrc= can't be found in ~default-directory~, then prompt user.
-
-#+begin_src elisp :tangle no
-;;;###autoload
-(defun dan/nvm-use-for ()
-  "Activate a node version interactively.
-
-From `default-directory' upwards, a .nvmrc file will be searched to fix the nvm version.
-If none is found, the user will be prompted to select an available version of node."
-  (interactive)
-  (cl-flet ((announce ()
-                    (message "Node %s activated" (car nvm-current-version))))
-    (condition-case err
-        (progn
-          (nvm-use-for)
-          (announce))
-      ('error
-       (let* ((node-system-path "/usr/bin/node")
-              (node-system (and (file-exists-p node-system-path)
-                                (format "System (%s)"
-                                              (s-trim (with-temp-buffer
-                                                        (call-process-shell-command
-                                                         (concat node-system-path " -v") nil t)
-                                                        (buffer-string))))))
-              (choice (completing-read "Select a Node version:"
-                                       (append (nvm--installed-versions) (list node-system)) nil t)))
-         (cond
-          ((s-equals-p choice node-system) (dan/nvm-deactivate))
-          (t (nvm-use choice)
-             (announce))))))))
 #+end_src
 
 *** Org
@@ -2894,33 +2734,6 @@ Keep header lines for ~+zen-mode~, so ~org-sticky-header-mode~ works as intended
 #+begin_src elisp
 (add-hook! org-mode
   (setq-local writeroom-header-line t))
-#+end_src
-
-*** xonsh
-
-#+begin_quote
-Xonsh is a Python-powered, cross-platform, Unix-gazing shell language and command prompt. The language is a superset of Python 3.6+ with additional shell primitives that you are used to from Bash and IPython. It works on all major systems including Linux, OSX, and Windows. Xonsh is meant for the daily use of experts and novices.
-#+end_quote
-
-#+begin_src elisp :tangle packages.el
-(package! xonsh-mode)
-#+end_src
-
-Only activate it in ~.xsh~ files.
-
-#+begin_src elisp
-(use-package! xonsh-mode
-   :mode "\\.xsh\\'")
-#+end_src
-
-*** xref
-
-A recent change in ~emacs~ master branch broke =xref= package for the ~Pgtk~ branch. Pin it to the last known working commit as a temporary solution.
-
-#+begin_src elisp :tangle packages.el
-(package! xref
-  :pin (when (= emacs-major-version 28)
-         "a82f459b37b31546bf274388baf8aca79e9c30d9"))
 #+end_src
 
 ** Private modules.
