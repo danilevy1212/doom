@@ -2460,14 +2460,6 @@ When using the rustic popup, be in Emacs state.
     (add-hook! 'rustic-popup-mode-hook #'evil-emacs-state)))
 #+end_src
 
-*** So Long Mode
-=emacs= struggles with long lines. In ~emacs-version >= 28~, the ~so-long-statistics-excessive-p~ function has been reworked into a native super fast function to detect when ~so-long-mode~ is needed.
-
-#+begin_src elisp
-(after! so-long
-  (setq so-long-predicate #'so-long-statistics-excessive-p))
-#+end_src
-
 *** Snow
 
 A nice, comfy, useless package.
@@ -2481,6 +2473,14 @@ We define an auto-load function as an entry point to the winter season.
 #+begin_src elisp
 (use-package! snow
   :commands snow)
+#+end_src
+
+*** So Long Mode
+=emacs= struggles with long lines. In ~emacs-version >= 28~, the ~so-long-statistics-excessive-p~ function has been reworked into a native super fast function to detect when ~so-long-mode~ is needed.
+
+#+begin_src elisp
+(after! so-long
+  (setq so-long-predicate #'so-long-statistics-excessive-p))
 #+end_src
 
 *** Splash Screen
