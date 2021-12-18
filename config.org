@@ -1339,6 +1339,25 @@ Here's a simple trick to make =she-banged= scripts executable auto-magically by 
            #'executable-make-buffer-file-executable-if-script-p)
 #+end_src
 
+*** alert.el
+
+#+begin_quote
+Alert is a Growl-workalike for Emacs which uses a common notification interface and multiple, selectable "styles", whose use is fully customizable by the user.
+#+end_quote
+
+#+begin_src elisp :tangle packages.el
+(package! alert)
+#+end_src
+
+I'm a =linux= user, so we pick the ~libnotify~ for getting system notifications.
+
+#+begin_src elisp
+(use-package! alert
+  :defer t
+  :custom
+  (alert-default-style #'libnotify))
+#+end_src
+
 *** Browse Url
 
 Some of my RSS feeds offer links to =lbry=, which cannot be open directly with a
@@ -2519,6 +2538,87 @@ But what if I am in the terminal? No worries:
 
 (when (not (display-graphic-p))
   (setq! +doom-dashboard-ascii-banner-fn #'dan/my-weebery-is-always-greater))
+#+end_src
+
+*** telega
+
+=telega= is full featured unofficial client for Telegram platform for GNU Emacs.
+
+Until ~tdlib-1.7.10~ makes it to ~nixpkgs~, we use the latest version compatible with ~tdlib-1.7.9~.
+
+#+begin_src elisp :tangle packages.el
+(package! telega
+  :pin "acf2d99df25f15c104cd13d5bbdcb17078a353f9")
+#+end_src
+
+Minimal configuration to be able to build the server and load the cache.
+
+#+begin_src elisp
+(use-package! telega
+  :defer t
+  :custom
+  (telega-directory (expand-file-name "telega" doom-cache-dir))
+  (telega-server-libs-prefix (getenv "TDLIB_PREFIX")))
+#+end_src
+
+Quick keybinding to open =telega=.
+
+#+begin_src elisp
+(map! :leader
+    :desc "telegram" :mv "o m" #'telega)
+#+end_src
+
+~evil-snipe~ shadows the =search= default bindings of =telega= in ~evil-collection~, so we disable it for ~telega-root-mode~.
+
+#+begin_src elisp
+(after! evil-snipe
+  (add-to-list 'evil-snipe-disabled-modes 'telega-root-mode))
+#+end_src
+
+We set up auto-completion for chats.
+
+#+begin_src elisp
+(after! telega
+  (set-company-backend! 'telega-chat-mode
+    '(:separate
+      telega-company-telegram-emoji
+      telega-company-username
+      telega-company-botcmd
+      telega-company-hashtag
+      company-ispell
+      company-dabbrev)))
+#+end_src
+
+Finally, we add some extra goodies, some in =core= and others in =contrib=. These include visual customization like =shortening url's= or =code blocks syntax highlighting= to more complicated functionality like =system notifications= brought to you via ~alert.el~.
+
+#+begin_src elisp
+(add-hook! telega-load
+           (progn
+             ;; core
+             (telega-mode-line-mode +1)
+             (telega-appindicator-mode +1)
+             (global-telega-squash-message-mode +1)
+             (telega-notifications-mode +1)
+
+             ;; contrib
+             (require 'telega-url-shorten)
+             (require 'telega-mnz)
+             (require 'telega-transient)
+             (require 'telega-alert)
+             (require 'telega-status-history)
+             (global-telega-url-shorten-mode +1)
+             (telega-alert-mode +1)
+             (telega-transient-mode +1)
+             (telega-status-history-mode +1)))
+
+(add-hook! telega-chat-mode #'telega-mnz-mode--maybe)
+#+end_src
+
+Highlight the current line in =telega= buffer.
+
+#+begin_src elisp
+(add-hook! '(telega-root-mode-hook telega-chat-mode-hook)
+           #'hl-line-mode)
 #+end_src
 
 *** Topsy
