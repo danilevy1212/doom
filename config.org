@@ -1810,13 +1810,31 @@ Remove highlighted items after a search.
         :m "C-l" #'evil-ex-nohighlight))
 #+end_src
 
+Center the cursor after jumping to a new search entry.
+
+#+begin_src elisp
+(after! evil
+  (defun dan/center-after-move (&rest _)
+    "Center screen after search."
+    (evil-scroll-line-to-center nil))
+
+  (dolist (command '(evil-ex-search-next
+                     evil-ex-search-previous))
+    (advice-add command :after #'dan/center-after-move))
+
+  (after! evil-snipe
+    (dolist (command '(evil-snipe-repeat
+                       evil-snipe-seek))
+      (advice-add command :after #'dan/center-after-move))))
+#+end_src
+
 *** evil-snipe
 
 ~evil-snipe~ is a simple but powerful plugin, that adds a =snipe= two character motion, plus the possibility of make builtin motions work further than a single line.
 
 #+begin_src elisp
 (after! evil-snipe
-  (setq! evil-snipe-scope 'buffer))
+  (setq evil-snipe-scope 'whole-buffer))
 #+end_src
 
 *** Hydra
