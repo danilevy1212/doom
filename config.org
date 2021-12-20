@@ -1759,6 +1759,62 @@ The BUFFER-NAME is given as string surrounded by \"\"."
   (insert-and-inherit "\"" buffer-name "\""))
 #+end_src
 
+*** evil-mode
+
+Vim keybindings are hard to let go once you are used to them.
+Luckily, doom comes with much of the heavy lifting already done when it comes to
+evil mode. We just gotta customize some minor details.
+
+#+begin_src elisp
+(use-package! evil
+  :defer t
+  :custom
+#+end_src
+
+Make horizontal motions move to other lines.
+
+#+begin_src elisp
+  (evil-cross-lines t)
+#+end_src
+
+Remove highlighted items after search is finished.
+
+#+begin_src elisp
+  (evil-ex-search-persistent-highlight nil)
+#+end_src
+
+Don't continue commented lines with o/O.
+
+#+begin_src elisp
+   (+evil-want-o/O-to-continue-comments nil)
+#+end_src
+
+Don't override the contents of the " register after pasting on a block.
+
+#+begin_src elisp
+   (evil-kill-on-visual-paste nil)
+#+end_src
+
+Yank by actual lines of text and not by screen lines, less confusing.
+
+#+begin_src elisp
+   :init
+   (setq! evil-respect-visual-line-mode nil)
+#+end_src
+
+Universal argument mapped to M-u instead.
+
+#+begin_src elisp
+  :config
+  (map! :g "M-u" #'universal-argument
+#+end_src
+
+Remove highlighted items after a search.
+
+#+begin_src elisp
+        :m "C-l" #'evil-ex-nohighlight))
+#+end_src
+
 *** evil-snipe
 
 ~evil-snipe~ is a simple but powerful plugin, that adds a =snipe= two character motion, plus the possibility of make builtin motions work further than a single line.
@@ -2345,56 +2401,6 @@ clients, file templates and snippets.
 #+begin_src elisp
 (setq! user-full-name "Daniel Levy Moreno"
        user-mail-address "daniellevymoreno@gmail.com")
-#+end_src
-
-*** Pretending we are in vim? That's just plain EVIL!
-
-Bad puns aside, vim keybindings are hard to let go once you are used to them.
-Luckily, doom comes with much of the heavy lifting already done when it comes to
-evil mode. We just gotta customize some minor details.
-
-#+begin_src elisp
-(use-package! evil
-  :defer t
-  :custom
-#+end_src
-
-Make horizontal motions move to other lines.
-
-#+begin_src elisp
-  (evil-cross-lines t)
-#+end_src
-
-Remove highlighted items after search is finished.
-
-#+begin_src elisp
-  (evil-ex-search-persistent-highlight nil)
-#+end_src
-
-Don't continue commented lines with o/O.
-
-#+begin_src elisp
-   (+evil-want-o/O-to-continue-comments nil)
-#+end_src
-
-Yank by actual lines of text and not by screen lines, less confusing.
-
-#+begin_src elisp
-   :init
-   (setq! evil-respect-visual-line-mode nil)
-#+end_src
-
-Universal argument mapped to M-u instead.
-
-#+begin_src elisp
-  :config
-  (map! :g "M-u" #'universal-argument
-#+end_src
-
-Remove highlighted items after a search.
-
-#+begin_src elisp
-        :m "C-l" #'evil-ex-nohighlight))
 #+end_src
 
 *** Proced
