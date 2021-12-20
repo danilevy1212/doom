@@ -837,19 +837,7 @@ Toggled on by the ~SPC b i~ keybinding.
 
 #+begin_src elisp :tangle init.el
        (ibuffer +icons)  ; interactive buffer management
-#+end_src
-
-***** undo
-
-#+begin_quote
-This module augments Emacs' built-in undo system to be more intuitive and to
-persist across Emacs sessions.
-#+end_quote
-
-This module uses [[https://github.com/emacsmirror/undo-fu][undo-fu]] to keep a history of editing changes.
-
-#+begin_src elisp :tangle init.el
-       undo              ; persistent, smarter undo for your inevitable mistakes
+       ;; undo           ; persistent, smarter undo for your inevitable mistakes
 #+end_src
 
 ***** vc
