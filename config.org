@@ -1106,7 +1106,14 @@ Requires [[https://github.com/rust-lang/rls][rls]] or [[https://rust-analyzer.gi
        ;;scheme            ; a fully conniving family of lisps
        sh                  ; she sells {ba,z,fi}sh shells on the C xor
        ;;sml
-       ;;solidity          ; do you need a blockchain? No.
+#+end_src
+
+***** solidity
+
+Emacs has support for any buzzword you can imagine, even =blockchain technologies=.
+
+#+begin_src elisp :tangle init.el
+       solidity          ; do you need a blockchain? No.
        ;;swift             ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
 #+end_src
@@ -2498,6 +2505,16 @@ We define an auto-load function as an entry point to the winter season.
 #+begin_src elisp
 (use-package! snow
   :commands snow)
+#+end_src
+
+*** Solidity
+
+~solidity-mode~ is a bit barebores. We can help it along adding ~company-yasnippet~ and ~company-dabbrev-code~ for better autocompletion.
+
+#+begin_src elisp
+(after! (solidity-mode company-solidity company-yasnippet)
+  (set-company-backend! 'solidity-mode
+    'company-solidity 'company-yasnippet 'company-dabbrev-code))
 #+end_src
 
 *** So Long Mode
