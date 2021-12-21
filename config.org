@@ -1828,6 +1828,18 @@ Center the cursor after jumping to a new search entry.
       (advice-add command :after #'dan/center-after-move))))
 #+end_src
 
+Create =undo= boundaries after certain key presses in insert mode.
+
+#+begin_src elisp
+(after! evil
+  (add-hook! 'post-self-insert-hook
+    (when (and (evil-insert-state-p)
+               (memq (char-before) '(?. ?, ?! ?\( ?\{ ?\[ ??)))
+      (let ((inhibit-message t))
+        (evil-force-normal-state)
+        (call-interactively #'evil-append)))))
+#+end_src
+
 *** evil-snipe
 
 ~evil-snipe~ is a simple but powerful plugin, that adds a =snipe= two character motion, plus the possibility of make builtin motions work further than a single line.
