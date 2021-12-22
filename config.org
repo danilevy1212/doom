@@ -2648,11 +2648,10 @@ Finally, we add some extra goodies, some in =core= and others in =contrib=. Thes
              (require 'telega-alert)
              (require 'telega-status-history)
              (global-telega-url-shorten-mode +1)
+             (global-telega-mnz-mode +1)
              (telega-alert-mode +1)
              (telega-transient-mode +1)
              (telega-status-history-mode +1)))
-
-(add-hook! telega-chat-mode #'telega-mnz-mode--maybe)
 #+end_src
 
 Highlight the current line in =telega= buffer.
