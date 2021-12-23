@@ -2408,14 +2408,14 @@ We reduce the default zoom factor to have more leeway between zoom levels.
 
 #+begin_src elisp
 (after! pdf-tools
-  (setq! pdf-view-resize-factor 1.05)
+  (setq! pdf-view-resize-factor 1.05))
 #+end_src
 
-We also auto install the ~pdf-info-epdfinfo-program~ in case it's not present already.
+We also auto install ~epdinfo~.
 
 #+begin_src elisp
-  (unless (file-executable-p pdf-info-epdfinfo-program)
-    (pdf-tools-install t)))
+(after! pdf-tools
+   (pdf-loader-install t))
 #+end_src
 
 *** Personal information
