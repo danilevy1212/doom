@@ -2843,6 +2843,45 @@ changing the buffer contents.
 (add-hook! 'doom-first-first-buffer #'+global-word-wrap-mode)
 #+end_src
 
+*** World Clock
+
+I have family all over the place, it's hard to keep up with the time difference. Luckily, =emacs= can help with ~world-clock~ mode.
+
+#+begin_src elisp
+(after! time
+  (setq world-clock-list '(("America/Los_Angeles" "Santa Rosa")
+                           ("America/Sao_Paulo" "Brasilia")
+                           ("Europe/Madrid" "Madrid")
+                           ("Asia/Tokyo" "Tokyo"))))
+#+end_src
+
+Make the =wclock= buffer into a popup.
+
+#+begin_src elisp
+(set-popup-rule! "^\\*wclock" :quit 'current :side 'top)
+#+end_src
+
+Make it quit-able with =q=.
+
+#+begin_src elisp
+(after! time
+  (map! :map 'world-clock-mode-map
+        :nm "q" #'quit-window))
+#+end_src
+
+Make it play nice with ~evil-mode~.
+
+#+begin_src elisp
+(add-hook! world-clock-mode #'evil-normalize-keymaps)
+#+end_src
+
+Give it an easy entry keybinding ~SPC o w~.
+
+#+begin_src elisp
+(map! :leader
+      :desc "World Clock" :nm "o w" #'world-clock)
+#+end_src
+
 *** Writeroom
 
 Keep header lines for ~+zen-mode~, so ~org-sticky-header-mode~ works as intended.
