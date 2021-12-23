@@ -2332,7 +2332,7 @@ Do not activate in ~org-capture~ mode but leave it on after finalizing capture.
 
 #+begin_src elisp
 (after! org-capture
-  (add-hook! org-capture-mode (lambda () (org-sticky-header-mode -1)))
+  (add-hook! org-capture-mode :append (lambda () (org-sticky-header-mode -1)))
   (add-hook! 'org-capture-prepare-finalize-hook (lambda () (org-sticky-header-mode +1))))
 #+end_src
 
