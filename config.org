@@ -1675,7 +1675,7 @@ Expose the aliases to the =x= keybinding.
         :nv "X" #'dan/elfeed-search-untag-all-star)
 #+end_src
 
-Automatically updating feed when opening elfeed.
+Automatically updating feed when opening =elfeed=.
 
 #+begin_src elisp
   (add-hook! 'elfeed-search-mode-hook #'elfeed-update))
@@ -1966,7 +1966,7 @@ And let me change =lsp-lua-diagnostics-globals= on each project as a safe local 
 A hidden feature of the =eval= module is that any function whose name matches
 with the regex ~^\\(?:\\+\\)?\\([^/]+\\)/open-\\(?:\\(.+\\)-\\)?repl$~, will appear as an option in the ~+eval-open-repl~.
 
-With this, we can create a repl for the =awesome-client=.
+With this, we can create a =repl= for the =awesome-client=.
 
 #+begin_src elisp :tangle autoload/awesomewm.el
 ;;;###autoload
