@@ -1834,7 +1834,12 @@ Create =undo= boundaries after certain key presses in insert mode.
 (after! evil
   (add-hook! 'post-self-insert-hook
     (when (and (evil-insert-state-p)
-               (memq (char-before) '(?. ?, ?! ?\( ?\{ ?\[ ??)))
+               (memq (char-before)
+                     (seq-concatenate 'list
+                                      ;; English and Spanish
+                                      '(?. ?, ?! ?\( ?\{ ?\[ ??)
+                                      ;; 日本語
+                                      '(?。 ?、 ?\「 ?\（ ?\｛ ?・))))
       (let ((inhibit-message t))
         (evil-force-normal-state)
         (call-interactively #'evil-append)))))
