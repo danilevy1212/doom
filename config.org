@@ -2616,11 +2616,8 @@ But what if I am in the terminal? No worries:
 
 =telega= is full featured unofficial client for Telegram platform for GNU Emacs.
 
-Until ~tdlib-1.7.10~ makes it to ~nixpkgs~, we use the latest version compatible with ~tdlib-1.7.9~.
-
 #+begin_src elisp :tangle packages.el
-(package! telega
-  :pin "acf2d99df25f15c104cd13d5bbdcb17078a353f9")
+(package! telega)
 #+end_src
 
 Minimal configuration to be able to build the server and load the cache.
@@ -2668,7 +2665,6 @@ Finally, we add some extra goodies, some in =core= and others in =contrib=. Thes
            (progn
              ;; core
              (telega-mode-line-mode +1)
-             (telega-appindicator-mode +1)
              (global-telega-squash-message-mode +1)
              (telega-notifications-mode +1)
 
