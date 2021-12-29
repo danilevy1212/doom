@@ -2617,7 +2617,12 @@ But what if I am in the terminal? No worries:
 =telega= is full featured unofficial client for Telegram platform for GNU Emacs.
 
 #+begin_src elisp :tangle packages.el
-(package! telega)
+(package! telega
+  :recipe (:files (:defaults
+                   "contrib/*.el"
+                   "etc"
+                   "server"
+                   "Makefile")))
 #+end_src
 
 Minimal configuration to be able to build the server and load the cache.
@@ -2662,23 +2667,17 @@ Finally, we add some extra goodies, some in =core= and others in =contrib=. Thes
 
 #+begin_src elisp
 (add-hook! telega-load
-           (progn
-             ;; core
-             (telega-mode-line-mode +1)
-             (global-telega-squash-message-mode +1)
-             (telega-notifications-mode +1)
+           ;; core
+           #'telega-mode-line-mode
+           #'global-telega-squash-message-mode
+           #'telega-notifications-mode
 
-             ;; contrib
-             (require 'telega-url-shorten)
-             (require 'telega-mnz)
-             (require 'telega-transient)
-             (require 'telega-alert)
-             (require 'telega-status-history)
-             (global-telega-url-shorten-mode +1)
-             (global-telega-mnz-mode +1)
-             (telega-alert-mode +1)
-             (telega-transient-mode +1)
-             (telega-status-history-mode +1)))
+           ;; contrib
+           #'global-telega-url-shorten-mode
+           #'global-telega-mnz-mode
+           #'telega-alert-mode
+           #'telega-transient-mode
+           #'telega-status-history-mode)
 #+end_src
 
 Highlight the current line in =telega= buffer.
@@ -2686,6 +2685,15 @@ Highlight the current line in =telega= buffer.
 #+begin_src elisp
 (add-hook! '(telega-root-mode-hook telega-chat-mode-hook)
            #'hl-line-mode)
+#+end_src
+
+Sometimes ~telega~ emacs when trying to quit it. Forcing to quit ~telega~ when quitting =emacs= prevents this situation.
+
+#+begin_src elisp
+(add-hook! kill-emacs
+  (when (and (boundp 'telega-root-buffer-name)
+             (get-buffer telega-root-buffer-name))
+    (telega-kill t)))
 #+end_src
 
 *** Topsy
