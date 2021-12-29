@@ -2887,6 +2887,7 @@ I have family all over the place, it's hard to keep up with the time difference.
   (setq world-clock-list '(("America/Los_Angeles" "Santa Rosa")
                            ("America/Sao_Paulo" "Brasilia")
                            ("Europe/Madrid" "Madrid")
+                           ("Asia/Singapore" "Singapore")
                            ("Asia/Tokyo" "Tokyo"))))
 #+end_src
 
