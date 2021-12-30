@@ -1949,24 +1949,40 @@ Search for the ~lsp-server~ in path:
 
 #+begin_src elisp
 (after! lsp-lua
-   (setq! lsp-clients-lua-language-server-command "lua-language-server"))
+   (setq lsp-clients-lua-language-server-command "lua-language-server"))
 #+end_src
 
-And let me change =lsp-lua-diagnostics-globals= on each project as a safe local variable.
+Add ~lsp-lua-diagnostics-globals~ as a ~safe-local-variable~.
 
 #+begin_src elisp
 (after! lua-mode
-  (put 'lsp-lua-diagnostics-globals 'safe-local-variable (lambda (elt)
-                                                           (and (vectorp elt)
-                                                                (--all?
-                                                                 (and (stringp it)
-                                                                      (not (string-empty-p it)))
-                                                                 (seq-concatenate 'list elt)))))
-  ;; TODO List of alist, head is dir, last is t or dir.
-  (put 'lsp-lua-workspace-library 'safe-local-variable (lambda (elt) t)))
+  (put 'lsp-lua-diagnostics-globals
+       'safe-local-variable
+       (lambda (e)
+         (and (vectorp e)
+              (--all?
+               (and (stringp it)
+                    (not (string-empty-p it)))
+               (seq-concatenate 'list e))))))
 #+end_src
 
-**** awesome-client
+Add ~lsp-lua-workspace-library~ as a ~safe-local-variable~.
+
+#+begin_src elisp
+(after! lua-mode
+  (put 'lsp-lua-workspace-library 'safe-local-variable
+       (lambda (e)
+         (let ((is-dir-p (lambda (dir) (and (stringp dir))
+                           (file-directory-p dir))))
+           (and (listp e)
+                (--all? (pcase it
+                          (`(,first . ,last) (and (funcall is-dir-p first)
+                                                  (or (eq last t)
+                                                      (and (listp last)
+                                                           (-all? is-dir-p
+                                                                  last))))))
+                        e))))))
+#+end_src
 
 A hidden feature of the =eval= module is that any function whose name matches
 with the regex ~^\\(?:\\+\\)?\\([^/]+\\)/open-\\(?:\\(.+\\)-\\)?repl$~, will appear as an option in the ~+eval-open-repl~.
