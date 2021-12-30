@@ -1360,7 +1360,7 @@ with the regex ~^\\(?:\\+\\)?\\([^/]+\\)/open-\\(?:\\(.+\\)-\\)?repl$~, will app
 
 With this, we can create a =repl= for the =awesome-client=.
 
-#+begin_src elisp :tangle autoload/awesomewm.el
+#+begin_src elisp :tangle autoload/awesomewm.el :mkdirp yes
 ;;;###autoload
 (defun +lua/open-awesome-client-repl ()
    (interactive)
