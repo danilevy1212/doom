@@ -1353,6 +1353,20 @@ I'm a =linux= user, so we pick the ~libnotify~ for getting system notifications.
   (alert-default-style #'libnotify))
 #+end_src
 
+*** awesome-client
+
+A hidden feature of the =eval= module is that any function whose name matches
+with the regex ~^\\(?:\\+\\)?\\([^/]+\\)/open-\\(?:\\(.+\\)-\\)?repl$~, will appear as an option in the ~+eval-open-repl~.
+
+With this, we can create a =repl= for the =awesome-client=.
+
+#+begin_src elisp :tangle autoload/awesomewm.el
+;;;###autoload
+(defun +lua/open-awesome-client-repl ()
+   (interactive)
+   (pop-to-buffer (make-comint "repl:awesome-client" "awesome-client" nil)))
+#+end_src
+
 *** Browse Url
 
 Some of my RSS feeds offer links to =lbry=, which cannot be open directly with a
@@ -1982,18 +1996,6 @@ Add ~lsp-lua-workspace-library~ as a ~safe-local-variable~.
                                                            (-all? is-dir-p
                                                                   last))))))
                         e))))))
-#+end_src
-
-A hidden feature of the =eval= module is that any function whose name matches
-with the regex ~^\\(?:\\+\\)?\\([^/]+\\)/open-\\(?:\\(.+\\)-\\)?repl$~, will appear as an option in the ~+eval-open-repl~.
-
-With this, we can create a =repl= for the =awesome-client=.
-
-#+begin_src elisp :tangle autoload/awesomewm.el
-;;;###autoload
-(defun +lua/open-awesome-client-repl ()
-   (interactive)
-   (pop-to-buffer (make-comint "repl:awesome-client" "awesome-client" nil)))
 #+end_src
 
 *** magit-delta
