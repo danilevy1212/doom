@@ -229,8 +229,7 @@ With the following command you can clone the repository in either case:
 git clone https://github.com/danilevy1212/doom.git ${DOOMDIR:-~/.doom.d}
 #+end_src
 
-Then, just follow the instructions for installing [[https://github.com/hlissner/doom-emacs#install][doom emacs]]. In case you have
-set ~DOOMDIR~, make sure to run ~doom env~ before ~doom install~.
+Then, just follow the instructions for installing [[https://github.com/hlissner/doom-emacs#install][doom emacs]]. Run ~doom env~, then ~doom tangle~ and finally ~doom install~.
 
 * Configuration
 
