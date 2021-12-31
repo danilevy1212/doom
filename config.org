@@ -2649,6 +2649,9 @@ Minimal configuration to be able to build the server and load the cache.
   :defer t
   :custom
   (telega-directory (expand-file-name "telega" doom-cache-dir))
+  (telega-video-player-command '(concat "mpv"
+                                        (when telega-ffplay-media-timestamp
+                                          (format " --start=%f" telega-ffplay-media-timestamp))))
   (telega-server-libs-prefix (getenv "TDLIB_PREFIX")))
 #+end_src
 
