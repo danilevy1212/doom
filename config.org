@@ -1,4 +1,4 @@
-# -*- eval: (when (fboundp #'+zen/toggle) (+zen/toggle)); -*-
+# -*- eval: (when (and (fboundp #'+zen/toggle) (not noninteractive)) (+zen/toggle)); -*-
 
 #+TITLE: Dan's DOOM Emacs configuration
 #+OPTIONS: tags:nil todo:nil
@@ -2942,6 +2942,15 @@ Keep header lines for ~+zen-mode~, so ~org-sticky-header-mode~ works as intended
 #+begin_src elisp
 (add-hook! org-mode
   (setq-local writeroom-header-line t))
+#+end_src
+
+Make ~zen-mode~ togglable in a per file basis, just like in this ~config.org~!
+
+#+begin_src elisp
+(add-to-list 'safe-local-eval-forms
+             '(when (and (fboundp #'+zen/toggle)
+                         (not noninteractive))
+                (+zen/toggle)))
 #+end_src
 
 ** Private modules.
