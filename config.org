@@ -2429,10 +2429,12 @@ With the package installed, we are ready to define ~org-agenda-custom-commands~ 
                                 (:name "Candidates"
                                  :and (:not (:todo ("EVENT" "WAIT"))
                                        :priority "B"))
+                                (:name "Incoming Events"
+                                 :and (:todo "EVENT"))
+                                (:name "Backlog"
+                                 :and (:todo "TODO" :not (:tag ("consume") :priority>= "B")))
                                 (:name "Ideas"
                                  :and (:not (:tag ("consume")) :todo "IDEA"))
-                                (:name "Incoming Events"
-                                 :and (:todo "EVENT" :not (:date today)))
                                 (:name "Active projects"
                                  :todo "PROJ")
                                 (:name "Consumerism"
