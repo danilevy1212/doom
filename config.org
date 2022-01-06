@@ -2269,19 +2269,6 @@ Now we specify the ~org-refile-targets~. Any open org file and the files that ar
                              (org-agenda-files :maxlevel . 9))))
 #+end_src
 
-To prevent unnecessary scrolling when calling the agenda buffer, we automate the cursor position on agenda ~todo~ views.
-
-#+begin_src elisp
-(after! org-agenda
- (add-hook! 'org-agenda-finalize-hook
-            :append (when (org-agenda-check-type nil 'todo)
-                     (progn
-                       (evil-goto-first-line 3)
-                       (evil-scroll-line-to-center (count-lines (point-min)
-                                                                (point)))
-                       (org-agenda-next-item 1)))))
-#+end_src
-
 **** Auto-loads
 
 Lexical Binding.
@@ -2420,16 +2407,13 @@ With the package installed, we are ready to define ~org-agenda-custom-commands~ 
                                  :and (:todo "NEXT" :not (:tag ("consume"))))
                                 (:name "Important"
                                  :and (:priority "A" :not (:todo "WAIT")))
-                                (:name "In hold"
+                                (:name "In Hold"
                                  :and (:not (:tag ("consume")) :todo "WAIT"))
-                                (:name "Scheduled"
-                                 :and (:priority<= "B"
-                                       :scheduled future))
+                                (:name "Incoming Events"
+                                 :and (:todo "EVENT"))
                                 (:name "Candidates"
                                  :and (:not (:todo ("EVENT" "WAIT"))
                                        :priority "B"))
-                                (:name "Incoming Events"
-                                 :and (:todo "EVENT"))
                                 (:name "Backlog"
                                  :and (:todo "TODO" :not (:tag ("consume") :priority>= "B")))
                                 (:name "Ideas"
@@ -2444,8 +2428,69 @@ There are a few clashes between ~evil-org-agenda-mode-map~ and ~org-super-agenda
 
 #+begin_src elisp
 (after! (evil-org-agenda org-super-agenda)
-  (setq org-super-agenda-header-map
-        (copy-keymap evil-org-agenda-mode-map)))
+  (setq org-super-agenda-header-map (copy-keymap evil-org-agenda-mode-map)))
+#+end_src
+
+Make headers =foldable= and =quitable=.
+
+#+begin_src elisp
+(after! (evil-org-agenda org-super-agenda)
+  (map! :map 'org-super-agenda-header-map
+        "<tab>" #'origami-toggle-node
+        "q" #'org-agenda-quit))
+#+end_src
+
+Only the first important categories should open by default, fold the rest.
+
+#+begin_src elisp
+(after! (evil-org-agenda org-super-agenda)
+  (add-hook! 'org-agenda-finalize-hook
+             :append (when (org-agenda-check-type nil 'todo)
+                       (progn
+                         (evil-goto-first-line 4)
+                         (let ((inhibit-message t)
+                               (buf        (current-buffer))
+                               (last-point (point-min))
+                               (must-show-headers (cl-loop for group in (cl-subseq org-super-agenda-groups 0 4)
+                                                           collect (plist-get group :name)))
+                               (current-heading-function  (lambda ()
+                                                            (let ((line-text  (buffer-substring-no-properties (point-at-bol)
+                                                                                                              (point-at-eol))))
+                                                              (string-trim line-text)))))
+                           (while (/= last-point (point))
+                             (setq last-point (point))
+                             (unless (member (funcall current-heading-function) must-show-headers)
+                               (origami-toggle-node buf (point)))
+                             (origami-forward-fold-same-level buf (point))))))))
+
+#+end_src
+
+To prevent unnecessary scrolling when calling the agenda buffer, we automate the cursor position on agenda ~todo~ views.
+
+#+begin_src elisp
+(after! (evil-org-agenda org-super-agenda)
+ (add-hook! 'org-agenda-finalize-hook
+            :append (when (org-agenda-check-type nil 'todo)
+                     (progn
+                       (evil-goto-first-line 3)
+                       (evil-scroll-line-to-center (count-lines (point-min)
+                                                                (point)))
+                       (org-agenda-next-item 1)))))
+#+end_src
+
+*** Origami
+
+A text folding minor mode for Emacs.
+
+#+begin_src elisp :tangle packages.el
+(package! origami)
+#+end_src
+
+Currently, only used to fold ~org-super-agenda~ headers.
+
+#+begin_src elisp
+(use-package! origami
+  :hook (org-agenda-mode . origami-mode))
 #+end_src
 
 *** PDF Tools
