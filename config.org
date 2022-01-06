@@ -2269,6 +2269,22 @@ Now we specify the ~org-refile-targets~. Any open org file and the files that ar
                              (org-agenda-files :maxlevel . 9))))
 #+end_src
 
+The default agenda view shows yesterdays task, todays and tomorrows.
+
+#+begin_src elisp
+(after! org-agenda
+  (setq org-agenda-start-on-weekday nil
+        org-agenda-start-day        "-1d"
+        org-agenda-span             3))
+#+end_src
+
+Keybinding for the default agenda.
+
+#+begin_src elisp
+(map! :leader
+      :desc "3 Day Org Agenda" "o a d" #'org-agenda-list)
+#+end_src
+
 **** Auto-loads
 
 Lexical Binding.
