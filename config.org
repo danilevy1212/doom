@@ -2265,22 +2265,21 @@ Now we specify the ~org-refile-targets~. Any open org file and the files that ar
 
 #+begin_src elisp
 (after! org
-  (setq org-refile-targets '((nil :maxlevel              . 9)
+  (setq org-refile-targets '((nil              :maxlevel . 9)
                              (org-agenda-files :maxlevel . 9))))
 #+end_src
 
-To prevent unnecessary scrolling when calling the agenda buffer, we automate the cursor position on agenda views:
+To prevent unnecessary scrolling when calling the agenda buffer, we automate the cursor position on agenda ~todo~ views.
 
 #+begin_src elisp
 (after! org-agenda
-  (defun dan/org-agenda-set-focus-h ()
-     "Hook to appended to `org-agenda-finalize-hook', to prevent scrolling to the important parts of the buffer.'"
-     (progn
-         (evil-goto-first-line 3) ;; Skip heading.
-         (evil-scroll-line-to-center
-          (count-lines (point-min) (point))) ;; recenter.
-         (org-agenda-next-item 1))) ;; Jump to first item.
- (add-hook! 'org-agenda-finalize-hook :append #'dan/org-agenda-set-focus-h))
+ (add-hook! 'org-agenda-finalize-hook
+            :append (when (org-agenda-check-type nil 'todo)
+                     (progn
+                       (evil-goto-first-line 3)
+                       (evil-scroll-line-to-center (count-lines (point-min)
+                                                                (point)))
+                       (org-agenda-next-item 1)))))
 #+end_src
 
 **** Auto-loads
