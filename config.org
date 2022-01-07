@@ -2461,23 +2461,29 @@ Only the first important categories should open by default, fold the rest.
 #+begin_src elisp
 (after! (evil-org-agenda org-super-agenda)
   (add-hook! 'org-agenda-finalize-hook
-             :append (when (org-agenda-check-type nil 'todo)
-                       (progn
-                         (evil-goto-first-line 4)
-                         (let ((inhibit-message t)
-                               (buf        (current-buffer))
-                               (last-point (point-min))
-                               (must-show-headers (cl-loop for group in (cl-subseq org-super-agenda-groups 0 4)
-                                                           collect (plist-get group :name)))
-                               (current-heading-function  (lambda ()
-                                                            (let ((line-text  (buffer-substring-no-properties (point-at-bol)
-                                                                                                              (point-at-eol))))
-                                                              (string-trim line-text)))))
-                           (while (/= last-point (point))
-                             (setq last-point (point))
-                             (unless (member (funcall current-heading-function) must-show-headers)
-                               (origami-toggle-node buf (point)))
-                             (origami-forward-fold-same-level buf (point))))))))
+             :append (when (and (org-agenda-check-type nil 'todo)
+                                ;; Don't fold if we are filtering.
+                                (not (or org-agenda-filter-form
+                                         org-select-this-todo-keyword
+                                         ;; Don't fold when narrowed
+                                         (buffer-narrowed-p))))
+                       (goto-char (point-min))
+                       (re-search-forward "^$")
+                       (forward-line)
+                       (let ((inhibit-message t)
+                             (buf        (current-buffer))
+                             (last-point (point-min))
+                             (must-show-headers (cl-loop for group in (cl-subseq org-super-agenda-groups 0 4)
+                                                         collect (plist-get group :name)))
+                             (current-heading-function  (lambda ()
+                                                          (let ((line-text  (buffer-substring-no-properties (point-at-bol)
+                                                                                                            (point-at-eol))))
+                                                            (string-trim line-text)))))
+                         (while (/= last-point (point))
+                           (setq last-point (point))
+                           (unless (member (funcall current-heading-function) must-show-headers)
+                             (origami-close-node buf (point)))
+                           (origami-forward-fold-same-level buf (point)))))))
 
 #+end_src
 
@@ -2486,12 +2492,15 @@ To prevent unnecessary scrolling when calling the agenda buffer, we automate the
 #+begin_src elisp
 (after! (evil-org-agenda org-super-agenda)
  (add-hook! 'org-agenda-finalize-hook
-            :append (when (org-agenda-check-type nil 'todo)
-                     (progn
-                       (evil-goto-first-line 3)
-                       (evil-scroll-line-to-center (count-lines (point-min)
-                                                                (point)))
-                       (org-agenda-next-item 1)))))
+            :append (when (and (org-agenda-check-type nil 'todo)
+                               ;; Don't do any of this if the buffer is narrowed.
+                               (not (buffer-narrowed-p)))
+                     (goto-char (point-min))
+                     (re-search-forward "^$")
+                     (forward-line)
+                     (evil-scroll-line-to-center (count-lines (point-min)
+                                                              (point)))
+                     (org-agenda-next-item 1))))
 #+end_src
 
 *** Origami
