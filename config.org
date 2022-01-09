@@ -2481,7 +2481,7 @@ Only the first important categories should open by default, fold the rest.
                        (let ((inhibit-message t)
                              (buf        (current-buffer))
                              (last-point (point-min))
-                             (must-show-headers (cl-loop for group in (cl-subseq org-super-agenda-groups 0 4)
+                             (must-show-headers (cl-loop for group in (seq-take org-super-agenda-groups 4)
                                                          collect (plist-get group :name)))
                              (current-heading-function  (lambda ()
                                                           (let ((line-text  (buffer-substring-no-properties (point-at-bol)
