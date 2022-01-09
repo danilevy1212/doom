@@ -2923,8 +2923,14 @@ Lastly, let's activate =git-gutter= for remote files as well.
 Make =urls= clickable in ~vterm~ modes.
 
 #+begin_src elisp
+(add-hook! vterm-mode #'goto-address-mode)
+#+end_src
+
+Maximum scrollback to the max!
+
+#+begin_src elisp
 (after! vterm
-  (add-hook! vterm-mode #'goto-address-mode))
+  (setq vterm-max-scrollback 100000))
 #+end_src
 
 *** Vue
