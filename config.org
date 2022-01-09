@@ -1417,6 +1417,14 @@ Begin giving candidates as soon as something is typed. This can be slow sometime
         company-idle-delay 0.05))
 #+end_src
 
+*** Compilation
+
+Compilation URLs should be followable.
+
+#+begin_src elisp
+(add-hook! compilation-mode #'goto-address-mode)
+#+end_src
+
 *** consult-company
 
 A _consult_ing-read interface for ~company-mode~.
