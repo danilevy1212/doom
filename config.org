@@ -1651,6 +1651,92 @@ Now let's activate it when opening a =.env=:
   :mode ("\\.env\\.?.*\\'" . dotenv-mode))
 #+end_src
 
+*** Dtach
+
+#+begin_quote
+Dtache, or Detach Emacs, is a package to run shell commands completely detached from Emacs.
+#+end_quote
+
+#+begin_src elisp :tangle packages.el
+(package! dtache
+  :recipe (:host gitlab :repo "niklaseklund/dtache"))
+#+end_src
+
+#+begin_quote
+The detachable nature of the package means that commands started with it can outlive Emacs, which also works on remote hosts, essentially offering a lightweight alternative to Tmux or GNU Screen.
+#+end_quote
+
+#+begin_src elisp
+(use-package! dtache
+  :defer t
+  :config
+  (setq dtache-db-directory doom-cache-dir
+        dtache-session-directory (temporary-file-directory))
+  (dtache-initialize))
+#+end_src
+
+~dtache-shell-command~ acts as a replacement to ~async-shell-command~.
+
+#+begin_src elisp
+(map! :g "M-&" #'dtache-shell-command)
+#+end_src
+
+~dtache-consult~ allows us to manage the active sessions behind =dtache=.
+
+#+begin_src elisp
+(use-package! dtache-consult
+  :defer t
+  :init
+  (map! :leader
+        :desc "Shell Sessions Dtache" :g "o s" #'dtache-consult-session))
+#+end_src
+
+~embark~ can integrate with ~dtache~.
+
+#+begin_src elisp
+(after! (embark dtache)
+  (defvar embark-dtache-map (make-composed-keymap dtache-action-map embark-general-map))
+  (add-to-list 'embark-keymap-alist '(dtache . embark-dtache-map)))
+#+end_src
+
+The commands ~dtache-compile~ and ~dtache-compile-recompile~ can act as drop in replacements for ~compile~ and ~compile-recompile~, respectively.
+
+#+begin_src elisp
+(use-package! dtache-compile
+  :after dtache
+  :init
+  (map! :map dtache-compilation-mode-map
+        :desc "Dtach Session" :g "C-c C-q" #'dtache-consult-session
+        :leader
+        :desc "Compile" :g  "c c" #'dtache-compile
+        :desc "Recompile" :g "c C" #'dtache-compile-recompile)
+  :config
+  (dtache-compile-setup))
+#+end_src
+
+Finally, ~dtache~ can integrate with ~alert.el~ to notify us when a session has becomed inactive.
+
+#+begin_src elisp
+(after! dtache
+  (defun dan/dtache-inactive-session-notification (session)
+    "Send an `alert' notification when SESSION finish."
+    (let ((status (dtache--session-status session))
+          (title
+           (pcase (dtache--session-status session)
+             ('success "Dtache finished!")
+             ('failure "Dtache failed!"))))
+      (alert (dtache--session-command session)
+             :title title
+             :severity (pcase status
+                         ('success 'moderate)
+                         ('failure 'high))
+             :category 'compile
+             :id (pcase status
+                   ('success 'dtache-success)
+                   ('failure 'dtache-failure)))))
+  (setq dtache-notification-function #'dan/dtache-inactive-session-notification))
+#+end_src
+
 *** Elfeed
 
 First, lets bring our feeds into the cloud.
