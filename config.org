@@ -1636,6 +1636,23 @@ an external program.
                                   ("\\.md\\'" "xdg-open"))))
 #+end_src
 
+The following packages reduce the ~dired buffer~ clutter by condensing the information into a single buffer.
+
+#+begin_src elisp :tangle packages.el
+(package! dired-subtree)
+(package! dired-collapse)
+#+end_src
+
+~dired-collapse~ condenses empty directory paths or file paths with a single file in them. ~dired-subtree~ enables a tree view of te directory, which puts the information of sub-directories contents in the same buffer.
+
+#+begin_src elisp
+(use-package! dired-subtree
+  :after dired)
+
+(use-package! dired-collapse
+  :hook (dired-mode . dired-collapse-mode))
+#+end_src
+
 *** Dotenv
 
 Emacs is missing a mode to edit =.env= files. So let's add it one:
