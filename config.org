@@ -2597,6 +2597,20 @@ To prevent unnecessary scrolling when calling the agenda buffer, we automate the
                      (org-agenda-next-item 1))))
 #+end_src
 
+If we are filtering the agenda view, open up the nodes with results.
+
+#+begin_src elisp
+(after! (evil-org-agenda org-super-agenda)
+  (defadvice! dan/org-super-agenda-open-nodes (&rest _)
+    "Open all super agenda groups, under the right conditions."
+    :after #'org-agenda-filter-apply
+    (when (and (org-agenda-check-type nil 'todo)
+               (or org-agenda-filter-form
+                   org-select-this-todo-keyword)
+               (not (buffer-narrowed-p)))
+      (origami-open-all-nodes (current-buffer)))))
+#+end_src
+
 *** Origami
 
 A text folding minor mode for Emacs.
