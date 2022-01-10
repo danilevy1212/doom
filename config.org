@@ -1651,7 +1651,7 @@ Now let's activate it when opening a =.env=:
   :mode ("\\.env\\.?.*\\'" . dotenv-mode))
 #+end_src
 
-*** Dtach
+*** Dtache
 
 #+begin_quote
 Dtache, or Detach Emacs, is a package to run shell commands completely detached from Emacs.
@@ -1672,7 +1672,7 @@ The detachable nature of the package means that commands started with it can out
   :config
   (setq dtache-db-directory doom-cache-dir
         dtache-session-directory (temporary-file-directory))
-  (dtache-initialize))
+  (dtache-setup))
 #+end_src
 
 ~dtache-shell-command~ acts as a replacement to ~async-shell-command~.
