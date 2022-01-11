@@ -2628,6 +2628,16 @@ If we are filtering the agenda view, open up the nodes with results.
       (origami-open-all-nodes (current-buffer)))))
 #+end_src
 
+When quitting the agenda, remove all filters.
+
+#+begin_src elisp
+(after! (evil-org-agenda org-super-agenda)
+  (defadvice! dan/org-agenda-quit-remove-filters (&rest _)
+    "Remove filters when quitting the org agenda."
+    :after #'org-agenda-quit
+    (setq org-agenda-filter-form nil)))
+#+end_src
+
 *** Origami
 
 A text folding minor mode for Emacs.
