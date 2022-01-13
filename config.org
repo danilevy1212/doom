@@ -1546,8 +1546,8 @@ Not everything fits in the =mode-line=, so let's make fonts and icons smaller:
 
 #+begin_src elisp
 (custom-set-faces!
-  '(mode-line :family "Sarasa UI J" :height 0.9)
-  '(mode-line-inactive :family "Sarasa UI J" :height 0.9))
+  '(mode-line :family "Sarasa UI J" :height 90)
+  '(mode-line-inactive :family "Sarasa UI J" :height 90))
 
 (after! all-the-icons
   (setq! all-the-icons-scale-factor 1.1))
