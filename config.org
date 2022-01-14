@@ -2570,6 +2570,7 @@ Only the first important categories should open by default, fold the rest.
                        (goto-char (point-min))
                        (re-search-forward "^$")
                        (forward-line)
+                       (origami-mode +1)
                        (let ((inhibit-message t)
                              (buf        (current-buffer))
                              (last-point (point-min))
@@ -2584,7 +2585,6 @@ Only the first important categories should open by default, fold the rest.
                            (unless (member (funcall current-heading-function) must-show-headers)
                              (origami-close-node buf (point)))
                            (origami-forward-fold-same-level buf (point)))))))
-
 #+end_src
 
 To prevent unnecessary scrolling when calling the agenda buffer, we automate the cursor position on agenda ~todo~ views.
@@ -2614,7 +2614,7 @@ If we are filtering the agenda view, open up the nodes with results.
                (or org-agenda-filter-form
                    org-select-this-todo-keyword)
                (not (buffer-narrowed-p)))
-      (origami-open-all-nodes (current-buffer)))))
+      (origami-mode -1))))
 #+end_src
 
 When quitting the agenda, remove all filters.
@@ -2639,7 +2639,7 @@ Currently, only used to fold ~org-super-agenda~ headers.
 
 #+begin_src elisp
 (use-package! origami
-  :hook (org-agenda-mode . origami-mode))
+  :defer t)
 #+end_src
 
 *** PDF Tools
