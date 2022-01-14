@@ -945,7 +945,7 @@ Fixing that code, on step at a time.
        ;;gist              ; interacting with github gists
 #+end_src
 
-***** TODO lookup
+***** lookup
 
 #+begin_quote
 This module adds code navigation and documentation lookup tools to help you
@@ -964,7 +964,11 @@ or synonyms.
        (lookup +docsets +dictionary +offline)              ; navigate your code and its documentation
 #+end_src
 
-***** TODO lsp
+***** lsp
+
+#+begin_quote
+The Language Server protocol is used between a tool (the client) and a language smartness provider (the server) to integrate features like auto complete, go to definition, find all references and alike into the tool.
+#+end_quote
 
 #+begin_src elisp :tangle init.el
        (lsp +peek)
@@ -1081,10 +1085,6 @@ love?
 #+begin_src elisp :tangle init.el
        (rust +lsp)         ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
 #+end_src
-
-****** Dependencies:
-
-Requires [[https://github.com/rust-lang/rls][rls]] or [[https://rust-analyzer.github.io/manual.html#installation][rust-analyzer]], both obtainable with [[https://github.com/rust-lang/rustup][rustup]]. I always use =rls=.
 
 ***** TODO sh
 
