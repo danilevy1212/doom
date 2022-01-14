@@ -1605,7 +1605,19 @@ hide it by default. One can toggle this information on/off with ~(~ keybinding.
 But, do show git information on repositories by default, can be toggled on/off with ~)~.
 
 #+begin_src elisp
-   (add-hook! 'dired-after-readin-hook #'+dired-enable-git-info-h))
+   (add-hook! 'dired-after-readin-hook #'+dired-enable-git-info-h)
+#+end_src
+
+There is a class between ~dired-subtree~ and ~dired-git-info~. Luckily, there is a [[https://github.com/clemera/dired-git-info/issues/9][hack]] to fix it.
+
+#+begin_src elisp
+    (defadvice! dan/dired-subtree-toggle-advice (orig-fn &rest args)
+      :around #'dired-subtree-toggle
+      (cond ((bound-and-true-p dired-git-info-mode)
+             (dired-git-info-mode -1)
+             (apply orig-fn args)
+             (dired-git-info-mode +1))
+            (t (apply orig-fn args)))))
 #+end_src
 
 Opening files from =dired= with an external program is a bit of drag by default, so
