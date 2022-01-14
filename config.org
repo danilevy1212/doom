@@ -2460,8 +2460,7 @@ Load and activate ~org-edna~ together with ~org~.
 
 #+begin_src elisp
 (use-package! org-edna
-  :hook
-  '(org-load . org-edna-mode)
+  :hook (org-load . org-edna-mode)
 #+end_src
 
 Make =org-edna= to trigger in any state change except done.
@@ -2989,6 +2988,12 @@ Tree-sitter is a general programming language parser that efficiently builds and
 Activate =tree-sitter= for programming modes.
 
 #+begin_src elisp
+(use-package! tree-sitter
+  :defer t)
+
+(use-package! tree-sitter-langs
+  :defer t)
+
 (add-transient-hook! 'prog-mode-hook
   (require 'tree-sitter-langs)
   (global-tree-sitter-mode))
