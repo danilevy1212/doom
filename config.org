@@ -905,40 +905,95 @@ My english is not the best, neither is my spanish or my 日本語 for that matte
        grammar           ; tasing grammar mistake every you make
 #+end_src
 
-**** TODO :tools
+**** :tools
 
-***** TODO ansible
-#+begin_src elisp :tangle init.el
-       :tools
-       ;; ansible
-#+end_src
+***** debugger
 
 Fixing that code, on step at a time.
 
 #+begin_src elisp :tangle init.el
+       :tools
+       ;;ansible
+       ;;biblio                 ; Writes a PhD for you (citation needed)
        (debugger +lsp)          ; FIXME stepping through code, to help you add bugs
 #+end_src
 
-***** TODO direnv
+***** direnv
+
+#+begin_quote
+This module integrates direnv into Emacs.
+#+end_quote
 
 #+begin_src elisp :tangle init.el
        direnv
 #+end_src
 
-***** TODO docker
+***** docker
+
+#+begin_quote
+This module allows you to manipulate Docker images, containers & more from
+Emacs.
+
+Provides a major =dockerfile-mode= to edit =Dockerfiles=. Additional
+convenience functions allow images to be built easily.
+
+=docker-tramp.el= offers a [[https://www.gnu.org/software/tramp/][TRAMP]] method for Docker containers.
+#+end_quote
 
 #+begin_src elisp :tangle init.el
        (docker +lsp)
 #+end_src
 
-***** TODO editorconfig
+***** editorconfig
+
+#+begin_quote
+This module integrates [[https://editorconfig.org/][EditorConfig]] into Emacs, allowing users to dictate code
+style on a per-project basis with an =.editorconfig= file ([[https://editorconfig-specification.readthedocs.io/][formal
+specification]]).
+#+end_quote
 
 #+begin_src elisp :tangle init.el
        editorconfig        ; let someone else argue about tabs vs spaces
        ;;ein               ; tame Jupyter notebooks with emacs
 #+end_src
 
-***** TODO eval
+***** eval
+
+#+begin_quote
+This modules adds inline code evaluation support to Emacs and a universal
+interface for opening and interacting with REPLs.
+#+end_quote
+
+Most important features.
+
+1. Inline code evaluation.
+
+    #+begin_quote
+Quickrun can be invoked via:
++ ~M-x +eval/buffer~ (or ~gR~, or ~M-r~)
++ ~M-x +eval/region~
++ ~M-x +eval/region-and-replace~
++ Evil users can use the ~gr~ operator to select and run a region.
+    #+end_quote
+
+    Evaluation handlers can be set with ~set-eval-handler!~ function.
+
+2. REPLs
+
+    #+begin_src
+Invoked via:
++ =SPC o r= or ~:repl~ will open a REPL in a popup window. =SPC o R= or ~:repl!~
+  will open a REPL in the current window. If a REPL is already open and a
+  selection is active, it will be sent to the REPL.
++ ~M-x +eval/open-repl-other-window~ (=SPC o r=)
++ ~M-x +eval/open-repl-same-window~ (=SPC o R=)
++ ~M-x +eval/send-region-to-repl~ (=SPC c s=) while a selection (and REPL) is
+  active
+    #+end_src
+
+    ~REPLs~ can be registered with ~set-repl-handler!~ function.
+
+More about it's features can be learned in [[doom-modules:tools/eval/README.org][here]].
 
 #+begin_src elisp :tangle init.el
        (eval +overlay)     ; run code, run (also, repls)
@@ -982,6 +1037,20 @@ The best porcelain for ~git~, in =emacs=!
        magit             ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
+#+end_src
+
+***** pdf
+
+#+begin_quote
+This module improves support for reading and interacting with PDF files in Emacs.
+
+It uses =pdf-tools=, which is a replacement for the built-in ~doc-view-mode~ for
+PDF files. The key difference being pages are not pre-rendered, but instead
+rendered on-demand and stored in memory; a much faster approach, especially for
+larger PDFs.
+#+end_quote
+
+#+begin_src elisp :tangle init.el
        pdf               ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
        ;;rgb               ; creating color strings
@@ -1074,7 +1143,6 @@ Better integration of Emacs with the terminal emulator, particularly:
        ;;rst               ; ReST in peace
        ;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
 #+end_src
-
 
 ***** rust
 
