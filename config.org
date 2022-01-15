@@ -3134,43 +3134,6 @@ Maximum scrollback to the max!
   (setq vterm-max-scrollback 100000))
 #+end_src
 
-*** Vue
-
-The language server =VLS= does not analyze the templates of ~.vue~ files by default,
-let's change that!
-
-#+begin_src elisp :tangle no
-(after! lsp-vetur
-  (setq! lsp-vetur-experimental-template-interpolation-service t))
-#+end_src
-
-*** Web Mode
-
-~web-mode~, as customized in the ~web~ module, has more features that I could
-wish for. Indentation is the only sore point I wish to change.
-
-First, text at the beginning of line should not be indented by default.
-
-#+begin_src elisp :tangle no
-(after! web-mode
-  (setq! web-mode-indent-style 1
-#+end_src
-
-The default indentation is of 2 spaces.
-
-#+begin_src elisp  :tangle no
-    web-mode-code-indent-offset 2
-    web-mode-css-indent-offset 2
-    web-mode-markup-indent-offset 2
-#+end_src
-
-And no padding!
-
-#+begin_src elisp  :tangle no
-    web-mode-part-padding nil
-    web-mode-script-padding nil))
-#+end_src
-
 *** Which Key
 
 Doom Emacs default configuration is too slow, let's speed it up.
