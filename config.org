@@ -1087,6 +1087,15 @@ Better integration of Emacs with the terminal emulator, particularly:
 
 **** TODO :lang
 
+***** TODO emacs-lisp
+
+#+begin_quote
+This module extends support for Emacs Lisp in Doom Emacs.
+
++ Macro expansion
++ Go-to-definitions or references functionality
+#+end_quote
+
 #+begin_src elisp :tangle init.el
        :lang
        ;;agda              ; types of types of types of types...
@@ -1110,31 +1119,80 @@ Better integration of Emacs with the terminal emulator, particularly:
        ;;fsharp            ; ML stands for Microsoft's Language
        ;;fstar             ; (dependent) types and (monadic) effects and Z3
        ;;gdscript          ; the language you waited for
-       ;;(go +lsp)           ; the hipster dialect
+#+end_src
+
+***** TODO golang
+
+#+begin_quote
+This module adds [[https://golang.org][Go]] support, with optional (but recommended) LSP support via
+[[https://github.com/golang/tools/blob/master/gopls/README.md][gopls]].
+
++ Code completion (~gocode~)
++ Documentation lookup (~godoc~)
++ Eldoc support (~go-eldoc~)
++ REPL (~gore~)
++ Syntax-checking (~flycheck~)
++ Auto-formatting on save (~gofmt~) (requires =:editor (format +onsave)=)
++ Code navigation & refactoring (~go-guru~)
++ [[../../editor/file-templates/templates/go-mode][File templates]]
++ [[https://github.com/hlissner/doom-snippets/tree/master/go-mode][Snippets]]
++ Generate testing code (~go-gen-test~)
++ Code checking (~flycheck-golangci-lint~)
+#+end_quote
+
+#+begin_src elisp :tangle init.el
+       (go +lsp)           ; the hipster dialect
        ;;(haskell +lsp)      ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ;
+#+end_src
+
+***** TODO json
+
+#+begin_src elisp :tangle init.el
        (json +lsp)              ; At least it ain't XML
        ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
+#+end_src
+
+***** TODO javascript
+
+#+begin_src elisp :tangle init.el
        (javascript +lsp)          ; all(hope(abandon(ye(who(enter(here)))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
+#+end_src
+
+***** TODO latex
+
+#+begin_src elisp :tangle init.el
        (latex +lsp)               ; writing papers in Emacs has never been so fun
        ;;lean
        ;;factor
        ;;ledger            ; an accounting system in Emacs
        ;;(lua +lsp +fennel)  ; one-based indices? one-based indices
+#+end_src
+
+***** TODO markdown
+
+#+begin_src elisp :tangle init.el
        markdown          ; writing docs for people to ignore
+#+end_src
+
+***** TODO nix
+
+#+begin_src elisp :tangle init.el
        ;;nim               ; python + lisp at the speed of c
        nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
 #+end_src
 
-***** org
+***** TODO org
 
 #+begin_src elisp :tangle init.el
        (org +dragndrop +pretty)               ; organize your plain life in plain text
 #+end_src
+
+***** TODO python
 
 #+begin_src elisp :tangle init.el
        ;;php               ; perl's insecure younger brother
@@ -1144,6 +1202,11 @@ Better integration of Emacs with the terminal emulator, particularly:
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
+#+end_src
+
+***** TODO rest
+
+#+begin_src elisp :tangle init.el
        rest                ; Emacs as a REST client
        ;;rst               ; ReST in peace
        ;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
