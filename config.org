@@ -1994,6 +1994,12 @@ Don't override the contents of the " register after pasting on a block.
    (evil-kill-on-visual-paste nil)
 #+end_src
 
+Implicit /g flag on evil ex substitution. Put =g= flag to reverse it.
+
+#+begin_src elisp
+  (evil-ex-substitute-global t)
+#+end_src
+
 Yank by actual lines of text and not by screen lines, less confusing.
 
 #+begin_src elisp
