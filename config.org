@@ -1640,20 +1640,20 @@ font string. You generally only need these two:
 
 ie:
 #+begin_src elisp :tangle no
-(setq! doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
+(setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
        doom-variable-pitch-font (font-spec :family "sans" :size 13))
 #+end_src
 
 Let's _choose_ our *monospaced* font, /Sarasa Mono J/ goodness:
 
 #+begin_src elisp
-(setq! doom-font (font-spec :family "Sarasa Mono J" :size 18 :weight 'semi-light))
+(setq doom-font (font-spec :family "Sarasa Mono J" :size 18 :weight 'semi-light))
 #+end_src
 
 And our =variable pitch= +font+, ~Sarasa UI J~:
 
 #+begin_src elisp :tangle no
-(setq! doom-variable-pitch-font (font-spec :family "Sarasa UI J" :size 18 :weight 'extra-light))
+(setq doom-variable-pitch-font (font-spec :family "Sarasa UI J" :size 18 :weight 'extra-light))
 #+end_src
 
 Comments and keywords should pop more...
@@ -1668,7 +1668,7 @@ When in zen mode, scale text just a bit.
 
 #+begin_src elisp
 (after! writeroom-mode
-  (setq! +zen-text-scale 1.25))
+  (setq +zen-text-scale 1.25))
 #+end_src
 
 Not everything fits in the =mode-line=, so let's make fonts and icons smaller:
@@ -1679,14 +1679,14 @@ Not everything fits in the =mode-line=, so let's make fonts and icons smaller:
   '(mode-line-inactive :family "Sarasa UI J" :height 90))
 
 (after! all-the-icons
-  (setq! all-the-icons-scale-factor 1.1))
+  (setq all-the-icons-scale-factor 1.1))
 #+end_src
 
 The filename in the =mode line= occupies way too much space.
 
 #+begin_src elisp
 (after! doom-modeline
-  (setq! doom-modeline-buffer-file-name-style 'truncate-with-project))
+  (setq doom-modeline-buffer-file-name-style 'truncate-with-project))
 #+end_src
 
 *** Default theme
@@ -1696,7 +1696,7 @@ available. You can either set ~doom-theme~ or manually load a theme with the
 ~load-theme~ function. This is the default:
 
 #+begin_src elisp
-(setq! doom-theme 'doom-nord)
+(setq doom-theme 'doom-nord)
 #+end_src
 
 **** Nord powered aesthetics.
@@ -1917,7 +1917,7 @@ Show me entries from within a month that I haven't read and that I have 'starred
 
 #+begin_src elisp
   :config
-  (setq! elfeed-search-filter "@4-week-ago +unread ")
+  (setq elfeed-search-filter "@4-week-ago +unread ")
 #+end_src
 
 Some entries are worth preserving. By 'starring' them we don't lose them.
@@ -2000,7 +2000,7 @@ representation. So let's make an extra keybinding for said case:
 Do not use bash for auto-completion backend.
 
 #+begin_src elisp
-  (setq! fish-completion-fallback-on-bash-p nil))
+  (setq fish-completion-fallback-on-bash-p nil))
 #+end_src
 
 **** Auto-loads
@@ -2065,7 +2065,7 @@ Yank by actual lines of text and not by screen lines, less confusing.
 
 #+begin_src elisp
    :init
-   (setq! evil-respect-visual-line-mode nil)
+   (setq evil-respect-visual-line-mode nil)
 #+end_src
 
 Universal argument mapped to M-u instead.
@@ -2193,13 +2193,13 @@ Finally, lazily load the package and it's =evil= keybindings when calling an ent
 
 Do not run the jar file! Run the binary.
 #+begin_src elisp
-(setq! langtool-bin "languagetool-commandline")
+(setq langtool-bin "languagetool-commandline")
 #+end_src
 
 Most of the time, assume I speak English.
 
 #+begin_src elisp
-(setq! langtool-mother-tongue "en")
+(setq langtool-mother-tongue "en")
 #+end_src
 
 *** Line-numbers
@@ -2208,7 +2208,7 @@ This determines the style of line numbers in effect. If set to ~nil~, line
 numbers are disabled. For relative line numbers, set this to ~relative~.
 
 #+begin_src elisp
-(setq! display-line-numbers-type 'relative)
+(setq display-line-numbers-type 'relative)
 #+end_src
 
 *** Lua
@@ -2437,7 +2437,7 @@ Skip sub-tasks whose parents are scheduled in the future. The function ~org-agen
 
 #+begin_src elisp
 (after! org
-  (setq! org-agenda-skip-function-global
+  (setq org-agenda-skip-function-global
          (defun dan/org-agenda-skip-if-inherited-timestamp ()
            "Skip item with an inherited timestamp according to the org-agenda settings..
 Uses built-in `org-agenda-check-for-timestamp-as-reason-to-ignore-todo-item'."
@@ -2794,7 +2794,7 @@ We reduce the default zoom factor to have more leeway between zoom levels.
 
 #+begin_src elisp
 (after! pdf-tools
-  (setq! pdf-view-resize-factor 1.05))
+  (setq pdf-view-resize-factor 1.05))
 #+end_src
 
 We also auto install ~epdinfo~.
@@ -2810,7 +2810,7 @@ Some functionality uses this to identify you, e.g. GPG configuration, email
 clients, file templates and snippets.
 
 #+begin_src elisp
-(setq! user-full-name "Daniel Levy Moreno"
+(setq user-full-name "Daniel Levy Moreno"
        user-mail-address "daniellevymoreno@gmail.com")
 #+end_src
 
@@ -2841,7 +2841,7 @@ Let's make projectile's life easier by giving it some paths where I normally
 store projects.
 
 #+begin_src elisp
-(setq! projectile-project-search-path '("~/Projects/" "~/.config/"))
+(setq projectile-project-search-path '("~/Projects/" "~/.config/"))
 #+end_src
 
 *** QR encode
@@ -2934,7 +2934,7 @@ We define an auto-load function as an entry point to the winter season.
 Default doom dashboard is pretty and welcoming, let's just give it a small personal touch.
 
 #+begin_src elisp
-(setq! fancy-splash-image (expand-file-name "img/qs.png" doom-private-dir))
+(setq fancy-splash-image (expand-file-name "img/qs.png" doom-private-dir))
 #+end_src
 
 #+HTML: <p align="center"><img src="https://raw.githubusercontent.com/danilevy1212/doom/master/img/qs.png"/></p>
@@ -2964,7 +2964,7 @@ But what if I am in the terminal? No worries:
           "⠜⠋⢠⣷⢻⣿⣿⣶⣾⣿⣿⣿⣿⠿⣛⣥⣾⣿⠿⠟⠛⠉⠄⠄          ")))
 
 (when (not (display-graphic-p))
-  (setq! +doom-dashboard-ascii-banner-fn #'dan/my-weebery-is-always-greater))
+  (setq +doom-dashboard-ascii-banner-fn #'dan/my-weebery-is-always-greater))
 #+end_src
 
 *** telega
@@ -3089,7 +3089,7 @@ To make the ~header-line~ a little more noticeable while consistent with the buf
 configuration with limited capabilities. Let's change that.
 
 #+begin_src elisp
-(setq! +treemacs-git-mode 'deferred)
+(setq +treemacs-git-mode 'deferred)
 #+end_src
 
 I don't plan on using =treemacs= to explore directories beyond the project root
@@ -3098,7 +3098,7 @@ directory, that's what =dired= is for.
 Use =all-the-icons= theme in =treemacs=, for consistency.
 
 #+begin_src elisp
-(setq! doom-themes-treemacs-theme "doom-colors")
+(setq doom-themes-treemacs-theme "doom-colors")
 #+end_src
 
 When running ~treemacs-find-file~, the focus remains in the file instead of going
@@ -3177,13 +3177,13 @@ Let's add minor customization to the =vc-gutter= module:
 First, diff the file while the buffer is changing, not just when it's saved.
 
 #+begin_src elisp
-(setq! +vc-gutter-diff-unsaved-buffer t)
+(setq +vc-gutter-diff-unsaved-buffer t)
 #+end_src
 
 Lastly, let's activate =git-gutter= for remote files as well.
 
 #+begin_src elisp
-(setq! +vc-gutter-in-remote-files t)
+(setq +vc-gutter-in-remote-files t)
 #+end_src
 
 *** Vterm
@@ -3207,7 +3207,7 @@ Doom Emacs default configuration is too slow, let's speed it up.
 
 #+begin_src elisp
 (after! which-key
-  (setq! which-key-idle-delay 0.1
+  (setq which-key-idle-delay 0.1
          which-key-idle-secondary-delay 0.2))
 #+end_src
 
