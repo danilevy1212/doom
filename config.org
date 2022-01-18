@@ -3227,12 +3227,13 @@ I have family all over the place, it's hard to keep up with the time difference.
 
 #+begin_src elisp
 (after! time
-  (setq world-clock-list '(("America/Los_Angeles" "Santa Rosa")
-                           ("America/Sao_Paulo" "Brasilia")
-                           ("Europe/Madrid" "Madrid")
-                           ("Asia/Kolkata" "India")
-                           ("Asia/Singapore" "Singapore")
-                           ("Asia/Tokyo" "Tokyo"))))
+  (setq world-clock-list '(("America/Los_Angeles" "Napa")
+                           ("America/New_York"    "Hatfield")
+                           ("America/Sao_Paulo"   "Brasilia")
+                           ("Europe/Madrid"       "Madrid")
+                           ("Asia/Kolkata"        "India")
+                           ("Asia/Singapore"      "Singapore")
+                           ("Asia/Tokyo"          "Tokyo"))))
 #+end_src
 
 Make the =wclock= buffer into a popup.
