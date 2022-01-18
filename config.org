@@ -247,7 +247,7 @@ Emacs lisp by default has dynamic-scope, which is fine if a little weird. Howeve
 dynamic scope comes with a performance penalty. Optional lexical scope has to be
 activated with a file parameter, as such:
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
 ;;; $DOOMDIR/init.el -*- lexical-binding: t; -*-
 #+end_src
 
@@ -289,7 +289,7 @@ as the tail.
 In the ~japanese~ module only ~pangu spacing~ seems like a package I could use, so I
 rather install it standalone.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
 (doom! :input
        ;;chinese
        ;;japanese
@@ -305,7 +305,7 @@ essential. Sure, the overlay can be distracting for some, but it's
 unobtrusive and optional while being a good tool for
 discoverability.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        :completion
        (company +childframe)  ; the ultimate code completion backend
 #+end_src
@@ -416,7 +416,7 @@ If you want to further configure this module, here are some good places to start
 + =+icons= Adds icons to =file= and =buffer= category completion selections.
 #+end_quote
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (vertico +icons)           ; the search engine of the future
 #+end_src
 
@@ -426,7 +426,7 @@ If you want to further configure this module, here are some good places to start
 
 Most of what makes doom feel like doom is in the =doom=, =doom-dashboard= and =doom-quit=.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        :ui
        ;;deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
@@ -439,7 +439,7 @@ Most of what makes doom feel like doom is in the =doom=, =doom-dashboard= and =d
 Not really necessary, but they are fun. Use the ~emojify-insert-emoji~ function
 (=SPC i e=) to insert and emoji and ~emojify-apropos-emoji~ to search for them.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (emoji +unicode)  ; 🙂
 #+end_src
 
@@ -457,7 +457,7 @@ keybindings:
 | =SPC s b= | search buffer for string         |
 
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        ;;fill-column       ; a `fill-column' indicator
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
 #+end_src
@@ -467,7 +467,7 @@ keybindings:
 The =hydra= module activates a convenient hydras for window controls and text
 zoom level.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        hydra
 #+end_src
 
@@ -475,7 +475,7 @@ zoom level.
 
 Some visual help to quickly understand the indent levels in your code.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        indent-guides     ; highlighted indent columns
 #+end_src
 
@@ -484,7 +484,7 @@ Some visual help to quickly understand the indent levels in your code.
 When using ~emacs-major-version >= 28~, enable ligatures, since they can be
 composed by =hardfuzz=.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (:if (>= emacs-major-version 28) ligatures)         ; ligatures and symbols to make your code pretty again
 #+end_src
 
@@ -492,7 +492,7 @@ composed by =hardfuzz=.
 
 Doom ain't doom without its mode line.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        ;; minimap           ; show a map of the code on the side
        modeline          ; snazzy, Atom-inspired modeline, plus API
 #+end_src
@@ -501,7 +501,7 @@ Doom ain't doom without its mode line.
 
 To help with getting lost in big buffers, use the =nav-flash= module:
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        nav-flash         ; blink cursor line after big motions
 #+end_src
 
@@ -509,7 +509,7 @@ To help with getting lost in big buffers, use the =nav-flash= module:
 
 This module give a visual hint when selecting or doing operations over text-objects.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        ;;neotree           ; a project drawer, like NERDTree for vim
        ophints           ; highlight the region an operation acts on
 #+end_src
@@ -520,7 +520,7 @@ Using ~display-buffer-alist~ under the hood, =doom= has an emergent window (or
 pop-up) management system. It is [[https://github.com/hlissner/doom-emacs/blob/develop/modules/ui/popup/README.org][well documented]], and offers an API to
 arbitrarily extend it.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
        ;;tabs              ; a tab bar for Emacs
 #+end_src
@@ -529,7 +529,7 @@ arbitrarily extend it.
 
 A modern, beautiful and extensible project file editor, what is not to love?
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (treemacs +lsp)          ; a project drawer, like neotree but cooler
 #+end_src
 
@@ -545,7 +545,7 @@ possible with system fonts. It needs the following fonts in the system:
 
 Follow [[https://medium.com/source-words/how-to-manually-install-update-and-uninstall-fonts-on-linux-a8d09a3853b0][this guide]] to install the fonts on Linux.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        unicode           ; extended unicode support for various languages
 #+end_src
 
@@ -554,7 +554,7 @@ Follow [[https://medium.com/source-words/how-to-manually-install-update-and-unin
 This module integrates with git to show hinges on the side of the buffer that
 indicate the difference between its contents and the version control version.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        vc-gutter         ; vcs diff in the fringe
 #+end_src
 
@@ -562,7 +562,7 @@ indicate the difference between its contents and the version control version.
 
 Add a small =~= indicating an empty line, like vi.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
 #+end_src
 
@@ -575,7 +575,7 @@ specific window in the frame.
 To use =ace-window= use =C-w C-w=. You can short-cut to the associated window number
 using =winum=, with =SPC w {window number}=.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (window-select +numbers)     ; visually switch windows
 #+end_src
 
@@ -587,7 +587,7 @@ Commands associated with workspaces are under the =SPC TAB= prefix.
 
 It also has a [[https://github.com/hlissner/doom-emacs/tree/develop/modules/ui/workspaces][API]] for programmatic access.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        workspaces        ; tab emulation, persistence & separate workspaces
 #+end_src
 
@@ -596,7 +596,7 @@ It also has a [[https://github.com/hlissner/doom-emacs/tree/develop/modules/ui/w
 Using ~writeroom-mode~, changes the UI elements of a buffer so its contents
 become the main focus. It can be toggled on and off with =SPC t z=.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        zen               ; distraction-free coding or writing
 #+end_src
 
@@ -608,7 +608,7 @@ I prefer vim's keybindings to Emacs and thankfully, =doom= offers first class
 support for ~evil-mode~, a vim emulator inside Emacs, making it easy to get the
 benefits of both Emacs and vim.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        :editor
        (evil +everywhere); come to the dark side, we have cookies
 #+end_src
@@ -675,13 +675,13 @@ Like =yas-snippets=, but for empty files. Includes a mechanism to insert softwar
 licenses as well, through ~M-x +file-templates/insert-license~. The module
 documentation gives extra information on customization of the snippets.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        file-templates    ; auto-snippets for empty files
 #+end_src
 
 ***** fold
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        fold              ; (nigh) universal code folding
 #+end_src
 
@@ -716,7 +716,7 @@ For setting my own formatter, there are two options:
 - Set the buffer-local variable ~+format-with~ to the name of the formatter to
 use. e.g.
 
-#+BEGIN_SRC elisp :tangle no
+#+BEGIN_SRC emacs-lisp :tangle no
 (setq-hook! 'python-mode-hook +format-with 'html-tidy)
 
 ;; Or set it to `:none' to disable formatting
@@ -729,7 +729,7 @@ looked up in the ~format-all-mode-table~ hash table or in format-all's [[https:/
 code]].
 #+end_quote
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        format          ; automated prettiness
 #+end_src
 
@@ -749,14 +749,14 @@ work with =lispyville='s commands. Bummer.
 - [[http://lfe.io/][LFE]]
 - Clojure
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        ;;god             ; run Emacs commands without modifier keys
        lispy             ; vim for lisp, for people who don't like vim
 #+end_src
 
 ***** TODO multiple-cursors
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        multiple-cursors    ; editing in many places at once
 #+end_src
 
@@ -778,7 +778,7 @@ Basically, it's a another editing helper package for lisp, in particular:
 - Racket
 - Hy
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        ;;objed               ; text object editing for the innocent
        (parinfer +rust)      ; turn lisp into python, sort of
 #+end_src
@@ -789,7 +789,7 @@ Basically, it's a another editing helper package for lisp, in particular:
 This module adds snippets to Emacs, powered by yasnippet.
 #+end_quote
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        ;;rotate-text     ; cycle region at point between text candidates
        snippets          ; my elves. They type so I don't have to
 #+end_src
@@ -801,7 +801,7 @@ This module adds a minor-mode ~+word-wrap-mode~, which intelligently wraps long
 lines in the buffer without modifying the buffer content.
 #+end_quote
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        word-wrap         ; soft wrapping with language-aware indent
 #+end_src
 
@@ -809,7 +809,7 @@ lines in the buffer without modifying the buffer content.
 
 ***** editor
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        :emacs
        (dired +icons)    ; making dired pretty [functional]
 #+end_src
@@ -830,7 +830,7 @@ This complement the [[https://www.gnu.org/software/emacs/refcards/pdf/dired-ref.
 
 Built-in automated indentation.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        electric          ; smarter, keyword-based electric-indent
 #+end_src
 
@@ -839,7 +839,7 @@ Built-in automated indentation.
 Project-aware buffer management.  Similar to =dired=, but for buffers.
 Toggled on by the ~SPC b i~ keybinding.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (ibuffer +icons)  ; interactive buffer management
        ;; undo           ; persistent, smarter undo for your inevitable mistakes
 #+end_src
@@ -853,7 +853,7 @@ This module augments Emacs built-in version control support and provides better 
 It offers different modes for ~.git{ignore,info,attributes,config} files, a way
 to easily visit the remote file of a repo, ~M-x browse-at-remote~, bind to ~SPC g o o~.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        vc                ; version-control and Emacs, sitting in a tree
 #+end_src
 
@@ -863,7 +863,7 @@ to easily visit the remote file of a repo, ~M-x browse-at-remote~, bind to ~SPC 
 
 An =emacs= alternative to the traditional shell. From this shell, you have access to all of Emacs internal functions and variables. The features of the =eshell= are too many to [[https://www.gnu.org/software/emacs/manual/html_mono/eshell.html][explain here]].
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        :term
        eshell            ; the elisp shell that works everywhere
 #+end_src
@@ -872,7 +872,7 @@ An =emacs= alternative to the traditional shell. From this shell, you have acces
 
 A traditional terminal emulator, powered by [[https://github.com/neovim/libvterm][libvterm]] and Emacs [[https://phst.eu/emacs-modules.html][c modules]].
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        ;;shell             ; simple shell REPL for Emacs
        ;;term              ; basic terminal emulator for Emacs
        vterm               ; the best terminal emulation in Emacs
@@ -884,7 +884,7 @@ A traditional terminal emulator, powered by [[https://github.com/neovim/libvterm
 
 Setup [[https://www.flycheck.org/en/latest/][flycheck]], the unofficial general programming language checker of Emacs.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        :checkers
        (syntax +childframe) ; tasing you for every semicolon you forget
 #+end_src
@@ -893,7 +893,7 @@ Setup [[https://www.flycheck.org/en/latest/][flycheck]], the unofficial general 
 
 Don't misspell, ever again!
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (spell +aspell +everywhere)             ; tasing you for misspelling mispelling
 #+end_src
 
@@ -906,7 +906,7 @@ This module adds grammar checking to Emacs to aid your writing by combining
 
 My english is not the best, neither is my spanish or my 日本語 for that matter. Maybe this module can help!
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        grammar           ; tasing grammar mistake every you make
 #+end_src
 
@@ -916,7 +916,7 @@ My english is not the best, neither is my spanish or my 日本語 for that matte
 
 Fixing that code, on step at a time.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        :tools
        ;;ansible
        ;;biblio                 ; Writes a PhD for you (citation needed)
@@ -929,7 +929,7 @@ Fixing that code, on step at a time.
 This module integrates direnv into Emacs.
 #+end_quote
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        direnv
 #+end_src
 
@@ -945,7 +945,7 @@ convenience functions allow images to be built easily.
 =docker-tramp.el= offers a [[https://www.gnu.org/software/tramp/][TRAMP]] method for Docker containers.
 #+end_quote
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (docker +lsp)
 #+end_src
 
@@ -957,7 +957,7 @@ style on a per-project basis with an =.editorconfig= file ([[https://editorconfi
 specification]]).
 #+end_quote
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        editorconfig        ; let someone else argue about tabs vs spaces
        ;;ein               ; tame Jupyter notebooks with emacs
 #+end_src
@@ -1000,7 +1000,7 @@ Invoked via:
 
 More about it's features can be learned in [[doom-modules:tools/eval/README.org][here]].
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
 #+end_src
@@ -1020,7 +1020,7 @@ or synonyms.
 + Support for online (and offline) dictionaries and thesauruses.
 #+end_quote
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (lookup +docsets +dictionary +offline)              ; navigate your code and its documentation
 #+end_src
 
@@ -1030,7 +1030,7 @@ or synonyms.
 The Language Server protocol is used between a tool (the client) and a language smartness provider (the server) to integrate features like auto complete, go to definition, find all references and alike into the tool.
 #+end_quote
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (lsp +peek)
 #+end_src
 
@@ -1038,7 +1038,7 @@ The Language Server protocol is used between a tool (the client) and a language 
 
 The best porcelain for ~git~, in =emacs=!
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        magit             ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
@@ -1055,7 +1055,7 @@ rendered on-demand and stored in memory; a much faster approach, especially for
 larger PDFs.
 #+end_quote
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        pdf               ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
        ;;rgb               ; creating color strings
@@ -1079,7 +1079,7 @@ Better integration of Emacs with the terminal emulator, particularly:
 
 #+end_quote
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        :os
        ;;(:if IS-MAC macos)  ; improve compatibility with macOS
        tty               ; improve the terminal Emacs experience
@@ -1087,7 +1087,7 @@ Better integration of Emacs with the terminal emulator, particularly:
 
 **** TODO :lang
 
-***** TODO emacs-lisp
+***** TODO emacs-lisp :tangle yes
 
 #+begin_quote
 This module extends support for Emacs Lisp in Doom Emacs.
@@ -1096,7 +1096,7 @@ This module extends support for Emacs Lisp in Doom Emacs.
 + Go-to-definitions or references functionality
 #+end_quote
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        :lang
        ;;agda              ; types of types of types of types...
        ;;beancount
@@ -1140,7 +1140,7 @@ This module adds [[https://golang.org][Go]] support, with optional (but recommen
 + Code checking (~flycheck-golangci-lint~)
 #+end_quote
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (go +lsp)           ; the hipster dialect
        ;;(haskell +lsp)      ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
@@ -1149,14 +1149,14 @@ This module adds [[https://golang.org][Go]] support, with optional (but recommen
 
 ***** TODO json
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (json +lsp)              ; At least it ain't XML
        ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
 #+end_src
 
 ***** TODO javascript
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (javascript +lsp)          ; all(hope(abandon(ye(who(enter(here)))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
@@ -1164,7 +1164,7 @@ This module adds [[https://golang.org][Go]] support, with optional (but recommen
 
 ***** TODO latex
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (latex +lsp)               ; writing papers in Emacs has never been so fun
        ;;lean
        ;;factor
@@ -1174,13 +1174,13 @@ This module adds [[https://golang.org][Go]] support, with optional (but recommen
 
 ***** TODO markdown
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        markdown          ; writing docs for people to ignore
 #+end_src
 
 ***** TODO nix
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        ;;nim               ; python + lisp at the speed of c
        nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
@@ -1188,13 +1188,13 @@ This module adds [[https://golang.org][Go]] support, with optional (but recommen
 
 ***** TODO org
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (org +dragndrop +pretty)               ; organize your plain life in plain text
 #+end_src
 
 ***** TODO python
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
@@ -1206,7 +1206,7 @@ This module adds [[https://golang.org][Go]] support, with optional (but recommen
 
 ***** TODO rest
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        rest                ; Emacs as a REST client
        ;;rst               ; ReST in peace
        ;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
@@ -1218,13 +1218,13 @@ Rustic mode is great and the integrates really well with cargo. The defaults are
 reasonable and with the =+lsp= it integrates nicely with ~lsp-mode~, what's not to
 love?
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (rust +lsp)         ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
 #+end_src
 
 ***** TODO sh
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        ;;scala             ; java, but good
        ;;scheme            ; a fully conniving family of lisps
        sh                  ; she sells {ba,z,fi}sh shells on the C xor
@@ -1235,7 +1235,7 @@ love?
 
 Emacs has support for any buzzword you can imagine, even =blockchain technologies=.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        solidity          ; do you need a blockchain? No.
        ;;swift             ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
@@ -1244,13 +1244,13 @@ Emacs has support for any buzzword you can imagine, even =blockchain technologie
 
 ***** TODO yaml
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (yaml +lsp)         ; JSON, but readable
 #+end_src
 
 **** TODO :email
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        :email
        ;;(mu4e +org +gmail)
        ;;notmuch
@@ -1266,21 +1266,21 @@ This module adds a calendar view for Emacs, with org and google calendar sync
 support.
 #+end_quote
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        :app
        calendar
 #+end_src
 
 ***** TODO everywhere
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        ;;emms
        everywhere        ; *leave* Emacs!? You must be joking
 #+end_src
 
 ***** TODO rss
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        ;;irc               ; how neckbeards socialize
        (rss +org)        ; Emacs as an RSS reader
        ;;twitter           ; twitter client https://twitter.com/vnought
@@ -1292,7 +1292,7 @@ support.
 
 The meat and potatoes of this configuration. This module [[https://orgmode.org/manual/Extracting-Source-Code.html][tangles]] the source code blocks in ~$DOOMDIR/config.org~.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        :config
        literate
 #+end_src
@@ -1310,7 +1310,7 @@ This module provides a set of reasonable defaults, including:
 
 Alongside the reasonable defaults, this module offers tons of convenience commands, under the ~+default/~ prefix.
 
-#+begin_src elisp :tangle init.el
+#+begin_src emacs-lisp :tangle init.el
        (default +bindings +smartparens))
 #+end_src
 
@@ -1325,7 +1325,7 @@ use ~M-x doom/reload~.
 To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 
 ie:
-#+begin_src elisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (package! some-package)
 #+end_src
 
@@ -1334,7 +1334,7 @@ To install a package directly from a remote git repo, you must specify a
 https://github.com/raxod502/straight.el#the-recipe-format
 
 ie:
-#+begin_src elisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (package! another-package
   :recipe (:host github :repo "username/repo"))
 #+end_src
@@ -1344,7 +1344,7 @@ file, or is located in a sub-directory of the repository, you'll need to specify
 ~:files~ in the ~:recipe~:
 
 ie:
-#+begin_src elisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (package! this-package
   :recipe (:host github :repo "username/repo"
            :files ("some-file.el" "src/lisp/*.el")))
@@ -1354,7 +1354,7 @@ If you'd like to disable a package included with Doom, you can do so here
 with the ~:disable~ property:
 
 ie:
-#+begin_src elisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (package! builtin-package :disable t)
 #+end_src
 
@@ -1363,7 +1363,7 @@ all the properties for ~:recipe~. These will inherit the rest of its recipe
 from Doom or MELPA/ELPA/Emacsmirror:
 
 ie:
-#+begin_src elisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (package! builtin-package :disable t)
 #+end_src
 
@@ -1372,7 +1372,7 @@ all the properties for ~:recipe~. These will inherit the rest of its recipe
 from Doom or MELPA/ELPA/Emacsmirror:
 
 ie:
-#+begin_src elisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (package! builtin-package :recipe (:nonrecursive t))
 (package! builtin-package-2 :recipe (:repo "myfork/package"))
 #+end_src
@@ -1382,13 +1382,13 @@ This is required for some packages whose default branch isn't ~master~ (which
 our package manager can't deal with; see raxod502/straight.el#279)
 
 ie:
-#+begin_src elisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (package! builtin-package :recipe (:branch "develop"))
 #+end_src
 
 Use ~:pin~ to specify a particular commit to install.
 ie:
-#+begin_src elisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (package! builtin-package :pin "1a2b3c4d5e")
 #+end_src
 
@@ -1396,7 +1396,7 @@ Doom's packages are pinned to a specific commit and updated from release to
 release. The ~unpin!~ macro allows you to unpin single packages...
 
 ie:
-#+begin_src elisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (unpin! pinned-package)
 ; ...or multiple packages
 (unpin! pinned-package another-pinned-package)
@@ -1414,7 +1414,7 @@ containing the ~package!~ macro.
 We don't permit the ~package.el~ file to be byte compiled and declare its
 lexical binding.
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 ;; -*- no-byte-compile: t; lexical-binding:t; -*-
 ;;; $DOOMDIR/packages.el
 #+end_src
@@ -1449,7 +1449,7 @@ customize the packages from the different modules and in =packages.el=. In other
 words, the real fun starts here.  As always, we start by declaring the lexical
 binding:
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 #+END_SRC
 
@@ -1457,7 +1457,7 @@ binding:
 
 Here's a simple trick to make =she-banged= scripts executable auto-magically by default.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (add-hook! 'after-save-hook
            #'executable-make-buffer-file-executable-if-script-p)
 #+end_src
@@ -1468,13 +1468,13 @@ Here's a simple trick to make =she-banged= scripts executable auto-magically by 
 Alert is a Growl-workalike for Emacs which uses a common notification interface and multiple, selectable "styles", whose use is fully customizable by the user.
 #+end_quote
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! alert)
 #+end_src
 
 I'm a =linux= user, so we pick the ~libnotify~ for getting system notifications.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! alert
   :defer t
   :custom
@@ -1488,7 +1488,7 @@ with the regex ~^\\(?:\\+\\)?\\([^/]+\\)/open-\\(?:\\(.+\\)-\\)?repl$~, will app
 
 With this, we can create a =repl= for the =awesome-client=.
 
-#+begin_src elisp :tangle autoload/awesomewm.el :mkdirp yes
+#+begin_src emacs-lisp :tangle autoload/awesomewm.el :mkdirp yes
 ;;;###autoload
 (defun +lua/open-awesome-client-repl ()
    (interactive)
@@ -1500,7 +1500,7 @@ With this, we can create a =repl= for the =awesome-client=.
 Some of my RSS feeds offer links to =lbry=, which cannot be open directly with a
 browser. The following advice takes care of this edge case.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! browse-url
   (defadvice! dan/browse-url-encode-url--parse-lbry-url (args)
     "Process a `lbry://' link so it can be opened with `browse-url'."
@@ -1515,14 +1515,14 @@ As part of the ~calendar~ module, we get the excellent ~calfw~ package, which di
 
 Europeans start the week on monday!
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! calfw
   (setq calendar-week-start-day 1)
 #+end_src
 
 For the =calendar= view, it's useful to be able to see when a task is scheduled.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
   (defadvice! dan/org-agenda--show-scheduled-in-calfw (fn &rest args)
     :around #'cfw:org-collect-schedules-period
     (let ((org-agenda-todo-ignore-scheduled nil))
@@ -1531,7 +1531,7 @@ For the =calendar= view, it's useful to be able to see when a task is scheduled.
 
 Finally, we create an entrance point to the calendar view.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (map! :leader
       :desc "Calfw" :mv "o a c" #'cfw:open-org-calendar)
 #+end_src
@@ -1540,7 +1540,7 @@ Finally, we create an entrance point to the calendar view.
 
 Begin giving candidates as soon as something is typed. This can be slow sometimes, so it might be a good idea to change it back to it's default value of ~3~. Also reduce the idle delay so it *feels* more responsive.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! company
   (setq company-minimum-prefix-length 2
         company-idle-delay 0.05))
@@ -1550,7 +1550,7 @@ Begin giving candidates as soon as something is typed. This can be slow sometime
 
 Compilation URLs should be followable.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (add-hook! compilation-mode #'goto-address-mode)
 #+end_src
 
@@ -1558,20 +1558,20 @@ Compilation URLs should be followable.
 
 A _consult_ing-read interface for ~company-mode~.
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! consult-company)
 #+end_src
 
 First, let's ensure the package is only loaded on demand, by creating a ~consult-company~ auto-command.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! consult-company
   :commands consult-company)
 #+end_src
 
 This package remaps ~completion-at-point~ to use =consult='s interface. Keybind to =C-S-s=.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! (company consult)
   (map! :map company-active-map
         "C-S-s" #'consult-company))
@@ -1583,13 +1583,13 @@ This package remaps ~completion-at-point~ to use =consult='s interface. Keybind 
 A package to incorporate projectile into consult. This allows to choose a project, when none is selected or choose a project buffer/file.
 #+end_quote
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! consult-projectile)
 #+end_src
 
 ~consult-projectile~ also allows for narrowing in ~emacs >= 28~, making it more useful than the default projectile command in =doom=. Narrow selection with B for buffer, F for file or P for project.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! consult-projectile
   :defer t
   :init
@@ -1599,7 +1599,7 @@ A package to incorporate projectile into consult. This allows to choose a projec
 
 To incorporate the same  behavior as ~projectile-switch-project~ when changing project:
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! consult-projectile
   (setq +workspaces-switch-project-function #'consult-projectile--file)
   (plist-put! consult-projectile--source-projectile-project
@@ -1610,7 +1610,7 @@ To incorporate the same  behavior as ~projectile-switch-project~ when changing p
 
 An essential interface to know what to customize!
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! cus-edit
   :defer t
 #+end_src
@@ -1618,7 +1618,7 @@ An essential interface to know what to customize!
 I use it to know the customizable options in a package, changing the
 values within this configuration. So, let's make it show the actual real values.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
   :custom
   (custom-unlispify-menu-entries nil)
   (custom-unlispify-tag-names nil)
@@ -1639,26 +1639,26 @@ They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 font string. You generally only need these two:
 
 ie:
-#+begin_src elisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
        doom-variable-pitch-font (font-spec :family "sans" :size 13))
 #+end_src
 
 Let's _choose_ our *monospaced* font, /Sarasa Mono J/ goodness:
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (setq doom-font (font-spec :family "Sarasa Mono J" :size 18 :weight 'semi-light))
 #+end_src
 
 And our =variable pitch= +font+, ~Sarasa UI J~:
 
-#+begin_src elisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (setq doom-variable-pitch-font (font-spec :family "Sarasa UI J" :size 18 :weight 'extra-light))
 #+end_src
 
 Comments and keywords should pop more...
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (custom-set-faces!
   '(font-lock-comment-face :slant italic)
   '(font-lock-keyword-face :slant italic))
@@ -1666,14 +1666,14 @@ Comments and keywords should pop more...
 
 When in zen mode, scale text just a bit.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! writeroom-mode
   (setq +zen-text-scale 1.25))
 #+end_src
 
 Not everything fits in the =mode-line=, so let's make fonts and icons smaller:
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (custom-set-faces!
   '(mode-line :family "Sarasa UI J" :height 90)
   '(mode-line-inactive :family "Sarasa UI J" :height 90))
@@ -1684,7 +1684,7 @@ Not everything fits in the =mode-line=, so let's make fonts and icons smaller:
 
 The filename in the =mode line= occupies way too much space.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! doom-modeline
   (setq doom-modeline-buffer-file-name-style 'truncate-with-project))
 #+end_src
@@ -1695,7 +1695,7 @@ There are two ways to load a theme. Both assume the theme is installed and
 available. You can either set ~doom-theme~ or manually load a theme with the
 ~load-theme~ function. This is the default:
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (setq doom-theme 'doom-nord)
 #+end_src
 
@@ -1703,7 +1703,7 @@ available. You can either set ~doom-theme~ or manually load a theme with the
 
 Let's add some small customization to make everything a bit brighter and bigger:
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! doom-nord-theme
   :defer t
   :custom
@@ -1717,7 +1717,7 @@ Let's add some small customization to make everything a bit brighter and bigger:
 One thing really missing from the default configuration of =dired= is an easy
 way to move up and down from directories.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! dired
   (map! :map dired-mode-map
         :m "h" #'dired-up-directory
@@ -1727,19 +1727,19 @@ way to move up and down from directories.
 Most of the information =dired= throws at you is not really necessary, so let's
 hide it by default. One can toggle this information on/off with ~(~ keybinding.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
   (add-hook! dired-mode #'dired-hide-details-mode)
 #+end_src
 
 But, do show git information on repositories by default, can be toggled on/off with ~)~.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
    (add-hook! 'dired-after-readin-hook #'+dired-enable-git-info-h)
 #+end_src
 
 There is a class between ~dired-subtree~ and ~dired-git-info~. Luckily, there is a [[https://github.com/clemera/dired-git-info/issues/9][hack]] to fix it.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
     (defadvice! dan/dired-subtree-toggle-advice (orig-fn &rest args)
       :around #'dired-subtree-toggle
       (cond ((bound-and-true-p dired-git-info-mode)
@@ -1752,14 +1752,14 @@ There is a class between ~dired-subtree~ and ~dired-git-info~. Luckily, there is
 Opening files from =dired= with an external program is a bit of drag by default, so
 we add the =dired-open= package to take care of that.
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! dired-open)
 #+end_src
 
 The variable ~dired-open-guess-shell-alist~ determines if the file is opened with
 an external program.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! dired-open
   :after dired
   :custom
@@ -1779,14 +1779,14 @@ an external program.
 
 The following packages reduce the ~dired buffer~ clutter by condensing the information into a single buffer.
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! dired-subtree)
 (package! dired-collapse)
 #+end_src
 
 ~dired-collapse~ condenses empty directory paths or file paths with a single file in them. ~dired-subtree~ enables a tree view of te directory, which puts the information of sub-directories contents in the same buffer.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! dired-subtree
   :after dired)
 
@@ -1798,13 +1798,13 @@ The following packages reduce the ~dired buffer~ clutter by condensing the infor
 
 Emacs is missing a mode to edit =.env= files. So let's add it one:
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! dotenv-mode)
 #+end_src
 
 Now let's activate it when opening a =.env=:
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! dotenv-mode
   :mode ("\\.env\\.?.*\\'" . dotenv-mode))
 #+end_src
@@ -1815,7 +1815,7 @@ Now let's activate it when opening a =.env=:
 Dtache, or Detach Emacs, is a package to run shell commands completely detached from Emacs.
 #+end_quote
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! dtache
   :recipe (:host gitlab :repo "niklaseklund/dtache"))
 #+end_src
@@ -1824,7 +1824,7 @@ Dtache, or Detach Emacs, is a package to run shell commands completely detached 
 The detachable nature of the package means that commands started with it can outlive Emacs, which also works on remote hosts, essentially offering a lightweight alternative to Tmux or GNU Screen.
 #+end_quote
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! dtache
   :defer t
   :config
@@ -1835,13 +1835,13 @@ The detachable nature of the package means that commands started with it can out
 
 ~dtache-shell-command~ acts as a replacement to ~async-shell-command~.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (map! :g "M-&" #'dtache-shell-command)
 #+end_src
 
 ~dtache-consult~ allows us to manage the active sessions behind =dtache=.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! dtache-consult
   :defer t
   :init
@@ -1851,7 +1851,7 @@ The detachable nature of the package means that commands started with it can out
 
 ~embark~ can integrate with ~dtache~.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! (embark dtache)
   (defvar embark-dtache-map (make-composed-keymap dtache-action-map embark-general-map))
   (add-to-list 'embark-keymap-alist '(dtache . embark-dtache-map)))
@@ -1859,7 +1859,7 @@ The detachable nature of the package means that commands started with it can out
 
 The commands ~dtache-compile~ and ~dtache-compile-recompile~ can act as drop in replacements for ~compile~ and ~compile-recompile~, respectively.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! dtache-compile
   :after dtache
   :init
@@ -1874,7 +1874,7 @@ The commands ~dtache-compile~ and ~dtache-compile-recompile~ can act as drop in 
 
 Finally, ~dtache~ can integrate with ~alert.el~ to notify us when a session has becomed inactive.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! dtache
   (defun dan/dtache-inactive-session-notification (session)
     "Send an `alert' notification when SESSION finish."
@@ -1899,7 +1899,7 @@ Finally, ~dtache~ can integrate with ~alert.el~ to notify us when a session has 
 
 First, lets bring our feeds into the cloud.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! elfeed
   :defer t
   :custom
@@ -1908,21 +1908,21 @@ First, lets bring our feeds into the cloud.
 
 Special faces for special tags.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
   (elfeed-search-face-alist '((unread    elfeed-search-unread-title-face)
                               (star      elfeed-search-unread-count-face)))
 #+end_src
 
 Show me entries from within a month that I haven't read and that I have 'starred'.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
   :config
   (setq elfeed-search-filter "@4-week-ago +unread ")
 #+end_src
 
 Some entries are worth preserving. By 'starring' them we don't lose them.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
   (defalias 'dan/elfeed-search-tag-all-star
           (elfeed-expose #'elfeed-search-tag-all 'star)
           "Add the `star' tag to all selected entries.")
@@ -1934,7 +1934,7 @@ Some entries are worth preserving. By 'starring' them we don't lose them.
 
 Expose the aliases to the =x= keybinding.
 
-    #+begin_src elisp
+    #+begin_src emacs-lisp :tangle yes
   (map! :map 'elfeed-search-mode-map
         :nv "x" #'dan/elfeed-search-tag-all-star
         :nv "X" #'dan/elfeed-search-untag-all-star)
@@ -1942,13 +1942,13 @@ Expose the aliases to the =x= keybinding.
 
 Automatically updating feed when opening =elfeed=.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
   (add-hook! 'elfeed-search-mode-hook #'elfeed-update))
 #+end_src
 
 Give it an easy keybinding to access it:
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (map! :leader :desc "News feed" :m "o n" #'=rss)
 #+end_src
 
@@ -1958,7 +1958,7 @@ Give it an easy keybinding to access it:
 Various bits and pieces to enhance the Elfeed user experience.
 #+end_quote
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! elfeed-goodies
   (setq elfeed-goodies/feed-source-column-width 24
         elfeed-goodies/tag-column-width 40
@@ -1969,14 +1969,14 @@ Various bits and pieces to enhance the Elfeed user experience.
 
 And point =elfeed= to the org configuration file.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! elfeed
   (setq rmh-elfeed-org-files (list (expand-file-name "elfeed.org" org-directory))))
 #+end_src
 
 Keybinding to easily find the feeds file.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (map! :leader
       :desc "News feed config" :m "o N" (cmd! (unless (featurep 'elfeed-org)
                                                 (require 'elfeed-org))
@@ -1989,7 +1989,7 @@ The keybinding =M-SPC m b= inserts the name of a buffer in the =eshell= syntax.
 However, sometimes it's useful to refer to the buffer by its string name
 representation. So let's make an extra keybinding for said case:
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! eshell
   (map! :map eshell-mode-map
         (:localleader
@@ -1999,7 +1999,7 @@ representation. So let's make an extra keybinding for said case:
 
 Do not use bash for auto-completion backend.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
   (setq fish-completion-fallback-on-bash-p nil))
 #+end_src
 
@@ -2007,7 +2007,7 @@ Do not use bash for auto-completion backend.
 
 Here I define the slightly modified version of ~eshell-insert-buffer-name~.
 
-#+begin_src elisp :tangle autoload/eshell.el :mkdirp yes
+#+begin_src emacs-lisp :tangle autoload/eshell.el :mkdirp yes
 ;;; $DOOMDIR/autoload/eshell.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
@@ -2025,7 +2025,7 @@ Vim keybindings are hard to let go once you are used to them.
 Luckily, doom comes with much of the heavy lifting already done when it comes to
 evil mode. We just gotta customize some minor details.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! evil
   :defer t
   :custom
@@ -2033,57 +2033,57 @@ evil mode. We just gotta customize some minor details.
 
 Make horizontal motions move to other lines.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
   (evil-cross-lines t)
 #+end_src
 
 Remove highlighted items after search is finished.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
   (evil-ex-search-persistent-highlight nil)
 #+end_src
 
 Don't continue commented lines with o/O.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
    (+evil-want-o/O-to-continue-comments nil)
 #+end_src
 
 Don't override the contents of the " register after pasting on a block.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
    (evil-kill-on-visual-paste nil)
 #+end_src
 
 Implicit /g flag on evil ex substitution. Put =g= flag to reverse it.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
   (evil-ex-substitute-global t)
 #+end_src
 
 Yank by actual lines of text and not by screen lines, less confusing.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
    :init
    (setq evil-respect-visual-line-mode nil)
 #+end_src
 
 Universal argument mapped to M-u instead.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
   :config
   (map! :g "M-u" #'universal-argument
 #+end_src
 
 Remove highlighted items after a search.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
         :m "C-l" #'evil-ex-nohighlight))
 #+end_src
 
 Center the cursor after jumping to a new search entry.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! evil
   (defun dan/center-after-move (&rest _)
     "Center screen after search."
@@ -2101,7 +2101,7 @@ Center the cursor after jumping to a new search entry.
 
 Create =undo= boundaries after certain key presses in insert mode.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! evil
   (add-hook! 'post-self-insert-hook
     (when (and (evil-insert-state-p)
@@ -2120,7 +2120,7 @@ Create =undo= boundaries after certain key presses in insert mode.
 
 ~evil-snipe~ is a simple but powerful plugin, that adds a =snipe= two character motion, plus the possibility of make builtin motions work further than a single line.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! evil-snipe
   (setq evil-snipe-scope 'whole-buffer))
 #+end_src
@@ -2129,7 +2129,7 @@ Create =undo= boundaries after certain key presses in insert mode.
 
 Let's make the =hydra= module's functions easily accessible:
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (map! :leader
       :desc "Navigate/Hydra"  :m "w N" #'+hydra/window-nav/body
       :desc "Text-Zoom/Hydra" :m "w f" #'+hydra/text-zoom/body)
@@ -2139,7 +2139,7 @@ Let's make the =hydra= module's functions easily accessible:
 
 Use the bitmap to display the indent level if we are in a graphic interface.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! highlight-indent-guides
   (setq highlight-indent-guides-method (if (display-graphic-p)
                                            'bitmap
@@ -2151,13 +2151,13 @@ Use the bitmap to display the indent level if we are in a graphic interface.
 
 =kubedoc.el= provides Kubernetes API documentation in Emacs.
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! kubedoc)
 #+end_src
 
 Lazy load with the command ~kubedoc~.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! kubedoc
   :defer t)
 #+end_src
@@ -2166,19 +2166,19 @@ Lazy load with the command ~kubedoc~.
 
 =kubernetes.el= is a ~kubectl~ porcelain to manage all your cluster comfortably from emacs. It is what =magit= is to ~git~.
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! kubernetes)
 #+end_src
 
 We also bring along a =evil= keybind package for convenience.
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! kubernetes-evil)
 #+end_src
 
 Finally, lazily load the package and it's =evil= keybindings when calling an entry command, ~kubernetes-overview~.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! kubernetes
   :defer t)
 
@@ -2192,13 +2192,13 @@ Finally, lazily load the package and it's =evil= keybindings when calling an ent
 *** Language Tool
 
 Do not run the jar file! Run the binary.
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (setq langtool-bin "languagetool-commandline")
 #+end_src
 
 Most of the time, assume I speak English.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (setq langtool-mother-tongue "en")
 #+end_src
 
@@ -2207,7 +2207,7 @@ Most of the time, assume I speak English.
 This determines the style of line numbers in effect. If set to ~nil~, line
 numbers are disabled. For relative line numbers, set this to ~relative~.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (setq display-line-numbers-type 'relative)
 #+end_src
 
@@ -2215,14 +2215,14 @@ numbers are disabled. For relative line numbers, set this to ~relative~.
 
 Search for the ~lsp-server~ in path:
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! lsp-lua
    (setq lsp-clients-lua-language-server-command "lua-language-server"))
 #+end_src
 
 Add ~lsp-lua-diagnostics-globals~ as a ~safe-local-variable~.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! lua-mode
   (put 'lsp-lua-diagnostics-globals
        'safe-local-variable
@@ -2236,7 +2236,7 @@ Add ~lsp-lua-diagnostics-globals~ as a ~safe-local-variable~.
 
 Add ~lsp-lua-workspace-library~ as a ~safe-local-variable~.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! lua-mode
   (put 'lsp-lua-workspace-library 'safe-local-variable
        (lambda (e)
@@ -2256,18 +2256,18 @@ Add ~lsp-lua-workspace-library~ as a ~safe-local-variable~.
 
 This =emacs= package provides a minor mode which configures =magit= to use delta when displaying diffs.
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! magit-delta)
 #+end_src
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! magit-delta
   :hook (magit-mode . magit-delta-mode))
 #+end_src
 
 ~magit-delta-mode~ can be slow on big diffs. Luckily, we can [[https://github.com/dandavison/magit-delta/issues/9#issuecomment-795435781][advice the appropiate functions]] to deactivate the mode on big buffers.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! magit-delta
   (defcustom dan/magit-delta-point-max 50000
     "Maximum length of diff buffer which `magit-delta' will tolerate."
@@ -2283,7 +2283,7 @@ This =emacs= package provides a minor mode which configures =magit= to use delta
 
 Re-enable mode after ~magit-refresh~ if there aren't too many characters.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! magit
   (add-hook! 'magit-post-refresh-hook
     (when (and (not magit-delta-mode)
@@ -2296,7 +2296,7 @@ Re-enable mode after ~magit-refresh~ if there aren't too many characters.
 The default =doom-modeline= is great, the only thing is that I want it to show me
 the evil state I am in with a letter instead of an icon:
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! doom-modeline
   :defer t
   :custom
@@ -2306,7 +2306,7 @@ the evil state I am in with a letter instead of an icon:
 We would like to display the battery icon in the mode line, but only if I am in
 a laptop:
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! battery
   :after-call doom-modeline-mode
   :config
@@ -2323,13 +2323,13 @@ Emacs aggressively adds a ~\n~ to files, which is technically a good practice. H
 
 We change it so emacs simply asks us first if we want to add the ~\n~ before saving.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (setq require-final-newline 'ask)
 #+end_src
 
 This little hack prevents ~persp-mode~ to bother me when saving its =autosave= file. We advice ~basic-save-buffer~ so files in ~persp-save-dir~ insert a breakline if missing one.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! persp-mode
   (defadvice! dan/persp-autosave--add-breakline (&rest _)
     "Automatically add breakline for certain buffers before saving to file."
@@ -2348,7 +2348,7 @@ This little hack prevents ~persp-mode~ to bother me when saving its =autosave= f
 
 ~nodejs-repl~ is a super useful package. However, it's missing a comfortable way to interact with promises. We can change that with an experimental =nodejs=.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! nodejs-repl
   (setq nodejs-repl-arguments '("--experimental-repl-await")))
 #+end_src
@@ -2357,7 +2357,7 @@ This little hack prevents ~persp-mode~ to bother me when saving its =autosave= f
 
 One of the killer features of Emacs.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! org
     :defer t
 #+end_src
@@ -2365,77 +2365,77 @@ One of the killer features of Emacs.
 If you use ~org~ and don't want your org files in the default location below,
 change ~org-directory~. It must be set before org loads!
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
     :custom
     (org-directory "~/Cloud/org/")
 #+end_src
 
 Set ~org-attach-id-dir~ back to default value.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
     (org-attach-id-dir  "data")
 #+end_src
 
 Any file in the ~agenda~ directory is part of the agenda view.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
     (org-agenda-files (list (expand-file-name "agenda/" org-directory)))
 #+end_src
 
 Make emphasis markers auto-hide.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
     (org-hide-emphasis-markers t)
 #+end_src
 
 Modules for keeping track of habits and completing checklists.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
     (org-module  '(org-habit org-checklist))
 #+end_src
 
 Don't show TODOs which are scheduled in the future.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
     (org-agenda-todo-ignore-scheduled 'future)
 #+end_src
 
 A project with no NEXT subheads is stuck.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
     (org-stuck-projects '("TODO=\"PROJ\"" ("NEXT") nil ""))
 #+end_src
 
 Default priority is lowest priority
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
     (org-priority-default org-priority-lowest)
 #+end_src
 
 Add custom functions to some org hooks. First, a function that runs when
 subheading change KEYWORD state.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
     :config
     (add-hook! 'org-after-todo-statistics-hook #'dan/org-after-todo-statistics-preserve-todo-state)
 #+end_src
 
 In org buffers, remove the line number fringe.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
     (add-hook! org-mode (setq-local display-line-numbers nil))
 #+end_src
 
 Switch header 'TODO' state to 'DONE' when all checkboxes are ticked, to 'TODO'
 otherwise
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
     (add-hook! 'org-checkbox-statistics-hook  #'dan/org-checkbox-statistics-change-to-done-when-all-ticked))
 #+end_src
 
 Skip sub-tasks whose parents are scheduled in the future. The function ~org-agenda-skip-function~ can be used in individual commands instead.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! org
   (setq org-agenda-skip-function-global
          (defun dan/org-agenda-skip-if-inherited-timestamp ()
@@ -2463,7 +2463,7 @@ Use the TODO keywords that suit my workflow.
 
 Also, add them faces so they stick out more:
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! org
   (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "PROJ(p)" "WAIT(w)" "IDEA(i)" "EVENT(e)" "|"
                                       "DONE(d)" "CANCELLED(c)"))
@@ -2483,7 +2483,7 @@ The key files of the capture template are:
 - ~+org-capture-journal-file~ :: Scheduled todos or events.
 - ~+org-capture-notes-file~ :: Ideas file.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! org
   (setq +org-capture-projects-file (expand-file-name "projects.org" (car org-agenda-files))
         +org-capture-todo-file (expand-file-name "diary.org" (car org-agenda-files))
@@ -2493,7 +2493,7 @@ The key files of the capture template are:
 
 And the templates that use those files:
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! org
   (setq org-capture-templates '(("t" "Quick todo" entry
                                  (file+headline +org-capture-todo-file "Quick errands")
@@ -2518,7 +2518,7 @@ And the templates that use those files:
 
 Now we specify the ~org-refile-targets~. Any open org file and the files that are part of the agenda.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! org
   (setq org-refile-targets '((nil              :maxlevel . 9)
                              (org-agenda-files :maxlevel . 9))))
@@ -2526,7 +2526,7 @@ Now we specify the ~org-refile-targets~. Any open org file and the files that ar
 
 The default agenda view shows yesterdays task, todays and tomorrows.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! org-agenda
   (setq org-agenda-start-on-weekday nil
         org-agenda-start-day        "-1d"
@@ -2535,7 +2535,7 @@ The default agenda view shows yesterdays task, todays and tomorrows.
 
 Keybinding for the default agenda.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (map! :leader
       :desc "3 Day Org Agenda" "o a d" #'org-agenda-list)
 #+end_src
@@ -2544,14 +2544,14 @@ Keybinding for the default agenda.
 
 Lexical Binding.
 
-#+begin_src elisp :tangle autoload/org.el :mkdirp yes
+#+begin_src emacs-lisp :tangle autoload/org.el :mkdirp yes
 ;;; $DOOMDIR/autoload/org.el -*- lexical-binding: t; -*-
 #+end_src
 
 Define the custom function, switch entry to 'DONE' when all sub-entries are
 'DONE', else keep entry original todo state.
 
-#+begin_src elisp :tangle autoload/org.el :mkdirp yes
+#+begin_src emacs-lisp :tangle autoload/org.el :mkdirp yes
 ;;;###autoload
 (defun dan/org-after-todo-statistics-preserve-todo-state (n-done n-not-done)
   "Change `TODO' state to `DONE' if all subheadings are also `DONE', otherwise
@@ -2568,7 +2568,7 @@ headings that are not done. This function is meant to be run as part of
 
 Custom function that switches heading from 'TODO' to 'DONE' when all checkboxes are ticked.
 
-#+begin_src elisp :tangle autoload/org.el :mkdirp yes
+#+begin_src emacs-lisp :tangle autoload/org.el :mkdirp yes
 ;;;###autoload
 (defun dan/org-checkbox-statistics-change-to-done-when-all-ticked ()
   "Change `TODO' state to `DONE' if all checkboxes of the heading are ticked.
@@ -2599,20 +2599,20 @@ This function is meant to be run as as part of `org-checkbox-statistics-hook'"
 =org-edna= offers more control over how and when tasks change state and manages
 dependencies between tasks through extra heading properties.
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! org-edna)
 #+end_src
 
 Load and activate ~org-edna~ together with ~org~.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! org-edna
   :hook (org-load . org-edna-mode)
 #+end_src
 
 Make =org-edna= to trigger in any state change except done.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
   :custom
   (org-edna-from-todo-states 'not-done))
 #+end_src
@@ -2621,13 +2621,13 @@ Make =org-edna= to trigger in any state change except done.
 
 Like =topsy=, for org mode.
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! org-sticky-header)
 #+end_src
 
 Lazy load only in ~org-mode~ buffers.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! org-sticky-header
   :hook (org-mode . org-sticky-header-mode))
 #+end_src
@@ -2638,7 +2638,7 @@ Lazy load only in ~org-mode~ buffers.
 This package lets you “supercharge” your Org daily/weekly agenda. The idea is to group items into sections, rather than having them all in one big list.
 #+end_quote
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! org-super-agenda)
 #+end_src
 
@@ -2650,7 +2650,7 @@ u
 The primary use of this package is for the daily/weekly agenda, made by the org-agenda-list command, but it also works for other agenda views, like org-tags-view, org-todo-list, org-search-view, etc.
 #+end_quote
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! org-super-agenda
   :after org
   :config
@@ -2659,7 +2659,7 @@ The primary use of this package is for the daily/weekly agenda, made by the org-
 
 With the package installed, we are ready to define ~org-agenda-custom-commands~ as well as the ~org-super-agenda-groups~. For extra visibility, we tweak the agenda sorting strategy to make priority hight tasks appear early.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 :custom
 (org-agenda-sorting-strategy '((agenda priority-down habit-down time-up category-keep)
                                (todo priority-down category-keep)
@@ -2688,14 +2688,14 @@ With the package installed, we are ready to define ~org-agenda-custom-commands~ 
 
 There are a few clashes between ~evil-org-agenda-mode-map~ and ~org-super-agenda-header-map~. To remove them, we simply override the latter keymap, after loading both ~evil-org-agenda~ and ~org-super-agenda~.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! (evil-org-agenda org-super-agenda)
   (setq org-super-agenda-header-map (copy-keymap evil-org-agenda-mode-map)))
 #+end_src
 
 Make headers =foldable= and =quitable=.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! (evil-org-agenda org-super-agenda)
   (map! :map 'org-super-agenda-header-map
         "<tab>" #'origami-toggle-node
@@ -2704,7 +2704,7 @@ Make headers =foldable= and =quitable=.
 
 Only the first important categories should open by default, fold the rest.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! (evil-org-agenda org-super-agenda)
   (add-hook! 'org-agenda-finalize-hook
              :append (when (and (org-agenda-check-type nil 'todo)
@@ -2735,7 +2735,7 @@ Only the first important categories should open by default, fold the rest.
 
 To prevent unnecessary scrolling when calling the agenda buffer, we automate the cursor position on agenda ~todo~ views.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! (evil-org-agenda org-super-agenda)
  (add-hook! 'org-agenda-finalize-hook
             :append (when (and (org-agenda-check-type nil 'todo)
@@ -2751,7 +2751,7 @@ To prevent unnecessary scrolling when calling the agenda buffer, we automate the
 
 If we are filtering the agenda view, open up the nodes with results.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! (evil-org-agenda org-super-agenda)
   (defadvice! dan/org-super-agenda-open-nodes (&rest _)
     "Open all super agenda groups, under the right conditions."
@@ -2765,7 +2765,7 @@ If we are filtering the agenda view, open up the nodes with results.
 
 When quitting the agenda, remove all filters.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! (evil-org-agenda org-super-agenda)
   (defadvice! dan/org-agenda-quit-remove-filters (&rest _)
     "Remove filters when quitting the org agenda."
@@ -2777,13 +2777,13 @@ When quitting the agenda, remove all filters.
 
 A text folding minor mode for Emacs.
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! origami)
 #+end_src
 
 Currently, only used to fold ~org-super-agenda~ headers.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! origami
   :defer t)
 #+end_src
@@ -2792,14 +2792,14 @@ Currently, only used to fold ~org-super-agenda~ headers.
 
 We reduce the default zoom factor to have more leeway between zoom levels.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! pdf-tools
   (setq pdf-view-resize-factor 1.05))
 #+end_src
 
 We also auto install ~epdinfo~.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! pdf-tools
    (pdf-loader-install t))
 #+end_src
@@ -2809,7 +2809,7 @@ We also auto install ~epdinfo~.
 Some functionality uses this to identify you, e.g. GPG configuration, email
 clients, file templates and snippets.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (setq user-full-name "Daniel Levy Moreno"
        user-mail-address "daniellevymoreno@gmail.com")
 #+end_src
@@ -2822,14 +2822,14 @@ A builtin hidden gem, which has substituted =htop= for me.
 Mode for displaying system processes and sending signals to them.
 #+end_quote
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! proced
   :defer t
 #+end_src
 
 By default, =proced= doesn't auto update the process list, which is a bummer. Luckily, we can change that.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
   :custom
   (proced-auto-update-flag t)
   (proced-auto-update-interval 1))
@@ -2840,7 +2840,7 @@ By default, =proced= doesn't auto update the process list, which is a bummer. Lu
 Let's make projectile's life easier by giving it some paths where I normally
 store projects.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (setq projectile-project-search-path '("~/Projects/" "~/.config/"))
 #+end_src
 
@@ -2850,7 +2850,7 @@ store projects.
 QR Code encoder written in pure Emacs Lisp.
 #+end_quote
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! qrencode)
 #+end_src
 
@@ -2864,7 +2864,7 @@ This package provides two user facing interactive functions, that will encode te
     Encode URL at point as QR Code.
 #+end_quote
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! qrencode
     :defer t)
 #+end_src
@@ -2873,7 +2873,7 @@ This package provides two user facing interactive functions, that will encode te
 
 Matching pairs draw with the same face color, making them easily identifiable.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (add-hook! prog-mode #'rainbow-delimiters-mode-enable)
 #+end_src
 
@@ -2881,7 +2881,7 @@ Matching pairs draw with the same face color, making them easily identifiable.
 
 Use =rust-analyzer= by default, since it has more features.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! rustic
   :defer t
   :custom
@@ -2890,7 +2890,7 @@ Use =rust-analyzer= by default, since it has more features.
 
 When using the rustic popup, be in Emacs state.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
   :config
   (when (featurep 'evil)
     (add-hook! 'rustic-popup-mode-hook #'evil-emacs-state)))
@@ -2900,13 +2900,13 @@ When using the rustic popup, be in Emacs state.
 
 A nice, comfy, useless package.
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! snow)
 #+end_src
 
 We define an auto-load function as an entry point to the winter season.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! snow
   :commands snow)
 #+end_src
@@ -2915,7 +2915,7 @@ We define an auto-load function as an entry point to the winter season.
 
 ~solidity-mode~ is a bit barebores. We can help it along adding ~company-yasnippet~ and ~company-dabbrev-code~ for better autocompletion.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! (solidity-mode company-solidity company-yasnippet)
   (set-company-backend! 'solidity-mode
     'company-solidity 'company-yasnippet 'company-dabbrev-code))
@@ -2924,7 +2924,7 @@ We define an auto-load function as an entry point to the winter season.
 *** So Long Mode
 =emacs= struggles with long lines. In ~emacs-version >= 28~, the ~so-long-statistics-excessive-p~ function has been reworked into a native super fast function to detect when ~so-long-mode~ is needed.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! so-long
   (setq so-long-predicate #'so-long-statistics-excessive-p))
 #+end_src
@@ -2933,7 +2933,7 @@ We define an auto-load function as an entry point to the winter season.
 
 Default doom dashboard is pretty and welcoming, let's just give it a small personal touch.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (setq fancy-splash-image (expand-file-name "img/qs.png" doom-private-dir))
 #+end_src
 
@@ -2941,7 +2941,7 @@ Default doom dashboard is pretty and welcoming, let's just give it a small perso
 
 But what if I am in the terminal? No worries:
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (defun dan/my-weebery-is-always-greater ()
   (mapc (lambda (line)
           (insert (propertize (+doom-dashboard--center +doom-dashboard--width line)
@@ -2971,7 +2971,7 @@ But what if I am in the terminal? No worries:
 
 =telega= is full featured unofficial client for Telegram platform for GNU Emacs.
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! telega
   :recipe (:files (:defaults
                    "contrib/*.el"
@@ -2982,7 +2982,7 @@ But what if I am in the terminal? No worries:
 
 Minimal configuration to be able to build the server and load the cache.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! telega
   :defer t
   :custom
@@ -2996,21 +2996,21 @@ Minimal configuration to be able to build the server and load the cache.
 
 Quick keybinding to open =telega=.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (map! :leader
     :desc "telegram" :mv "o m" #'telega)
 #+end_src
 
 ~evil-snipe~ shadows the =search= default bindings of =telega= in ~evil-collection~, so we disable it for ~telega-root-mode~.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! evil-snipe
   (add-to-list 'evil-snipe-disabled-modes 'telega-root-mode))
 #+end_src
 
 We set up auto-completion for chats.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! telega
   (set-company-backend! 'telega-chat-mode
     '(:separate
@@ -3024,7 +3024,7 @@ We set up auto-completion for chats.
 
 Finally, we add some extra goodies, some in =core= and others in =contrib=. These include visual customization like =shortening url's= or =code blocks syntax highlighting= to more complicated functionality like =system notifications= brought to you via ~alert.el~.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (add-hook! telega-load
            ;; core
            #'telega-mode-line-mode
@@ -3041,14 +3041,14 @@ Finally, we add some extra goodies, some in =core= and others in =contrib=. Thes
 
 Highlight the current line in =telega= buffer.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (add-hook! '(telega-root-mode-hook telega-chat-mode-hook)
            #'hl-line-mode)
 #+end_src
 
 Sometimes ~telega~ emacs when trying to quit it. Forcing to quit ~telega~ when quitting =emacs= prevents this situation.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (add-hook! kill-emacs
   (when (and (boundp 'telega-root-buffer-name)
              (get-buffer telega-root-buffer-name))
@@ -3059,13 +3059,13 @@ Sometimes ~telega~ emacs when trying to quit it. Forcing to quit ~telega~ when q
 
 This library shows a sticky header at the top of the window. The header shows which definition the top line of the window is within.
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! topsy)
 #+end_src
 
 We activate ~topsy-mode~ only in programming contexts.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! topsy
   :defer t
   :init
@@ -3076,7 +3076,7 @@ We activate ~topsy-mode~ only in programming contexts.
 
 To make the ~header-line~ a little more noticeable while consistent with the buffer style, we change it's font and inherit from the ~default~ style.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
   :config
   (custom-set-faces!
     '(header-line :family "Victor Mono"
@@ -3088,7 +3088,7 @@ To make the ~header-line~ a little more noticeable while consistent with the buf
 =treemacs= integrates with =git=. By default, its set to a performance oriented
 configuration with limited capabilities. Let's change that.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (setq +treemacs-git-mode 'deferred)
 #+end_src
 
@@ -3097,14 +3097,14 @@ directory, that's what =dired= is for.
 
 Use =all-the-icons= theme in =treemacs=, for consistency.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (setq doom-themes-treemacs-theme "doom-colors")
 #+end_src
 
 When running ~treemacs-find-file~, the focus remains in the file instead of going
 to the =treemacs= buffer. Let's change that.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (defadvice! dan/treemacs-select-after-find-file (&rest args)
   "Switch focus to the treemacs buffer after calling `treemacs-find-file'."
   :after #'treemacs-find-file
@@ -3113,7 +3113,7 @@ to the =treemacs= buffer. Let's change that.
 
 Let's switch the bindings for ~+treemacs/toggle~ and ~treemacs-find-file~.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (map! :leader
       :desc "Find file in project sidebar" :mv "o p" #'treemacs-find-file
       :desc "Project sidebar" :mv "o P" #'+treemacs/toggle)
@@ -3127,14 +3127,14 @@ Tree-sitter is a general programming language parser that efficiently builds and
     --- https://hungyi.net/posts/use-emacs-tree-sitter-doom-emacs/
 #+end_quote
 
-#+begin_src elisp :tangle packages.el
+#+begin_src emacs-lisp :tangle packages.el
 (package! tree-sitter)
 (package! tree-sitter-langs)
 #+end_src
 
 Activate =tree-sitter= for programming modes.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (use-package! tree-sitter
   :defer t)
 
@@ -3148,7 +3148,7 @@ Activate =tree-sitter= for programming modes.
 
 Activate syntax highlighting based on the AST.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (add-hook! 'tree-sitter-after-on-hook
            #'tree-sitter-hl-mode)
 #+end_src
@@ -3157,7 +3157,7 @@ Activate syntax highlighting based on the AST.
 
 Uniquify makes buffers with the same name easier to distinguish. The ~'forward~ configuration shows the file path of the buffer.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (setq uniquify-buffer-name-style 'forward)
 #+end_src
 
@@ -3165,7 +3165,7 @@ Uniquify makes buffers with the same name easier to distinguish. The ~'forward~ 
 
 We want packages to be lazy by default. In other words, load only on demand.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! use-package
   (setq use-package-always-defer t))
 #+end_src
@@ -3176,13 +3176,13 @@ Let's add minor customization to the =vc-gutter= module:
 
 First, diff the file while the buffer is changing, not just when it's saved.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (setq +vc-gutter-diff-unsaved-buffer t)
 #+end_src
 
 Lastly, let's activate =git-gutter= for remote files as well.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (setq +vc-gutter-in-remote-files t)
 #+end_src
 
@@ -3190,13 +3190,13 @@ Lastly, let's activate =git-gutter= for remote files as well.
 
 Make =urls= clickable in ~vterm~ modes.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (add-hook! vterm-mode #'goto-address-mode)
 #+end_src
 
 Maximum scrollback to the max!
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! vterm
   (setq vterm-max-scrollback 100000))
 #+end_src
@@ -3205,7 +3205,7 @@ Maximum scrollback to the max!
 
 Doom Emacs default configuration is too slow, let's speed it up.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! which-key
   (setq which-key-idle-delay 0.1
          which-key-idle-secondary-delay 0.2))
@@ -3217,7 +3217,7 @@ I work with lots of files that have long lines, which can be hard to read
 sometimes. ~+word-wrap-mode~ helps to make these files more readable without
 changing the buffer contents.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (add-hook! 'doom-first-first-buffer #'+global-word-wrap-mode)
 #+end_src
 
@@ -3225,7 +3225,7 @@ changing the buffer contents.
 
 I have family all over the place, it's hard to keep up with the time difference. Luckily, =emacs= can help with ~world-clock~ mode.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! time
   (setq world-clock-list '(("America/Los_Angeles" "Napa")
                            ("America/New_York"    "Hatfield")
@@ -3238,13 +3238,13 @@ I have family all over the place, it's hard to keep up with the time difference.
 
 Make the =wclock= buffer into a popup.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (set-popup-rule! "^\\*wclock" :quit 'current :side 'top)
 #+end_src
 
 Make it quit-able with =q=.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (after! time
   (map! :map 'world-clock-mode-map
         :nm "q" #'quit-window))
@@ -3252,13 +3252,13 @@ Make it quit-able with =q=.
 
 Make it play nice with ~evil-mode~.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (add-hook! world-clock-mode #'evil-normalize-keymaps)
 #+end_src
 
 Give it an easy entry keybinding ~SPC o w~.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (map! :leader
       :desc "World Clock" :nm "o w" #'world-clock)
 #+end_src
@@ -3267,14 +3267,14 @@ Give it an easy entry keybinding ~SPC o w~.
 
 Keep header lines for ~+zen-mode~, so ~org-sticky-header-mode~ works as intended.
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (add-hook! org-mode
   (setq-local writeroom-header-line t))
 #+end_src
 
 Make ~zen-mode~ togglable in a per file basis, just like in this ~config.org~!
 
-#+begin_src elisp
+#+begin_src emacs-lisp :tangle yes
 (add-to-list 'safe-local-eval-forms
              '(when (and (fboundp #'+zen/toggle)
                          (not noninteractive))
