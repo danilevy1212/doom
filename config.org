@@ -2091,7 +2091,7 @@ Center the cursor after jumping to a new search entry.
       (advice-add command :after #'dan/center-after-move))))
 #+end_src
 
-Create =undo= boundaries after certain key presses in insert mode.
+Create =undo= boundaries after certain key presses in =insert-mode=.
 
 #+begin_src emacs-lisp :tangle yes
 (after! evil
@@ -2103,9 +2103,8 @@ Create =undo= boundaries after certain key presses in insert mode.
                                       '(?. ?, ?! ?\( ?\{ ?\[ ??)
                                       ;; 日本語
                                       '(?。 ?、 ?\「 ?\（ ?\｛ ?・))))
-      (let ((inhibit-message t))
-        (evil-force-normal-state)
-        (call-interactively #'evil-append)))))
+      (evil-end-undo-step)
+      (evil-start-undo-step))))
 #+end_src
 
 *** evil-snipe
