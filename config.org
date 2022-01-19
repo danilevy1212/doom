@@ -525,14 +525,6 @@ arbitrarily extend it.
        ;;tabs              ; a tab bar for Emacs
 #+end_src
 
-***** treemacs
-
-A modern, beautiful and extensible project file editor, what is not to love?
-
-#+begin_src emacs-lisp :tangle init.el
-       (treemacs +lsp)          ; a project drawer, like neotree but cooler
-#+end_src
-
 ***** unicode
 
 This module is based on [[https://github.com/rolandwalker/unicode-fonts][unicode-fonts]], which tries to cover as many glyphs as
@@ -2135,6 +2127,53 @@ Let's make the =hydra= module's functions easily accessible:
       :desc "Text-Zoom/Hydra" :m "w f" #'+hydra/text-zoom/body)
 #+end_src
 
+*** imenu-list
+
+#+begin_quote
+This Emacs minor-mode creates an automatically updated buffer called *Ilist* that is populated with the current buffer's imenu entries. The *Ilist* buffer is typically shown as a sidebar (Emacs vertically splits the window).
+#+end_quote
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! imenu-list)
+#+end_src
+
+Keybindings:
+
+| Command                  | Keybinding | Description                              |
+|--------------------------+------------+------------------------------------------|
+| ~imenu-list~               | =SPC o i=    | Open/Toggle =Ilist= buffer.                |
+| ~imenu-list-go-entry~      | =RET=        | Go to =imenu= entry.                       |
+| ~imenu-list-display-entry~ | =d=          | Display the =imenu= entry in other buffer. |
+| ~imenu-list-quit-window~   | =q=          | Quit =Ilist= buffer.                       |
+| ~hs-toggle-hiding~         | =TAB=        | Toggle fold/unfold =imenu= entry.          |
+
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! imenu-list
+  :defer t
+  :init
+  (map! :leader
+        :desc "Index" :g "o i" #'imenu-list-smart-toggle))
+#+end_src
+
+Reduce the delay to update the buffer when idle.
+
+#+begin_src emacs-lisp :tangle yes
+(setq imenu-list-idle-update-delay 0.2)
+#+end_src
+
+Take less screen real-state.
+
+#+begin_src emacs-lisp :tangle yes
+(setq imenu-list-size 0.2)
+#+end_src
+
+Force size we just defined.
+
+#+begin_src emacs-lisp :tangle yes
+(setq imenu-list-auto-resize t)
+#+end_src
+
 *** indent-guides
 
 Use the bitmap to display the indent level if we are in a graphic interface.
@@ -3081,42 +3120,6 @@ To make the ~header-line~ a little more noticeable while consistent with the buf
   (custom-set-faces!
     '(header-line :family "Victor Mono"
                   :inherit default)))
-#+end_src
-
-*** Treemacs
-
-=treemacs= integrates with =git=. By default, its set to a performance oriented
-configuration with limited capabilities. Let's change that.
-
-#+begin_src emacs-lisp :tangle yes
-(setq +treemacs-git-mode 'deferred)
-#+end_src
-
-I don't plan on using =treemacs= to explore directories beyond the project root
-directory, that's what =dired= is for.
-
-Use =all-the-icons= theme in =treemacs=, for consistency.
-
-#+begin_src emacs-lisp :tangle yes
-(setq doom-themes-treemacs-theme "doom-colors")
-#+end_src
-
-When running ~treemacs-find-file~, the focus remains in the file instead of going
-to the =treemacs= buffer. Let's change that.
-
-#+begin_src emacs-lisp :tangle yes
-(defadvice! dan/treemacs-select-after-find-file (&rest args)
-  "Switch focus to the treemacs buffer after calling `treemacs-find-file'."
-  :after #'treemacs-find-file
-  (treemacs-select-window))
-#+end_src
-
-Let's switch the bindings for ~+treemacs/toggle~ and ~treemacs-find-file~.
-
-#+begin_src emacs-lisp :tangle yes
-(map! :leader
-      :desc "Find file in project sidebar" :mv "o p" #'treemacs-find-file
-      :desc "Project sidebar" :mv "o P" #'+treemacs/toggle)
 #+end_src
 
 *** Tree-sitter
