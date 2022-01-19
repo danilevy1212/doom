@@ -2755,7 +2755,8 @@ Only the first important categories should open by default, fold the rest.
                        (goto-char (point-min))
                        (re-search-forward "^$")
                        (forward-line)
-                       (origami-mode +1)
+                       (unless (bound-and-true-p origami-mode)
+                         (origami-mode +1))
                        (let ((inhibit-message t)
                              (buf        (current-buffer))
                              (last-point (point-min))
@@ -2796,6 +2797,7 @@ If we are filtering the agenda view, open up the nodes with results.
     "Open all super agenda groups, under the right conditions."
     :after #'org-agenda-filter-apply
     (when (and (org-agenda-check-type nil 'todo)
+               (bound-and-true-p origami-mode)
                (or org-agenda-filter-form
                    org-select-this-todo-keyword)
                (not (buffer-narrowed-p)))
