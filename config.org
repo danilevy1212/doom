@@ -2147,7 +2147,6 @@ Keybindings:
 | ~imenu-list-quit-window~   | =q=          | Quit =Ilist= buffer.                       |
 | ~hs-toggle-hiding~         | =TAB=        | Toggle fold/unfold =imenu= entry.          |
 
-
 #+begin_src emacs-lisp :tangle yes
 (use-package! imenu-list
   :defer t
@@ -2172,6 +2171,13 @@ Force size we just defined.
 
 #+begin_src emacs-lisp :tangle yes
 (setq imenu-list-auto-resize t)
+#+end_src
+
+Recenter window after =jumping= to an entry.
+
+#+begin_src emacs-lisp :tangle yes
+(after! imenu-list
+ (setq imenu-list-after-jump-hook '(recenter-top-bottom)))
 #+end_src
 
 *** indent-guides
