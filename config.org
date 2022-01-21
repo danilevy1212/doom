@@ -2819,6 +2819,27 @@ When quitting the agenda, remove all filters.
     (setq org-agenda-filter-form nil)))
 #+end_src
 
+Prevent ~org-capture~ buffers from loosing their target when restarting.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org
+  (defadvice! dan/+org--restart-mode-h-careful-restart (fn &rest args)
+    :around #'+org--restart-mode-h
+    (let ((old-org-capture-current-plist (and (bound-and-true-p org-capture-mode)
+                                              (bound-and-true-p org-capture-current-plist))))
+      (apply fn args)
+      (when old-org-capture-current-plist
+        (setq-local org-capture-current-plist old-org-capture-current-plist)
+        (org-capture-mode +1)))))
+#+end_src
+
+Prevent false error messages with ~org-element--cache-sync~.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org
+  (add-hook! 'org-capture-after-finalize-hook (org-element-cache-reset t)))
+#+end_src
+
 *** Origami
 
 A text folding minor mode for Emacs.
