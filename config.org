@@ -1808,8 +1808,7 @@ Dtache, or Detach Emacs, is a package to run shell commands completely detached 
 #+end_quote
 
 #+begin_src emacs-lisp :tangle packages.el
-(package! dtache
-  :recipe (:host gitlab :repo "niklaseklund/dtache"))
+(package! dtache)
 #+end_src
 
 #+begin_quote
