@@ -1143,7 +1143,7 @@ This module adds [[https://golang.org][Go]] support, with optional (but recommen
 
 #+begin_src emacs-lisp :tangle init.el
        (json +lsp)              ; At least it ain't XML
-       ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
+       ;;(java +lsp) ; the poster child for carpal tunnel syndrome
 #+end_src
 
 ***** TODO javascript
