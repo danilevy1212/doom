@@ -3212,8 +3212,13 @@ Uniquify makes buffers with the same name easier to distinguish. The ~'forward~ 
 We want packages to be lazy by default. In other words, load only on demand.
 
 #+begin_src emacs-lisp :tangle yes
-(after! use-package
-  (setq use-package-always-defer t))
+(setq use-package-always-defer t)
+#+end_src
+
+Make it easy to find ~use-package~ definitions in ~emacs-lisp~ buffers.
+
+#+begin_src emacs-lisp :tangle yes
+(setq use-package-enable-imenu-support t)
 #+end_src
 
 *** vc-gutter
