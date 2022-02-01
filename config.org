@@ -1863,6 +1863,17 @@ The commands ~dtache-compile~ and ~dtache-compile-recompile~ can act as drop in 
   (dtache-compile-setup))
 #+end_src
 
+A small hack to integrate ~dtache~ into ~projectile~.
+
+#+begin_src emacs-lisp :tangle yes
+(after! projectile
+  (defadvice! dan/projectile-run-compilation--use-dtache (cmd &optional use-comint-mode)
+    :override #'projectile-run-compilation
+    (if (functionp cmd)
+        (funcall cmd)
+      (dtache-compile cmd use-comint-mode))))
+#+end_src
+
 *** Elfeed
 
 First, lets bring our feeds into the cloud.
