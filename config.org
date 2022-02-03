@@ -2361,6 +2361,17 @@ Re-enable mode after ~magit-refresh~ if there aren't too many characters.
       (magit-delta-mode +1))))
 #+end_src
 
+*** Man
+
+The default =popup-rule= makes the buffer appear in the lower half of the screen. =man= pages use more vertical space, so we push it to the right side of the frame.
+
+#+begin_src emacs-lisp :tangle yes
+(add-transient-hook! 'doom-first-input-hook
+           (let ((cell (assoc 'side
+                              (assoc "^\\*\\(?:Wo\\)?Man " display-buffer-alist))))
+             (setcdr cell 'right)))
+#+end_src
+
 *** Modeline
 
 The default =doom-modeline= is great, the only thing is that I want it to show me
