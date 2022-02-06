@@ -3095,7 +3095,8 @@ Minimal configuration to be able to build the server and load the cache.
                                         (when telega-ffplay-media-timestamp
                                           (format " --start=%f" telega-ffplay-media-timestamp))))
   (telega-completing-read-function completing-read-function)
-  (telega-server-libs-prefix (getenv "TDLIB_PREFIX")))
+  (telega-server-libs-prefix (getenv "TDLIB_PREFIX"))
+  (telega-use-docker t))
 #+end_src
 
 Quick keybinding to open =telega=.
