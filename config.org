@@ -1528,6 +1528,13 @@ Finally, we create an entrance point to the calendar view.
       :desc "Calfw" :mv "o a c" #'cfw:open-org-calendar)
 #+end_src
 
+Disable ~evil-snipe~ in this mode, since It overrides some of the keybindings.
+
+#+begin_src emacs-lisp :tangle yes
+(after! evil-snipe
+  (add-to-list 'evil-snipe-disabled-modes 'cfw:calendar-mode))
+#+end_src
+
 *** company-mode
 
 Begin giving candidates as soon as something is typed. This can be slow sometimes, so it might be a good idea to change it back to it's default value of ~3~. Also reduce the idle delay so it *feels* more responsive.
