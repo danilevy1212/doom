@@ -2682,6 +2682,15 @@ This function is meant to be run as as part of `org-checkbox-statistics-hook'"
                     (org-todo 'done)))))))))
 #+end_src
 
+*** org-appear
+
+Add integration with ~evil-mode~, to auto hide/show entities.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org
+  (add-hook! org-mode #'org-appear-mode))
+#+end_src
+
 *** org-edna
 
 =org-edna= offers more control over how and when tasks change state and manages
