@@ -3308,8 +3308,8 @@ I have family all over the place, it's hard to keep up with the time difference.
 
 #+begin_src emacs-lisp :tangle yes
 (after! time
-  (setq world-clock-list '(("America/Los_Angeles" "Napa")
-                           ("America/New_York"    "Hatfield")
+  (setq world-clock-list '(("America/New_York"    "North Wales")
+                           ("America/Los_Angeles" "Napa")
                            ("America/Sao_Paulo"   "Brasilia")
                            ("Europe/Madrid"       "Madrid")
                            ("Asia/Kolkata"        "India")
