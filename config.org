@@ -746,11 +746,60 @@ work with =lispyville='s commands. Bummer.
        lispy             ; vim for lisp, for people who don't like vim
 #+end_src
 
-***** TODO multiple-cursors
+***** multiple-cursors
+
+This module adds multiple cursors through two plugins, =evil-mc= and =evil-multiedit=.
 
 #+begin_src emacs-lisp :tangle init.el
        multiple-cursors    ; editing in many places at once
 #+end_src
+
+****** evil-multiedit
+
+Keybindings:
+
+| Keybinding | command                              |
+|------------+--------------------------------------|
+| =M-d=        | evil-multiedit-match-symbol-and-next |
+| =M-D=        | evil-multiedit-match-symbol-and-prev |
+| =R=          | evil-multiedit-match-all (visual)    |
+| =C-M-d=      | evil-multiedit-restore               |
+
+Region active bidings:
+
+| Keybinding | Effect                                                      |
+|------------+-------------------------------------------------------------|
+| =D=          | Clear region                                                |
+| =M-D=        | Clear to end-of-region and go to insert mode                |
+| =A=          | Go into insert mode at end-of-region                        |
+| =I=          | Go into insert mode at start-of-region                      |
+| =V=          | Select the region                                           |
+| =P=          | Replace the iedit region with the contents of the clipboard |
+| =$=          | Go to end-of-region                                         |
+| =0= / ~^~      | Go to start-of-region                                       |
+| =gg= / =G=     | Go to the first/last region                                 |
+
+****** evil-mc
+
+Keybindings
+
+| Keybinding | command                                              |
+|------------+------------------------------------------------------|
+| =gzd=        | evil-mc-make-and-goto-next-match                     |
+| =gzD=        | evil-mc-make-and-goto-prev-match                     |
+| =gzj=        | evil-mc-make-cursor-move-next-line                   |
+| =gzk=        | evil-mc-make-cursor-move-prev-line                   |
+| =gzm=        | evil-mc-make-all-cursors                             |
+| =gzn=        | evil-mc-make-and-goto-next-cursor                    |
+| =gzN=        | evil-mc-make-and-goto-last-cursor                    |
+| =gzp=        | evil-mc-make-and-goto-prev-cursor                    |
+| =gzP=        | evil-mc-make-and-goto-first-cursor                   |
+| =gzq=        | evil-mc-undo-all-cursors                             |
+| =gzt=        | +multiple-cursors/evil-mc-toggle-cursors             |
+| =gzu=        | +multiple-cursors/evil-mc-undo-cursor                |
+| =gzz=        | +multiple-cursors/evil-mc-toggle-cursor-here         |
+| =gzI=        | evil-mc-make-cursor-in-visual-selection-beg (visual) |
+| =gzA=        | evil-mc-make-cursor-in-visual-selection-end (visual) |
 
 ***** parinfer
 
