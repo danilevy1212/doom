@@ -2208,19 +2208,20 @@ Define quick access keybindings.
   (harpoon-separate-by-branch t)
   :init
   (map! :leader
-        "j c" 'harpoon-clear
-        "j f" 'harpoon-toggle-file
-        "j a" 'harpoon-add-file
-        "j m" 'harpoon-toggle-quick-menu
-        "j 1" 'harpoon-go-to-1
-        "j 2" 'harpoon-go-to-2
-        "j 3" 'harpoon-go-to-3
-        "j 4" 'harpoon-go-to-4
-        "j 5" 'harpoon-go-to-5
-        "j 6" 'harpoon-go-to-6
-        "j 7" 'harpoon-go-to-7
-        "j 8" 'harpoon-go-to-8
-        "j 9" 'harpoon-go-to-9))
+        :prefix ("j" . "harpoon")
+        "c" 'harpoon-clear
+        "f" 'harpoon-toggle-file
+        "a" 'harpoon-add-file
+        "m" 'harpoon-toggle-quick-menu
+        "1" 'harpoon-go-to-1
+        "2" 'harpoon-go-to-2
+        "3" 'harpoon-go-to-3
+        "4" 'harpoon-go-to-4
+        "5" 'harpoon-go-to-5
+        "6" 'harpoon-go-to-6
+        "7" 'harpoon-go-to-7
+        "8" 'harpoon-go-to-8
+        "9" 'harpoon-go-to-9))
 #+end_src
 
 *** Hydra
