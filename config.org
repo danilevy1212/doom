@@ -2828,8 +2828,10 @@ With the package installed, we are ready to define ~org-agenda-custom-commands~ 
                                  :and (:not (:tag ("consume")) :todo "IDEA"))
                                 (:name "Active projects"
                                  :todo "PROJ")
-                                (:name "Consumerism"
-                                 :tag  ("consume")))))
+                                (:name "Entertainment"
+                                 :tag  ("entertainment"))
+                                (:name "Wishlist"
+                                 :tag  ("wishlist")))))
 #+end_src
 
 There are a few clashes between ~evil-org-agenda-mode-map~ and ~org-super-agenda-header-map~. To remove them, we simply override the latter keymap, after loading both ~evil-org-agenda~ and ~org-super-agenda~.
