@@ -1625,6 +1625,31 @@ This package remaps ~completion-at-point~ to use =consult='s interface. Keybind 
         "C-S-s" #'consult-company))
 #+end_src
 
+*** consult-dir
+
+#+begin_quote
+Here is a source that adds directory paths provided by the shell tool Fasd:
+#+end_quote
+
+#+begin_src emacs-lisp :tangle yes
+(after! consult-dir
+ (defun consult-dir--fasd-dirs ()
+  "Return list of fasd dirs."
+  (split-string (shell-command-to-string "fasd -ld") "\n" t))
+
+ (defvar consult-dir--source-fasd
+    `(:name     "Fasd dirs"
+        :narrow   ?f
+        :category file
+        :face     consult-file
+        :history  file-name-history
+        :enabled  ,(lambda () (executable-find "fasd"))
+        :items    ,#'consult-dir--fasd-dirs)
+   "Fasd directory source for `consult-dir'.")
+
+ (add-to-list 'consult-dir-sources 'consult-dir--source-fasd t))
+#+end_src
+
 *** consult-projectile
 
 #+begin_quote
