@@ -1132,14 +1132,9 @@ Better integration of Emacs with the terminal emulator, particularly:
 
 **** TODO :lang
 
-***** TODO emacs-lisp :tangle yes
+***** data
 
-#+begin_quote
-This module extends support for Emacs Lisp in Doom Emacs.
-
-+ Macro expansion
-+ Go-to-definitions or references functionality
-#+end_quote
+Occasionally I will have to edit ~.csv~ files manually. The =data= module comes in handy for this task.
 
 #+begin_src emacs-lisp :tangle init.el
        :lang
@@ -1151,7 +1146,19 @@ This module extends support for Emacs Lisp in Doom Emacs.
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
        ;;csharp            ; unity, .NET, and mono shenanigans
-       ;;data              ; config/data formats
+       data                ; config/data formats
+#+end_src
+
+***** emacs-lisp
+
+#+begin_quote
+This module extends support for Emacs Lisp in Doom Emacs.
+
++ Macro expansion
++ Go-to-definitions or references functionality
+#+end_quote
+
+#+begin_src emacs-lisp :tangle init.el
        ;;(dart +flutter)   ; paint ui and not much else
        ;;dhall
        ;;elixir            ; erlang done right
