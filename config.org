@@ -1173,7 +1173,7 @@ This module extends support for Emacs Lisp in Doom Emacs.
        ;;gdscript          ; the language you waited for
 #+end_src
 
-***** TODO golang
+***** golang
 
 #+begin_quote
 This module adds [[https://golang.org][Go]] support, with optional (but recommended) LSP support via
