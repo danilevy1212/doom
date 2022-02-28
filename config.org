@@ -3256,6 +3256,27 @@ Sometimes ~telega~ emacs when trying to quit it. Forcing to quit ~telega~ when q
     (telega-kill t)))
 #+end_src
 
+*** topspace
+
+#+begin_quote
+Scroll down and recenter top lines in Emacs.
+
+- Easier on the eyes: Recenter or scroll down top text to a more comfortable eye level for reading, especially when in full-screen or on a large monitor.
+
+- Easy to use: No new keybindings are required, keep using all your previous scrolling & recentering commands, except now you can also scroll above the top lines. It also integrates seamlessly with centered-cursor-mode to keep the cursor centered all the way to the top line.
+#+end_quote
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! topspace)
+#+end_src
+
+A package I didn't know I needed.
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! topspace
+  :hook ((prog-mode dired-mode) . topspace-mode))
+#+end_src
+
 *** Topsy
 
 This library shows a sticky header at the top of the window. The header shows which definition the top line of the window is within.
