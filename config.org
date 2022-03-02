@@ -3274,7 +3274,7 @@ A package I didn't know I needed.
 
 #+begin_src emacs-lisp :tangle yes
 (use-package! topspace
-  :hook ((prog-mode dired-mode) . topspace-mode))
+  :hook (dired-mode . topspace-mode))
 #+end_src
 
 *** Topsy
