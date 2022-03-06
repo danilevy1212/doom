@@ -523,22 +523,7 @@ arbitrarily extend it.
 #+begin_src emacs-lisp :tangle init.el
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
        ;;tabs              ; a tab bar for Emacs
-#+end_src
-
-***** unicode
-
-This module is based on [[https://github.com/rolandwalker/unicode-fonts][unicode-fonts]], which tries to cover as many glyphs as
-possible with system fonts. It needs the following fonts in the system:
-
-    - DejaVu Sans, Dejavu Mono :: [[https://dejavu-fonts.github.io/Download.html][Download]]
-    - Quivira :: [[http://www.quivira-font.com/downloads.php][Download]]
-    - Symbola :: [[https://dn-works.com/wp-content/uploads/2020/UFAS-Fonts/Symbola.zip][Download]]
-    - Noto Sans, Noto Sans Symbols :: [[http://www.google.com/get/noto/][Download]]
-
-Follow [[https://medium.com/source-words/how-to-manually-install-update-and-uninstall-fonts-on-linux-a8d09a3853b0][this guide]] to install the fonts on Linux.
-
-#+begin_src emacs-lisp :tangle init.el
-       unicode           ; extended unicode support for various languages
+       ;; unicode           ; extended unicode support for various languages
 #+end_src
 
 ***** vc-gutter
