@@ -3274,7 +3274,26 @@ A package I didn't know I needed.
 
 #+begin_src emacs-lisp :tangle yes
 (use-package! topspace
-  :hook (dired-mode . topspace-mode))
+  :custom
+  (topspace-active #'dan/topspace--active-p)
+  (topspace-autocenter-buffers #'dan/topspace--active-p)
+  :hook
+  (doom-first-buffer . global-topspace-mode))
+#+end_src
+
+We create a =blacklist= of sorts to deactivate ~topspace-mode~ in special modes.
+
+#+begin_src emacs-lisp :tangle yes
+(after! topspace
+  (defun dan/topspace--active-p ()
+    (not (and (minibufferp)
+              (memq major-mode
+                    '(vterm-mode
+                      org-agenda-mode
+                      +doom-dashboard-mode
+                      pdf-view-mode
+                      telega-root-mode
+                      telega-chat-mode))))))
 #+end_src
 
 *** Topsy
