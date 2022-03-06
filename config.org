@@ -2230,6 +2230,14 @@ Let's make the =hydra= module's functions easily accessible:
       :desc "Text-Zoom/Hydra" :m "w f" #'+hydra/text-zoom/body)
 #+end_src
 
+*** image
+
+Help ~emacs~ interpret exotic image formats using external programs, like ~ffmpeg~.
+
+#+begin_src emacs-lisp :tangle yes
+(setq image-use-external-converter t)
+#+end_src
+
 *** imenu-list
 
 #+begin_quote
