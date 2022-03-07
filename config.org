@@ -2635,7 +2635,7 @@ Also, add them faces so they stick out more:
   (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "PROJ(p)" "WAIT(w)" "IDEA(i)" "EVENT(e)" "|"
                                       "DONE(d)" "CANCELLED(c)"))
         org-todo-keyword-faces '(("NEXT"      . +org-todo-active)
-                                 ("WAIT"      . +org-todo-onhold)
+                                 ("WAIT"      . bold)
                                  ("EVENT"     . +org-todo-onhold)
                                  ("PROJ"      . +org-todo-project)
                                  ("CANCELLED" . +org-todo-cancel))))
