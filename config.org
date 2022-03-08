@@ -3288,6 +3288,10 @@ We create a =blacklist= of sorts to deactivate ~topspace-mode~ in special modes.
                      kubernetes-overview-mode
                      magit-status-mode
                      telega-root-mode
+                     dtache-compilation-mode
+                     elfeed-search-mode
+                     elfeed-show-mode
+                     shell-mode
                      telega-chat-mode))))))
 #+end_src
 
