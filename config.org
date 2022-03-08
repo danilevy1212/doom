@@ -8,7 +8,7 @@
 During my undergraduate years, I remember having trouble setting up a postfix
 server for a practical exercise in one of my classes. I had to edit the default
 configuration file to harden the security of the system. My server was wrongly
-configured and I couldn't figure out what part of my edits I had messed up. We
+configured, and I couldn't figure out what part of my edits I had messed up. We
 had to do all the changes to configuration file through a tty in an FreeBDS
 virtual machine, so I had to use a terminal editor. =nano= was my choice
 since it was similar to the other GUI editors I had used at the time. After much
@@ -36,10 +36,10 @@ Having taken that decision, I played around with =vim= and later on with =emacs=
 finally settling with the former to write the code for my thesis. I started out
 with a vanilla configuration, a single =.emacs= file where I would copy and paste
 Emacs Lisp from other people's configuration without much thinking.  It was
-ugly, messy and buggy but It was also fun. I loved the idea of using code to
+ugly, messy and buggy, but It was also fun. I loved the idea of using code to
 configure the tool that I would use to edit code, so I stuck with it.
 
-My knowledge of Emacs would come from google searches, blog posts and the online
+My knowledge of Emacs would come from Google searches, blog posts and the online
 GNU Emacs documentation. I still hadn't learned how to ask Emacs the things that
 I didn't know (The invaluable C-h _).  Embarrassingly, I didn't learn that until
 late into my Emacs usage history.  My editing needs were minimal so
@@ -53,7 +53,7 @@ popular saying that refers to Emacs as:
 A great OS, if only missing a good text editor.
 #+end_quote
 
-When I got frustrated with Emacs because I broke it somehow or I didn't know how
+When I got frustrated with Emacs because I broke it somehow, or I didn't know how
 to do something with it, the potential of Emacs as an almost infinitely
 extensible editor always kept me from switching editors and moving on. Even now,
 is this fact that keeps me going back to it.
@@ -64,7 +64,7 @@ Life changes and so do our needs. I got my first full-time job as Web Developer
 and Emacs had to level up to a robust daily driver. I had to use different
 technologies in a project with continuously changing requirements.  My cute
 emacs experiment could not keep up. I had to use other IDEs to be able to push
-the work out.  However, I was always missing aspects of Emacs when
+the work-out.  However, I was always missing aspects of Emacs when
 using other editors, like the frame, buffer and window model, the automatic
 backup files or just the simple fact that I could change almost any aspect of my
 emacs if I so desired.
@@ -81,7 +81,7 @@ research, time and effort.
 _Why work on problems that others have already solved?_ With this in mind, I
 decided to try out =spacemacs=, a community developed Emacs distribution full of
 pre-configured packages grouped by =layers=. And for a while, It worked out great.
-The defaults were good, it was functional enough and it could keep up with the
+The defaults were good, it was functional enough, and could keep up with the
 technologies I was using at work. What was not to love? Well, with continuous
 use the wrinkles started to appear. For one, =spacemacs= was slow. It would take a
 long time to startup and commands were noticeably sluggish. It was also pretty
@@ -92,8 +92,8 @@ Looking into ways of making =spacemacs= faster, I stumbled upon =doom= and decid
 to try it out. It is fast, at startup and during use. It feels quick and snappy.
 Installing =doom= modules was similar enough to configuring =spacemacs= layers.
 While =doom= was not by any means buggy, I would get frustrated with its
-opinionated defaults.  =doom= would have some keybinding I didn't like or some
-package had some extra behavior different to what I expected and I wouldn't
+opinionated defaults.  =doom= would have some keybinding I didn't like, or some
+package had some extra behavior different to what I expected, and I wouldn't
 know how to change it to what I wanted.
 
 ** Back to vanilla.
@@ -121,7 +121,7 @@ how to build my own criteria for what packages I should use.
 It took at least two months until I made a configuration that I could use at
 work again, but it felt great when I finally managed to have something that was
 reasonably fast, reproducible in any computer running Linux and was functional
-enough for my use cases that I had made and I intimately understood!  Although I
+enough for my use cases that I had made, and I intimately understood!  Although I
 am nowhere near an Emacs expert, if such a thing exists, and a lot of details
 still escape me. I learned a LOT about not only Emacs, but about lisp,
 functional programming and free (as in freedom) extensible software! Going back
@@ -135,7 +135,7 @@ truly immense, even if we don't take into account all the third party packages
 written for it. It has its own lisp dialect for extensibility, a =mode= system for
 defining unique behavior in each buffer, with =major modes= (one per buffer) and
 =minor modes= (can be multiple or none in a buffer) that change the visual
-elements, available commands and keybindings and it has different systems to
+elements, available commands and keybindings, and it has different systems to
 detect when and which of these modes it should activate at any given time. It
 also has different ways of running system commands synchronously or
 asynchronously and processing their output, including a process manager for the
@@ -156,9 +156,9 @@ terrible defaults, the problems I was trying to solve were interesting, perhaps
 because it was my first time trying to solve them. Things like: What's the best
 moment to lazy load this package?, How do I write Spanish accents in Emacs?,
 How should I structure my ~*.el~ files directory?. As the configuration grew,
-more and more problems started appearing. Nothing major that broke my workflow
+more and more issues started appearing. Nothing major that broke my workflow
 but annoyances nonetheless. I would write =FIXME= comments in my ~.el~ files to
-keep track of these problems, so I could fix them later.
+keep track of these issues, so I could fix them later.
 
 When I wanted to set up Emacs for a new language environments, I would spend a
 lot of time checking out what community packages there were for that specific
@@ -167,7 +167,7 @@ try out and configure it out later on. Quickly It became the case that for every
 =FIXME= or =TODO= comment I would solve, two or three more would appear.
 
 The =FIXME= were not such a big deal, I like hunting bugs and fixing them, since I
-always feel like I at least learn something in the process.  The big problems
+always feel like I at least learn something in the process.  The big problem
 were the =TODO=, which were not remotely as interesting to solve. Looking for
 packages is time-consuming and I would end up not using what I tried out.  Other
 times, the packages were so massive I never wanted to because I knew It would
@@ -178,11 +178,11 @@ these categories are =lsp= and =treemacs=.
 #+HTML: <p align="center">Unresolved issues in my vanilla configuration.</p>
 
 So, _Why work on problems that others have already solved?_. Not all problems are
-equally and some problems are just tedious to solve, this is the principal
+equal, and some problems are just tedious to solve, this is the principal
 reason why I choose to go back to =doom=. Another reason is that I strongly agree
 with the project guiding principles. =doom= is not and IDE replacement or a
 what-you-see-is-what-you-get type of editor. It's fully expected of its users to
-customize it and all its functionality is open to the user so it can be
+customize it and all its functionality is open to the user, so it can be
 tinkered with.  No magic, just well-thought-out Emacs lisp macros and hooks!
 
 This is perhaps what I like the most about =doom=, its true power resides in it's
@@ -377,7 +377,7 @@ keybindings are available:
 | =C-n=                 | Go to next candidate                               |
 | =C-k=                 | (evil) Go to previous candidate                    |
 | =C-j=                 | (evil) Go to next candidate                        |
-| =C-;= or =<leader> a= | Open an ~embark-act~ menu to chose a useful action |
+| =C-;= or =<leader> a= | Open an ~embark-act~ menu to choose a useful action |
 | =C-c C-;=             | export the current candidate list to a buffer      |
 | =C-SPC=               | Preview the current candidate                      |
 | =C-M-k=               | (evil) Go to previous candidate and preview.       |
