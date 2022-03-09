@@ -1666,13 +1666,11 @@ A package to incorporate projectile into consult. This allows to choose a projec
         :desc "Project find" "SPC" #'consult-projectile))
 #+end_src
 
-To incorporate the same  behavior as ~projectile-switch-project~ when changing project:
+Incorporate the same behavior as ~projectile-switch-project~ when changing project:
 
 #+begin_src emacs-lisp :tangle yes
 (after! consult-projectile
-  (setq +workspaces-switch-project-function #'consult-projectile--file)
-  (plist-put! consult-projectile--source-projectile-project
-              :action #'projectile-switch-project-by-name))
+  (setq consult-projectile-use-projectile-switch-project t))
 #+end_src
 
 *** Customize Group
