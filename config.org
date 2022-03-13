@@ -3248,6 +3248,12 @@ Sometimes ~telega~ emacs when trying to quit it. Forcing to quit ~telega~ when q
     (telega-kill t)))
 #+end_src
 
+Center the text of chat buffers for more comfy reading.
+
+#+begin_src emacs-lisp :tangle yes
+(add-hook! telega-chat-mode #'+zen/toggle)
+#+end_src
+
 *** topspace
 
 #+begin_quote
