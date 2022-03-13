@@ -3077,6 +3077,58 @@ Matching pairs draw with the same face color, making them easily identifiable.
 (add-hook! prog-mode #'rainbow-delimiters-mode-enable)
 #+end_src
 
+*** run-command
+
+#+begin_quote
+run-command you write a short recipe and obtain a command that is easy to bring up, invoke, and keep track of, without leaving Emacs.
+#+end_quote
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! run-command)
+#+end_src
+
+We advice ~run-command--run-compile~ to use =dtache=.
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! run-command
+  :defer t
+  :config
+  ;; NOTE: Forgotten builtin dependency
+  (unless (featurep 'map)
+    (require 'map))
+  (defadvice! dan/run-command--run-dtache-shell-command (command-line buffer-base-name)
+    "Override `run-command--run-compile' to use `dtache-compile'."
+    :override #'run-command--run-compile
+    (let ((compilation-buffer-name-function
+           (lambda (_name-of-mode) buffer-base-name)))
+      (dtache-shell-command command-line))))
+#+end_src
+
+An easy =mnemonic= keybinding.
+
+#+begin_src elisp :tangle yes
+(map! :leader
+      "o c" #'run-command)
+#+end_src
+
+=NixOS= recipes.
+
+#+begin_src emacs-lisp :tangle yes
+(after! run-command
+  (defun dan/run-command--nixos ()
+    (list
+     (list :command-line "rm ~/.config/mimeapps.list && sudo nixos-rebuild switch --flake '/etc/nixos#nyx15v2'"
+           :command-name "Rebuild NixOS"
+           :display "Create a new NixOS generation and switch to it")
+     (list :command-line "nix flake update /etc/nixos"
+           :command-name "Update NixOS"
+           :display "Update the NixOS flake inputs")
+     (list :command-line "sudo nix-collect-garbage -d"
+           :command-name "GC NixOS"
+           :display "Delete unused derivations and previous generations")))
+  (add-to-list 'run-command-recipes #'dan/run-command--nixos t))
+#+end_src
+
 *** Rust
 
 Use =rust-analyzer= by default, since it has more features.
