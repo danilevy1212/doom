@@ -1499,6 +1499,47 @@ Here's a simple trick to make =she-banged= scripts executable auto-magically by 
            #'executable-make-buffer-file-executable-if-script-p)
 #+end_src
 
+*** annotate.el
+
+#+begin_quote
+This package provides a minor mode annotate-mode, which can add annotations to arbitrary files without changing the files themselves. This is very useful for code reviews.
+#+end_quote
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! annotate)
+#+end_src
+
+Activate =annotate-mode= in file buffers.
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! annotate
+  :hook (find-file . annotate-mode))
+#+end_src
+
+#+begin_quote
+The current database for annotations is contained in the file indicated by the variable annotate-file.
+#+end_quote
+
+#+begin_src emacs-lisp :tangle yes
+(after! annotate
+  (setq annotate-file (expand-file-name "annotate" doom-cache-dir)))
+#+end_src
+
+Add keybindings.
+
+#+begin_src emacs-lisp :tangle yes
+(after! annotate
+  (setq annotate-mode-map (make-sparse-keymap))
+  (map! :map annotate-mode-map
+        :leader
+        :prefix ("b a" . "annotate")
+        "a" #'annotate-annotate
+        "d" #'annotate-delete-annotation
+        "s" #'annotate-show-annotation-summary
+        "]" #'annotate-goto-next-annotation
+        "[" #'annotate-goto-previous-annotation))
+#+end_src
+
 *** alert.el
 
 #+begin_quote
