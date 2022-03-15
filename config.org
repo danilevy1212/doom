@@ -2169,6 +2169,17 @@ Create =undo= boundaries after certain key presses in =insert-mode=.
       (evil-start-undo-step))))
 #+end_src
 
+*** evil-quick-diff
+
+Quickly diff to regions of text.
+
+#+begin_src emacs-lisp :tangle yes
+(map! :leader
+      :prefix "b"
+      "q" #'evil-quick-diff
+      "Q" #'evil-quick-diff-cancel)
+#+end_src
+
 *** evil-snipe
 
 ~evil-snipe~ is a simple but powerful plugin, that adds a =snipe= two character motion, plus the possibility of make builtin motions work further than a single line.
