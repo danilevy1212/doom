@@ -1801,19 +1801,19 @@ hide it by default. One can toggle this information on/off with ~(~ keybinding.
 But, do show git information on repositories by default, can be toggled on/off with ~)~.
 
 #+begin_src emacs-lisp :tangle yes
-   (add-hook! 'dired-after-readin-hook #'+dired-enable-git-info-h)
+  (add-hook! 'dired-after-readin-hook #'+dired-enable-git-info-h)
 #+end_src
 
 There is a class between ~dired-subtree~ and ~dired-git-info~. Luckily, there is a [[https://github.com/clemera/dired-git-info/issues/9][hack]] to fix it.
 
 #+begin_src emacs-lisp :tangle yes
-    (defadvice! dan/dired-subtree-toggle-advice (orig-fn &rest args)
-      :around #'dired-subtree-toggle
-      (cond ((bound-and-true-p dired-git-info-mode)
-             (dired-git-info-mode -1)
-             (apply orig-fn args)
-             (dired-git-info-mode +1))
-            (t (apply orig-fn args)))))
+  (defadvice! dan/dired-subtree-toggle-advice (orig-fn &rest args)
+    :around #'dired-subtree-toggle
+    (cond ((bound-and-true-p dired-git-info-mode)
+           (dired-git-info-mode -1)
+           (apply orig-fn args)
+           (dired-git-info-mode +1))
+          (t (apply orig-fn args)))))
 #+end_src
 
 Opening files from =dired= with an external program is a bit of drag by default, so
@@ -2073,7 +2073,7 @@ The BUFFER-NAME is given as string surrounded by \"\"."
   (insert-and-inherit "\"" buffer-name "\""))
 #+end_src
 
-*** evil-mode
+*** evil
 
 Vim keybindings are hard to let go once you are used to them.
 Luckily, doom comes with much of the heavy lifting already done when it comes to
@@ -2100,13 +2100,13 @@ Remove highlighted items after search is finished.
 Don't continue commented lines with o/O.
 
 #+begin_src emacs-lisp :tangle yes
-   (+evil-want-o/O-to-continue-comments nil)
+  (+evil-want-o/O-to-continue-comments nil)
 #+end_src
 
 Don't override the contents of the " register after pasting on a block.
 
 #+begin_src emacs-lisp :tangle yes
-   (evil-kill-on-visual-paste nil)
+  (evil-kill-on-visual-paste nil)
 #+end_src
 
 Implicit /g flag on evil ex substitution. Put =g= flag to reverse it.
@@ -2118,8 +2118,8 @@ Implicit /g flag on evil ex substitution. Put =g= flag to reverse it.
 Yank by actual lines of text and not by screen lines, less confusing.
 
 #+begin_src emacs-lisp :tangle yes
-   :init
-   (setq evil-respect-visual-line-mode nil)
+  :init
+  (setq evil-respect-visual-line-mode nil)
 #+end_src
 
 Universal argument mapped to M-u instead.
@@ -2835,32 +2835,32 @@ The primary use of this package is for the daily/weekly agenda, made by the org-
 With the package installed, we are ready to define ~org-agenda-custom-commands~ as well as the ~org-super-agenda-groups~. For extra visibility, we tweak the agenda sorting strategy to make priority hight tasks appear early.
 
 #+begin_src emacs-lisp :tangle yes
-:custom
-(org-agenda-sorting-strategy '((agenda priority-down habit-down time-up category-keep)
-                               (todo priority-down category-keep)
-                               (tags priority-down category-keep)
-                               (search category-keep)))
-(org-super-agenda-groups      '((:name "Next Items"
-                                 :and (:todo "NEXT" :not (:tag ("consume"))))
-                                (:name "Important"
-                                 :and (:priority "A" :not (:todo "WAIT")))
-                                (:name "In Hold"
-                                 :and (:not (:tag ("consume")) :todo "WAIT"))
-                                (:name "Incoming Events"
-                                 :and (:todo "EVENT"))
-                                (:name "Candidates"
-                                 :and (:not (:todo ("EVENT" "WAIT"))
-                                       :priority "B"))
-                                (:name "Backlog"
-                                 :and (:todo "TODO" :not (:tag ("consume") :priority>= "B")))
-                                (:name "Ideas"
-                                 :and (:not (:tag ("consume")) :todo "IDEA"))
-                                (:name "Active projects"
-                                 :todo "PROJ")
-                                (:name "Entertainment"
-                                 :tag  ("entertainment"))
-                                (:name "Wishlist"
-                                 :tag  ("wishlist")))))
+  :custom
+  (org-agenda-sorting-strategy '((agenda priority-down habit-down time-up category-keep)
+                                 (todo priority-down category-keep)
+                                 (tags priority-down category-keep)
+                                 (search category-keep)))
+  (org-super-agenda-groups      '((:name "Next Items"
+                                   :and (:todo "NEXT" :not (:tag ("consume"))))
+                                  (:name "Important"
+                                   :and (:priority "A" :not (:todo "WAIT")))
+                                  (:name "In Hold"
+                                   :and (:not (:tag ("consume")) :todo "WAIT"))
+                                  (:name "Incoming Events"
+                                   :and (:todo "EVENT"))
+                                  (:name "Candidates"
+                                   :and (:not (:todo ("EVENT" "WAIT"))
+                                         :priority "B"))
+                                  (:name "Backlog"
+                                   :and (:todo "TODO" :not (:tag ("consume") :priority>= "B")))
+                                  (:name "Ideas"
+                                   :and (:not (:tag ("consume")) :todo "IDEA"))
+                                  (:name "Active projects"
+                                   :todo "PROJ")
+                                  (:name "Entertainment"
+                                   :tag  ("entertainment"))
+                                  (:name "Wishlist"
+                                   :tag  ("wishlist")))))
 #+end_src
 
 There are a few clashes between ~evil-org-agenda-mode-map~ and ~org-super-agenda-header-map~. To remove them, we simply override the latter keymap, after loading both ~evil-org-agenda~ and ~org-super-agenda~.
