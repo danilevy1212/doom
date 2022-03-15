@@ -1902,6 +1902,23 @@ The following packages reduce the ~dired buffer~ clutter by condensing the infor
   :hook (dired-mode . dired-collapse-mode))
 #+end_src
 
+=dired= can get hung up in some operations. Luckily, =dired-async= can do the same procedures without blocking.
+
+#+begin_src emacs-lisp :tangle yes
+(add-hook! dired-mode #'dired-async-mode)
+#+end_src
+
+Add keybindings overriding blocking operations.
+
+#+begin_src emacs-lisp :tangle yes
+(after! dired
+  (map! :map dired-mode-map
+        :n "R" #'dired-async-do-rename
+        :n "C" #'dired-async-do-copy
+        :n "S" #'dired-async-do-symlink
+        :n "H" #'dired-async-do-hardlink))
+#+end_src
+
 *** Dotenv
 
 Emacs is missing a mode to edit =.env= files. So let's add it one:
