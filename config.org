@@ -2706,6 +2706,13 @@ Keybinding for the default agenda.
       :desc "3 Day Org Agenda" "o a d" #'org-agenda-list)
 #+end_src
 
+#+begin_src emacs-lisp :tangle yes
+(after! (org org-agenda)
+  (map! :map org-agenda-mode-map
+        :localleader
+        "f" #'org-agenda-follow-mode))
+#+end_src
+
 **** Auto-loads
 
 Lexical Binding.
