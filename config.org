@@ -1532,6 +1532,12 @@ The current database for annotations is contained in the file indicated by the v
   (setq annotate-file (expand-file-name "annotate" doom-cache-dir)))
 #+end_src
 
+Blacklist =org-mode=
+
+#+begin_src emacs-lisp :tangle yes
+(setq annotate-blacklist-major-mode '(org-mode))
+#+end_src
+
 Add keybindings.
 
 #+begin_src emacs-lisp :tangle yes
