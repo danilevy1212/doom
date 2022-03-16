@@ -1509,11 +1509,18 @@ This package provides a minor mode annotate-mode, which can add annotations to a
 (package! annotate)
 #+end_src
 
-Activate =annotate-mode= in file buffers.
+Activate =annotate-mode= in file buffers that have annotations.
 
 #+begin_src emacs-lisp :tangle yes
 (use-package! annotate
-  :hook (find-file . annotate-mode))
+  :commands (annotate-load-annotation-data))
+
+(add-hook! find-file
+           (let ((file-name (buffer-file-name))
+                 (annotation-files (mapcar #'car (annotate-load-annotation-data))))
+             (when (and file-name
+                        (member file-name annotation-files))
+               (annotate-mode +1))))
 #+end_src
 
 #+begin_quote
