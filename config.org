@@ -2550,20 +2550,6 @@ the evil state I am in with a letter instead of an icon:
   (doom-modeline-modal-icon nil))
 #+end_src
 
-We would like to display the battery icon in the mode line, but only if I am in
-a laptop:
-
-#+begin_src emacs-lisp :tangle yes
-(use-package! battery
-  :after-call doom-modeline-mode
-  :config
-  (when (and battery-status-function
-             (not (string-match-p "N/A"
-                                  (battery-format "%B"
-                                                  (funcall battery-status-function)))))
-    (display-battery-mode)))
-#+end_src
-
 *** New Lines
 
 Emacs aggressively adds a ~\n~ to files, which is technically a good practice. However, lots of other IDEs don't do this. In collaborative version controlled projects, this can result in emacs stubbornly adding a hunk at the end of the file, which can lead to problems, from strange commits diffs to tests failing because files where not expected to have a trailing new line.
