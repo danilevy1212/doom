@@ -3179,6 +3179,13 @@ We advice ~run-command--run-compile~ to use =dtache=.
       (dtache-shell-command command-line))))
 #+end_src
 
+Make sure ~run-command~ uses =vertico=.
+
+#+begin_src emacs-lisp :tangle yes
+(after! run-command
+  (setq run-command-completion-method 'completing-read))
+#+end_src
+
 An easy =mnemonic= keybinding.
 
 #+begin_src elisp :tangle yes
