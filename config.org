@@ -3436,8 +3436,9 @@ A package I didn't know I needed.
 #+begin_src emacs-lisp :tangle yes
 (use-package! topspace
   :custom
-  (topspace-active #'dan/topspace--active-p)
+  (topspace-active             #'dan/topspace--active-p)
   (topspace-autocenter-buffers #'dan/topspace--active-p)
+  (indicate-empty-lines        t)
   :hook
   (doom-first-buffer . global-topspace-mode))
 #+end_src
