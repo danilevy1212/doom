@@ -1796,8 +1796,8 @@ Not everything fits in the =mode-line=, so let's make fonts and icons smaller:
 
 #+begin_src emacs-lisp :tangle yes
 (custom-set-faces!
-  '(mode-line :family "Sarasa UI J" :height 90)
-  '(mode-line-inactive :family "Sarasa UI J" :height 90))
+  '(mode-line :height 90 :inherit 'variable-pitch)
+  '(mode-line-inactive :height 80 :inherit 'variable-pitch))
 
 (after! all-the-icons
   (setq all-the-icons-scale-factor 1.1))
