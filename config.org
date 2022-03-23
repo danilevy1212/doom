@@ -3228,7 +3228,7 @@ An easy =mnemonic= keybinding.
 (after! run-command
   (defun dan/run-command--nixos ()
     (list
-     (list :command-line "rm ~/.config/mimeapps.list && sudo nixos-rebuild switch --flake '/etc/nixos#nyx15v2'"
+     (list :command-line "rm -f ~/.config/mimeapps.list && sudo nixos-rebuild switch --flake '/etc/nixos#nyx15v2'"
            :command-name "Rebuild NixOS"
            :display "Create a new NixOS generation and switch to it")
      (list :command-line "nix flake update /etc/nixos"
