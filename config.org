@@ -2425,6 +2425,35 @@ Finally, lazily load the package and it's =evil= keybindings when calling an ent
       :desc "k8s Dashboard" "o k" #'kubernetes-overview)
 #+end_src
 
+When modifying =kubernetes= resources files, it can be useful to remove the extra clutter and keep only the essential API options. ~kubectl-neat~ offers this functionality and with the following command, we make it available to =emacs=, binding it to =SPC m n=.
+
+#+begin_src emacs-lisp :tangle yes
+(after! yaml-mode
+  (defun dan/kubectl-neatify ()
+    "Kube-neatify the contents of CURRENT-BUFFER yaml resource."
+    (interactive)
+    (let* ((old-buffer (current-buffer))
+           (temp-buf   (get-buffer-create (concat "*" (make-temp-name "kubectl-neat-") "*")))
+           (cmd-res
+            (with-current-buffer temp-buf
+              (insert-buffer-substring-no-properties old-buffer)
+              (list
+               :exit-code (call-process-region nil nil "kubectl-neat" t t)
+               :result    (buffer-string))))
+           (res-str (plist-get cmd-res :result))
+           (res-ec  (plist-get cmd-res :exit-code)))
+      (unwind-protect
+          (if (= (plist-get cmd-res :exit-code) 0)
+              (with-current-buffer old-buffer
+                (replace-buffer-contents temp-buf))
+            (error "kubectl-neat failed with error code %d:\n%s" res-ec res-str))
+        (kill-buffer temp-buf))))
+
+  (map! :map yaml-mode-map
+        :localleader
+        "n" #'dan/kubectl-neatify))
+#+end_src
+
 *** Language Tool
 
 Do not run the jar file! Run the binary.
