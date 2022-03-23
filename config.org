@@ -3448,24 +3448,25 @@ We create a =blacklist= of sorts to deactivate ~topspace-mode~ in special modes.
 (after! topspace
   (defun dan/topspace--active-p ()
     (not (or (minibufferp)
-             (memq major-mode
-                   '(vterm-mode
-                     org-agenda-mode
-                     +doom-dashboard-mode
-                     pdf-view-mode
-                     kubernetes-overview-mode
-                     kubernetes-log-line-mode
-                     kubernetes-logs-mode
-                     kubernetes-display-thing-mode
-                     magit-status-mode
-                     telega-root-mode
-                     telega-image-mode
-                     image-mode
-                     dtache-compilation-mode
-                     elfeed-search-mode
-                     elfeed-show-mode
-                     shell-mode
-                     telega-chat-mode))))))
+             (derived-mode-p 'vterm-mode
+                             'comint-mode
+                             'org-agenda-mode
+                             '+doom-dashboard-mode
+                             'pdf-view-mode
+                             'kubernetes-overview-mode
+                             'kubernetes-log-line-mode
+                             'kubernetes-logs-mode
+                             'kubernetes-display-thing-mode
+                             'magit-status-mode
+                             'telega-root-mode
+                             'telega-image-mode
+                             'image-mode
+                             'Custom-mode
+                             'dtache-compilation-mode
+                             'elfeed-search-mode
+                             'elfeed-show-mode
+                             'shell-mode
+                             'telega-chat-mode)))))
 #+end_src
 
 *** Topsy
