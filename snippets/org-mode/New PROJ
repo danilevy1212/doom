@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: New project
+# key: pj
+# --
+
+* PROJ ${1:name}
+
+${2:description}
+
+** Ideas
+** Tasks
+*** TODO $0
+** Events
