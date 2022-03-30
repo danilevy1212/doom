@@ -3585,6 +3585,13 @@ Maximum scrollback to the max!
   (setq vterm-max-scrollback 100000))
 #+end_src
 
+Make ~vterm~ as snappy as it can be.
+
+#+begin_src emacs-lisp :tangle yes
+(after! vterm
+  (setq vterm-timer-delay nil))
+#+end_src
+
 *** Which Key
 
 Doom Emacs default configuration is too slow, let's speed it up.
