@@ -3467,6 +3467,8 @@ We create a =blacklist= of sorts to deactivate ~topspace-mode~ in special modes.
                              'elfeed-search-mode
                              'elfeed-show-mode
                              'shell-mode
+                             'cfw:calendar-mode
+                             'special-mode
                              'telega-chat-mode)))))
 #+end_src
 
