@@ -1179,6 +1179,7 @@ This module adds [[https://golang.org][Go]] support, with optional (but recommen
 
 #+begin_src emacs-lisp :tangle init.el
        (go +lsp)           ; the hipster dialect
+       ;;(graphql +lsp)    ; Give queries a REST
        ;;(haskell +lsp)      ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ;
