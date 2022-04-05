@@ -1763,7 +1763,7 @@ font string. You generally only need these two:
 ie:
 #+begin_src emacs-lisp :tangle no
 (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
-       doom-variable-pitch-font (font-spec :family "sans" :size 13))
+      doom-variable-pitch-font (font-spec :family "sans" :size 13))
 #+end_src
 
 Let's _choose_ our *monospaced* font, /Sarasa Mono J/ goodness:
