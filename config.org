@@ -2975,47 +2975,6 @@ There are a few clashes between ~evil-org-agenda-mode-map~ and ~org-super-agenda
   (setq org-super-agenda-header-map (copy-keymap evil-org-agenda-mode-map)))
 #+end_src
 
-Make headers =foldable= and =quitable=.
-
-#+begin_src emacs-lisp :tangle yes
-(after! (evil-org-agenda org-super-agenda)
-  (map! :map 'org-super-agenda-header-map
-        "<tab>" #'origami-toggle-node
-        "q" #'org-agenda-quit))
-#+end_src
-
-Only the first important categories should open by default, fold the rest.
-
-#+begin_src emacs-lisp :tangle yes
-(after! (evil-org-agenda org-super-agenda)
-  (add-hook! 'org-agenda-finalize-hook
-             :append (when (and (org-agenda-check-type nil 'todo)
-                                ;; Don't fold if we are filtering.
-                                (not (or org-agenda-filter-form
-                                         org-select-this-todo-keyword
-                                         ;; Don't fold when narrowed
-                                         (buffer-narrowed-p))))
-                       (goto-char (point-min))
-                       (re-search-forward "^$")
-                       (forward-line)
-                       (unless (bound-and-true-p origami-mode)
-                         (origami-mode +1))
-                       (let ((inhibit-message t)
-                             (buf        (current-buffer))
-                             (last-point (point-min))
-                             (must-show-headers (cl-loop for group in (seq-take org-super-agenda-groups 4)
-                                                         collect (plist-get group :name)))
-                             (current-heading-function  (lambda ()
-                                                          (let ((line-text  (buffer-substring-no-properties (point-at-bol)
-                                                                                                            (point-at-eol))))
-                                                            (string-trim line-text)))))
-                         (while (/= last-point (point))
-                           (setq last-point (point))
-                           (unless (member (funcall current-heading-function) must-show-headers)
-                             (origami-close-node buf (point)))
-                           (origami-forward-fold-same-level buf (point)))))))
-#+end_src
-
 To prevent unnecessary scrolling when calling the agenda buffer, we automate the cursor position on agenda ~todo~ views.
 
 #+begin_src emacs-lisp :tangle yes
@@ -3030,31 +2989,6 @@ To prevent unnecessary scrolling when calling the agenda buffer, we automate the
                      (evil-scroll-line-to-center (count-lines (point-min)
                                                               (point)))
                      (org-agenda-next-item 1))))
-#+end_src
-
-If we are filtering the agenda view, open up the nodes with results.
-
-#+begin_src emacs-lisp :tangle yes
-(after! (evil-org-agenda org-super-agenda)
-  (defadvice! dan/org-super-agenda-open-nodes (&rest _)
-    "Open all super agenda groups, under the right conditions."
-    :after #'org-agenda-filter-apply
-    (when (and (org-agenda-check-type nil 'todo)
-               (bound-and-true-p origami-mode)
-               (or org-agenda-filter-form
-                   org-select-this-todo-keyword)
-               (not (buffer-narrowed-p)))
-      (origami-mode -1))))
-#+end_src
-
-When quitting the agenda, remove all filters.
-
-#+begin_src emacs-lisp :tangle yes
-(after! (evil-org-agenda org-super-agenda)
-  (defadvice! dan/org-agenda-quit-remove-filters (&rest _)
-    "Remove filters when quitting the org agenda."
-    :after #'org-agenda-quit
-    (setq org-agenda-filter-form nil)))
 #+end_src
 
 Prevent ~org-capture~ buffers from loosing their target when restarting.
@@ -3078,19 +3012,7 @@ Prevent false error messages with ~org-element--cache-sync~.
   (add-hook! 'org-capture-after-finalize-hook (org-element-cache-reset t)))
 #+end_src
 
-*** Origami
-
-A text folding minor mode for Emacs.
-
-#+begin_src emacs-lisp :tangle packages.el
-(package! origami)
-#+end_src
-
-Currently, only used to fold ~org-super-agenda~ headers.
-
 #+begin_src emacs-lisp :tangle yes
-(use-package! origami
-  :defer t)
 #+end_src
 
 *** PDF Tools
