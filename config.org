@@ -874,6 +874,17 @@ Toggled on by the ~SPC b i~ keybinding.
        ;; undo           ; persistent, smarter undo for your inevitable mistakes
 #+end_src
 
+***** undo
+
+#+begin_quote
+This module augments Emacs' built-in undo system to be more intuitive and to
+persist across Emacs sessions.
+#+end_quote
+
+#+begin_src emacs-lisp :tangle init.el
+       undo           ; persistent, smarter undo for your inevitable mistakes
+#+end_src
+
 ***** vc
 
 #+begin_quote
@@ -3509,6 +3520,55 @@ Make ~vterm~ as snappy as it can be.
 #+begin_src emacs-lisp :tangle yes
 (after! vterm
   (setq vterm-timer-delay nil))
+#+end_src
+
+*** Vundo
+
+A visual representation of =emacs= built-in =undo tree=.
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! vundo
+  :recipe (:host github :repo "casouri/vundo"))
+#+end_src
+
+For node navigation:
+
+| Key | Description                                           |
+|-----+-------------------------------------------------------|
+| =l=   | to go forward                                         |
+| =h=   | to go backward                                        |
+| =j=   | to go to the node below when you at a branching point |
+| =k=   | to go to the node above                               |
+| =H=   | to go back to the last branching point                |
+| =L=   | to go forward to the end/tip of the branch            |
+| =q=   | to quit, you can also type C-g                        |
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! vundo
+  :custom
+  (vundo-glyph-alist     vundo-unicode-symbols)
+  (vundo-compact-display t)
+  :config
+  (evil-set-initial-state 'vundo-mode 'motion)
+  (add-hook! vundo-mode #'evil-normalize-keymaps)
+  (map! :map vundo-mode-map
+        :m "h" #'vundo-backward
+        :m "l" #'vundo-forward
+        :m "j" #'vundo-next
+        :m "k" #'vundo-previous
+        :m "H" #'vundo-stem-root
+        :m "L" #'vundo-stem-end
+        :m "q" #'vundo-quit
+        :m "C-g" #'vundo-quit
+        :m "RET" #'vundo-confirm)
+  :defer t)
+#+end_src
+
+Set an entry point.
+
+#+begin_src emacs-lisp :tangle yes
+(map! :leader
+      :desc "Visual Undo Tree" "U" #'vundo)
 #+end_src
 
 *** Which Key
