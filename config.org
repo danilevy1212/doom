@@ -3555,18 +3555,18 @@ For node navigation:
   (vundo-glyph-alist     vundo-unicode-symbols)
   (vundo-compact-display t)
   :config
-  (evil-set-initial-state 'vundo-mode 'motion)
+  (set-evil-initial-state! 'vundo-mode 'motion)
   (add-hook! vundo-mode #'evil-normalize-keymaps)
   (map! :map vundo-mode-map
-        :m "h" #'vundo-backward
-        :m "l" #'vundo-forward
-        :m "j" #'vundo-next
-        :m "k" #'vundo-previous
-        :m "H" #'vundo-stem-root
-        :m "L" #'vundo-stem-end
-        :m "q" #'vundo-quit
-        :m "C-g" #'vundo-quit
-        :m "RET" #'vundo-confirm)
+        [remap evil-backward-char] #'vundo-backward
+        [remap evil-forward-char]  #'vundo-forward
+        [remap evil-next-line]     #'vundo-next
+        [remap evil-previous-line] #'vundo-previous
+        [remap evil-window-top]    #'vundo-stem-root
+        [remap evil-window-bottom] #'vundo-stem-end
+        [remap evil-record-macro]  #'vundo-quit
+        [remap doom/escape]        #'vundo-quit
+        [remap evil-ret]           #'vundo-confirm)
   :defer t)
 #+end_src
 
@@ -3574,7 +3574,7 @@ Set an entry point.
 
 #+begin_src emacs-lisp :tangle yes
 (map! :leader
-      :desc "Visual Undo Tree" "U" #'vundo)
+      :desc "Visual Undo Tree" "b U" #'vundo)
 #+end_src
 
 *** Which Key
