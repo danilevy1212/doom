@@ -3583,8 +3583,8 @@ Doom Emacs default configuration is too slow, let's speed it up.
 
 #+begin_src emacs-lisp :tangle yes
 (after! which-key
-  (setq which-key-idle-delay 0.1
-         which-key-idle-secondary-delay 0.2))
+  (setq which-key-idle-delay           0.1
+        which-key-idle-secondary-delay 0.2))
 #+end_src
 
 *** Word wrap
