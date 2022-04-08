@@ -2855,12 +2855,10 @@ Custom function that switches heading from 'TODO' to 'DONE' when all checkboxes 
 (defun dan/org-checkbox-statistics-change-to-done-when-all-ticked ()
   "Change `TODO' state to `DONE' if all checkboxes of the heading are ticked.
 
-This function is meant to be run as as part of `org-checkbox-statistics-hook'"
-  (let ((todo-state (condition-case err
+This function is meant to be run as as part of `org-checkbox-statistics-hook'."
+  (let ((todo-state (condition-case _
                         (org-get-todo-state)
-                      (user-error
-                       (message "%s" (error-message-string err))
-                       nil)))
+                      (user-error nil)))
         beg
         end)
     (when todo-state
