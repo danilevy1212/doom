@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: New project
-# key: pj
+# key: __proj
 # --
 
 * PROJ ${1:name}
