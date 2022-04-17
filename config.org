@@ -3656,6 +3656,57 @@ Make ~zen-mode~ togglable in a per file basis, just like in this ~config.org~!
                 (+zen/toggle)))
 #+end_src
 
+*** Yasnippet
+
+YASnippet is a template system for Emacs. It allows you to type an abbreviation and automatically expand it into function templates.
+
+**** org-mode
+
+For 日本語 grammar snippets.
+
+#+begin_src snippet :mkdirp yes :tangle snippets/org-mode/文法
+# -*- mode: snippet -*-
+# name: 文法の事項
+# key: bunpou
+# --
+
+`(make-string (+ 1 (org-outline-level)) ?*)` ${1:文法の事項}
+
+${2:説明}
+
+`(make-string (+ 2 (org-outline-level)) ?*)` 文型
+
+${3:文型}
+
+`(make-string (+ 2 (org-outline-level)) ?*)` 翻訳
+
+${4:翻訳}
+
+`(make-string (+ 2 (org-outline-level)) ?*)` 例
+
+${5:例}
+${6:例の翻訳}
+
+#+end_src
+
+For starting a new project!
+
+#+begin_src snippet :mkdirp yes :tangle snippets/org-mode/new_proj
+# -*- mode: snippet -*-
+# name: New project
+# key: project
+# --
+
+`(make-string (+ 1 (org-outline-level)) ?*)` PROJ ${1:name} :${2:tag_name}:
+
+${3:description}
+
+`(make-string (+ 2 (org-outline-level)) ?*)` Ideas
+`(make-string (+ 2 (org-outline-level)) ?*)` Tasks
+`(make-string (+ 3 (org-outline-level)) ?*)` TODO ${4:My first task!}
+`(make-string (+ 2 (org-outline-level)) ?*)` Events
+#+end_src
+
 ** Private modules.
 
 =doom= allows the user to [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#writing-your-own-modules][to write their own modules]] in their ~$DOOMDIR~
