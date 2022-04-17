@@ -2,6 +2,7 @@
 
 #+TITLE: Dan's DOOM Emacs configuration
 #+OPTIONS: tags:nil todo:nil
+#+LANGUAGE: en
 
 * Rationale
 
