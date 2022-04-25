@@ -2793,6 +2793,15 @@ And the templates that use those files:
                                  "* IDEA %?\n %i\n %a" :heading "Ideas" :prepend t))))
 #+end_src
 
+Easier to find ~org-attach~ links.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org
+  (setq org-id-method 'ts
+        org-attach-id-to-path-function-list '(org-attach-id-ts-folder-format
+                                              org-attach-id-uuid-folder-format)))
+#+end_src
+
 Now we specify the ~org-refile-targets~. Any open org file and the files that are part of the agenda.
 
 #+begin_src emacs-lisp :tangle yes
