@@ -3543,7 +3543,7 @@ A visual representation of =emacs= built-in =undo tree=.
 
 #+begin_src emacs-lisp :tangle packages.el
 (package! vundo
-  :recipe (:host github :repo "casouri/vundo"))
+  :pin "10d5debe317b2244d19085151040f955dda4a9ab")
 #+end_src
 
 For node navigation:
