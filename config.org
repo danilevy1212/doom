@@ -2416,7 +2416,8 @@ Lazy load with the command ~kubedoc~.
 =kubernetes.el= is a ~kubectl~ porcelain to manage all your cluster comfortably from emacs. It is what =magit= is to ~git~.
 
 #+begin_src emacs-lisp :tangle packages.el
-(package! kubernetes)
+(package! kubernetes
+  :recipe (:build (:not compile)))
 #+end_src
 
 We also bring along a =evil= keybind package for convenience.
