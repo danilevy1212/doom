@@ -2621,6 +2621,18 @@ This little hack prevents ~persp-mode~ to bother me when saving its =autosave= f
       (insert ?\n))))
 #+end_src
 
+*** Nix
+
+Use ~alejandra~ as the default formatter.
+
+#+begin_src emacs-lisp :tangle yes
+(after! nix-mode
+  (set-formatter! 'alejandra "alejandra --quiet" :modes '(nix-mode))
+  (map! :localleader
+        :map nix-mode-map
+        :desc "nix-format-buffer" "p" #'+format/buffer))
+#+end_src
+
 *** nodejs
 
 ~nodejs-repl~ is a super useful package. However, it's missing a comfortable way to interact with promises. We can change that with an experimental =nodejs=.
