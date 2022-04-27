@@ -2542,7 +2542,8 @@ This =emacs= package provides a minor mode which configures =magit= to use delta
 
 #+begin_src emacs-lisp :tangle yes
 (use-package! magit-delta
-  :hook (magit-mode . magit-delta-mode))
+  :custom (magit-delta-default-dark-theme "Nord")
+  :hook   (magit-mode . magit-delta-mode))
 #+end_src
 
 ~magit-delta-mode~ can be slow on big diffs. Luckily, we can [[https://github.com/dandavison/magit-delta/issues/9#issuecomment-795435781][advice the appropiate functions]] to deactivate the mode on big buffers.
@@ -2552,7 +2553,7 @@ This =emacs= package provides a minor mode which configures =magit= to use delta
   (defcustom dan/magit-delta-point-max 50000
     "Maximum length of diff buffer which `magit-delta' will tolerate."
     :group 'magit-delta
-    :type 'natnum)
+    :type  'natnum)
   (defadvice! dan/magit-delta-colorize-maybe (fn &rest args)
     "Disable mode if there are too many characters."
     :around #'magit-delta-call-delta-and-convert-ansi-escape-sequences
