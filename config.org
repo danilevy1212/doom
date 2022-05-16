@@ -1968,7 +1968,9 @@ Dtache, or Detach Emacs, is a package to run shell commands completely detached 
 #+end_quote
 
 #+begin_src emacs-lisp :tangle packages.el
-(package! dtache)
+(package! dtache
+  :recipe (:files (:defaults
+                   "dtache-env")))
 #+end_src
 
 #+begin_quote
@@ -1982,6 +1984,14 @@ The detachable nature of the package means that commands started with it can out
   (setq dtache-db-directory doom-cache-dir
         dtache-session-directory (temporary-file-directory))
   (dtache-setup))
+#+end_src
+
+With the ~dtache-env~ script we get colored stdout for our dtached commands, plus other goodies.
+
+#+begin_src emacs-lisp :tangle yes
+(after! dtache
+  (setq dtache-env (expand-file-name "dtache-env"
+                                     (file-name-directory (locate-library "dtache")))))
 #+end_src
 
 ~dtache-shell-command~ acts as a replacement to ~async-shell-command~.
@@ -2018,9 +2028,7 @@ The commands ~dtache-compile~ and ~dtache-compile-recompile~ can act as drop in 
         :desc "Dtach Session" :g "C-c C-q" #'dtache-consult-session
         :leader
         :desc "Compile" :g  "c c" #'dtache-compile
-        :desc "Recompile" :g "c C" #'dtache-compile-recompile)
-  :config
-  (dtache-compile-setup))
+        :desc "Recompile" :g "c C" #'dtache-compile-recompile))
 #+end_src
 
 A small hack to integrate ~dtache~ into ~projectile~.
