@@ -1961,16 +1961,16 @@ Now let's activate it when opening a =.env=:
   :mode ("\\.env\\.?.*\\'" . dotenv-mode))
 #+end_src
 
-*** Dtache
+*** Detached
 
 #+begin_quote
-Dtache, or Detach Emacs, is a package to run shell commands completely detached from Emacs.
+Detached, or Detach Emacs, is a package to run shell commands completely detachedd from Emacs.
 #+end_quote
 
 #+begin_src emacs-lisp :tangle packages.el
-(package! dtache
+(package! detached
   :recipe (:files (:defaults
-                   "dtache-env")))
+                   "detached-env")))
 #+end_src
 
 #+begin_quote
@@ -1978,68 +1978,68 @@ The detachable nature of the package means that commands started with it can out
 #+end_quote
 
 #+begin_src emacs-lisp :tangle yes
-(use-package! dtache
+(use-package! detached
   :defer t
   :config
-  (setq dtache-db-directory doom-cache-dir
-        dtache-session-directory (temporary-file-directory))
-  (dtache-setup))
+  (setq detached-db-directory doom-cache-dir
+        detached-session-directory (temporary-file-directory))
+  (detached-init))
 #+end_src
 
-With the ~dtache-env~ script we get colored stdout for our dtached commands, plus other goodies.
+With the ~detached-env~ script we get colored stdout for our detachedd commands, plus other goodies.
 
 #+begin_src emacs-lisp :tangle yes
-(after! dtache
-  (setq dtache-env (expand-file-name "dtache-env"
-                                     (file-name-directory (locate-library "dtache")))))
+(after! detached
+  (setq detached-env (expand-file-name "detached-env"
+                                     (file-name-directory (locate-library "detached")))))
 #+end_src
 
-~dtache-shell-command~ acts as a replacement to ~async-shell-command~.
+~detached-shell-command~ acts as a replacement to ~async-shell-command~.
 
 #+begin_src emacs-lisp :tangle yes
-(map! :g "M-&" #'dtache-shell-command)
+(map! :g "M-&" #'detached-shell-command)
 #+end_src
 
-~dtache-consult~ allows us to manage the active sessions behind =dtache=.
+~detached-consult~ allows us to manage the active sessions behind =detached=.
 
 #+begin_src emacs-lisp :tangle yes
-(use-package! dtache-consult
+(use-package! detached-consult
   :defer t
   :init
   (map! :leader
-        :desc "Shell Sessions Dtache" :g "o s" #'dtache-consult-session))
+        :desc "Shell Sessions Detached" :g "o s" #'detached-consult-session))
 #+end_src
 
-~embark~ can integrate with ~dtache~.
+~embark~ can integrate with ~detached~.
 
 #+begin_src emacs-lisp :tangle yes
-(after! (embark dtache)
-  (defvar embark-dtache-map (make-composed-keymap dtache-action-map embark-general-map))
-  (add-to-list 'embark-keymap-alist '(dtache . embark-dtache-map)))
+(after! (embark detached)
+  (defvar embark-detached-map (make-composed-keymap detached-action-map embark-general-map))
+  (add-to-list 'embark-keymap-alist '(detached . embark-detached-map)))
 #+end_src
 
-The commands ~dtache-compile~ and ~dtache-compile-recompile~ can act as drop in replacements for ~compile~ and ~compile-recompile~, respectively.
+The commands ~detached-compile~ and ~detached-compile-recompile~ can act as drop in replacements for ~compile~ and ~compile-recompile~, respectively.
 
 #+begin_src emacs-lisp :tangle yes
-(use-package! dtache-compile
-  :after dtache
+(use-package! detached-compile
+  :after detached
   :init
-  (map! :map dtache-compilation-mode-map
-        :desc "Dtach Session" :g "C-c C-q" #'dtache-consult-session
+  (map! :map detached-compilation-mode-map
+        :desc "Detache Session" :g "C-c C-q" #'detached-consult-session
         :leader
-        :desc "Compile" :g  "c c" #'dtache-compile
-        :desc "Recompile" :g "c C" #'dtache-compile-recompile))
+        :desc "Compile" :g  "c c" #'detached-compile
+        :desc "Recompile" :g "c C" #'detached-compile-recompile))
 #+end_src
 
-A small hack to integrate ~dtache~ into ~projectile~.
+A small hack to integrate ~detached~ into ~projectile~.
 
 #+begin_src emacs-lisp :tangle yes
 (after! projectile
-  (defadvice! dan/projectile-run-compilation--use-dtache (cmd &optional use-comint-mode)
+  (defadvice! dan/projectile-run-compilation--use-detached (cmd &optional use-comint-mode)
     :override #'projectile-run-compilation
     (if (functionp cmd)
         (funcall cmd)
-      (dtache-compile cmd use-comint-mode))))
+      (detached-compile cmd use-comint-mode))))
 #+end_src
 
 *** Elfeed
@@ -3162,7 +3162,7 @@ run-command you write a short recipe and obtain a command that is easy to bring 
 (package! run-command)
 #+end_src
 
-We advice ~run-command--run-compile~ to use =dtache=.
+We advice ~run-command--run-compile~ to use =detached=.
 
 #+begin_src emacs-lisp :tangle yes
 (use-package! run-command
@@ -3171,12 +3171,12 @@ We advice ~run-command--run-compile~ to use =dtache=.
   ;; NOTE: Forgotten builtin dependency
   (unless (featurep 'map)
     (require 'map))
-  (defadvice! dan/run-command--run-dtache-shell-command (command-line buffer-base-name)
-    "Override `run-command--run-compile' to use `dtache-compile'."
+  (defadvice! dan/run-command--run-detached-shell-command (command-line buffer-base-name)
+    "Override `run-command--run-compile' to use `detached-compile'."
     :override #'run-command--run-compile
     (let ((compilation-buffer-name-function
            (lambda (_name-of-mode) buffer-base-name)))
-      (dtache-shell-command command-line))))
+      (detached-shell-command command-line))))
 #+end_src
 
 Make sure ~run-command~ uses =vertico=.
