@@ -3572,8 +3572,7 @@ Make ~vterm~ as snappy as it can be.
 A visual representation of =emacs= built-in =undo tree=.
 
 #+begin_src emacs-lisp :tangle packages.el
-(package! vundo
-  :pin "10d5debe317b2244d19085151040f955dda4a9ab")
+(package! vundo)
 #+end_src
 
 For node navigation:
