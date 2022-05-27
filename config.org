@@ -2322,6 +2322,14 @@ Define quick access keybindings.
         "9" 'harpoon-go-to-9))
 #+end_src
 
+*** Hippie Expand
+
+An manual completion system, bind to ~M-/~. Useful for expanding in modes that don't have full context, like a ~fundamental-mode~ buffer.
+
+#+begin_src emacs-lisp :tangle yes
+(map! :g [remap dabbrev-expand] #'hippie-expand)
+#+end_src
+
 *** Hydra
 
 Let's make the =hydra= module's functions easily accessible:
