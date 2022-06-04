@@ -1968,9 +1968,7 @@ Detached, or Detach Emacs, is a package to run shell commands completely detache
 #+end_quote
 
 #+begin_src emacs-lisp :tangle packages.el
-(package! detached
-  :recipe (:files (:defaults
-                   "detached-env")))
+(package! detached)
 #+end_src
 
 #+begin_quote
@@ -1984,14 +1982,6 @@ The detachable nature of the package means that commands started with it can out
   (setq detached-db-directory doom-cache-dir
         detached-session-directory (temporary-file-directory))
   (detached-init))
-#+end_src
-
-With the ~detached-env~ script we get colored stdout for our detachedd commands, plus other goodies.
-
-#+begin_src emacs-lisp :tangle yes
-(after! detached
-  (setq detached-env (expand-file-name "detached-env"
-                                     (file-name-directory (locate-library "detached")))))
 #+end_src
 
 ~detached-shell-command~ acts as a replacement to ~async-shell-command~.
