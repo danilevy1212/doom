@@ -2112,6 +2112,29 @@ Various bits and pieces to enhance the Elfeed user experience.
         elfeed-goodies/entry-pane-position 'bottom))
 #+end_src
 
+*** Elfeed Tube
+
+#+begin_quote
+Elfeed Tube is an Emacs package for a richer, interactive, noise-free and fully text-capable interface to your Youtube subscriptions and playlists using Elfeed, the RSS feed reader for Emacs.
+#+end_quote
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! elfeed-tube
+  :recipe (:host github :repo "karthink/elfeed-tube"))
+#+end_src
+
+Simple setup.
+
+#+begin_src emacs-lisp :tangle yes
+(use-package elfeed-tube
+  :after elfeed
+  :custom
+  (elfeed-tube-auto-save-p  t)
+  (elfeed-tube-auto-fetch-p t)
+  :config
+  (elfeed-tube-setup))
+#+end_src
+
 *** Elfeed Org
 
 And point =elfeed= to the org configuration file.
