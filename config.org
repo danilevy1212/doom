@@ -1105,6 +1105,32 @@ larger PDFs.
        ;;taskrunner        ; taskrunner for all your projects
        ;;terraform         ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
+#+end_src
+
+***** tree-sitter
+
+#+begin_quote
+Tree-sitter is a general programming language parser that efficiently builds and updates Abstract Syntax Trees (AST) for your code. Basically, it can read programming languages and understand the structure and meaning of code without having to execute it. Among many amazing things, one of its best and simplest features to take advantage of is richer syntax highlighting.
+
+    --- https://hungyi.net/posts/use-emacs-tree-sitter-doom-emacs/
+#+end_quote
+
+Additionally, this module adds new text objects for =evil-mode=:
+
+| key | text object         |
+|-----+---------------------|
+| =A=   | parameter list      |
+| =f=   | function definition |
+| =F=   | function call       |
+| =C=   | class               |
+| =c=   | comment             |
+| =v=   | conditional         |
+| =l=   | loop                |
+
+You can jump directly to any of this nodes with the =[g= and =]g= motion commands.
+
+#+begin_src emacs-lisp :tangle init.el
+       tree-sitter       ; syntax and parsing, sitting in a tree.. .
        ;;upload            ; map local to remote projects via ssh/ftp
 #+end_src
 
@@ -1191,7 +1217,7 @@ This module adds [[https://golang.org][Go]] support, with optional (but recommen
 #+end_quote
 
 #+begin_src emacs-lisp :tangle init.el
-       (go +lsp)           ; the hipster dialect
+       (go +lsp +tree-sitter)           ; the hipster dialect
        ;;(graphql +lsp)    ; Give queries a REST
        ;;(haskell +lsp)      ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
@@ -1201,14 +1227,14 @@ This module adds [[https://golang.org][Go]] support, with optional (but recommen
 ***** TODO json
 
 #+begin_src emacs-lisp :tangle init.el
-       (json +lsp)              ; At least it ain't XML
+       (json +lsp +tree-sitter)              ; At least it ain't XML
        ;;(java +lsp) ; the poster child for carpal tunnel syndrome
 #+end_src
 
 ***** TODO javascript
 
 #+begin_src emacs-lisp :tangle init.el
-       (javascript +lsp)          ; all(hope(abandon(ye(who(enter(here)))))
+       (javascript +lsp +tree-sitter)          ; all(hope(abandon(ye(who(enter(here)))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
 #+end_src
@@ -1233,7 +1259,7 @@ This module adds [[https://golang.org][Go]] support, with optional (but recommen
 
 #+begin_src emacs-lisp :tangle init.el
        ;;nim               ; python + lisp at the speed of c
-       nix               ; I hereby declare "nix geht mehr!"
+       (nix +tree-sitter)               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
 #+end_src
 
@@ -1249,7 +1275,7 @@ This module adds [[https://golang.org][Go]] support, with optional (but recommen
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       (python +lsp +pyright +poetry) ; beautiful is better than ugly
+       (python +lsp +pyright +poetry +tree-sitter) ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
@@ -1270,7 +1296,7 @@ reasonable and with the =+lsp= it integrates nicely with ~lsp-mode~, what's not 
 love?
 
 #+begin_src emacs-lisp :tangle init.el
-       (rust +lsp)         ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       (rust +lsp +tree-sitter)         ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
 #+end_src
 
 ***** TODO sh
@@ -1278,7 +1304,7 @@ love?
 #+begin_src emacs-lisp :tangle init.el
        ;;scala             ; java, but good
        ;;scheme            ; a fully conniving family of lisps
-       sh                  ; she sells {ba,z,fi}sh shells on the C xor
+       (sh +tree-sitter)                  ; she sells {ba,z,fi}sh shells on the C xor
        ;;sml
 #+end_src
 
@@ -3494,40 +3520,6 @@ To make the ~header-line~ a little more noticeable while consistent with the buf
   (custom-set-faces!
     '(header-line :family "Victor Mono"
                   :inherit default)))
-#+end_src
-
-*** Tree-sitter
-
-#+begin_quote
-Tree-sitter is a general programming language parser that efficiently builds and updates Abstract Syntax Trees (AST) for your code. Basically, it can read programming languages and understand the structure and meaning of code without having to execute it. Among many amazing things, one of its best and simplest features to take advantage of is richer syntax highlighting, which is what I use it for in Emacs.
-
-    --- https://hungyi.net/posts/use-emacs-tree-sitter-doom-emacs/
-#+end_quote
-
-#+begin_src emacs-lisp :tangle packages.el
-(package! tree-sitter)
-(package! tree-sitter-langs)
-#+end_src
-
-Activate =tree-sitter= for programming modes.
-
-#+begin_src emacs-lisp :tangle yes
-(use-package! tree-sitter
-  :defer t)
-
-(use-package! tree-sitter-langs
-  :defer t)
-
-(add-transient-hook! 'prog-mode-hook
-  (require 'tree-sitter-langs)
-  (global-tree-sitter-mode))
-#+end_src
-
-Activate syntax highlighting based on the AST.
-
-#+begin_src emacs-lisp :tangle yes
-(add-hook! 'tree-sitter-after-on-hook
-           #'tree-sitter-hl-mode)
 #+end_src
 
 *** uniquify
