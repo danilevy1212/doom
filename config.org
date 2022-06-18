@@ -3233,7 +3233,7 @@ We advice ~run-command--run-compile~ to use =detached=.
     :override #'run-command--run-compile
     (let ((compilation-buffer-name-function
            (lambda (_name-of-mode) buffer-base-name)))
-      (detached-shell-command command-line))))
+      (detached-compile command-line t))))
 #+end_src
 
 Make sure ~run-command~ uses =vertico=.
