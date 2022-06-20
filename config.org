@@ -3608,18 +3608,8 @@ For node navigation:
   (vundo-glyph-alist     vundo-unicode-symbols)
   (vundo-compact-display t)
   :config
-  (set-evil-initial-state! 'vundo-mode 'motion)
-  (add-hook! vundo-mode #'evil-normalize-keymaps)
   (map! :map vundo-mode-map
-        [remap evil-backward-char] #'vundo-backward
-        [remap evil-forward-char]  #'vundo-forward
-        [remap evil-next-line]     #'vundo-next
-        [remap evil-previous-line] #'vundo-previous
-        [remap evil-window-top]    #'vundo-stem-root
-        [remap evil-window-bottom] #'vundo-stem-end
-        [remap evil-record-macro]  #'vundo-quit
-        [remap doom/escape]        #'vundo-quit
-        [remap evil-ret]           #'vundo-confirm)
+        [remap doom/escape]        #'vundo-quit)
   :defer t)
 #+end_src
 
