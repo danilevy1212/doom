@@ -812,7 +812,7 @@ Basically, it's a another editing helper package for lisp, in particular:
 
 #+begin_src emacs-lisp :tangle init.el
        ;;objed               ; text object editing for the innocent
-       (parinfer +rust)      ; turn lisp into python, sort of
+       (:if IS-LINUX parinfer) ; turn lisp into python, sort of
 #+end_src
 
 ***** snippets
@@ -911,14 +911,21 @@ An =emacs= alternative to the traditional shell. From this shell, you have acces
        eshell            ; the elisp shell that works everywhere
 #+end_src
 
+***** term
+
+A =emacs-lisp= terminal emulator, worse than =vterm=, but gets the job done.
+
+#+begin_src emacs-lisp :tangle init.el
+       ;;shell             ; simple shell REPL for Emacs
+       (:if IS-MAC term)   ; basic terminal emulator for Emacs
+#+end_src
+
 ***** vterm
 
 A traditional terminal emulator, powered by [[https://github.com/neovim/libvterm][libvterm]] and Emacs [[https://phst.eu/emacs-modules.html][c modules]].
 
 #+begin_src emacs-lisp :tangle init.el
-       ;;shell             ; simple shell REPL for Emacs
-       ;;term              ; basic terminal emulator for Emacs
-       vterm               ; the best terminal emulation in Emacs
+       (:if IS-LINUX vterm)               ; the best terminal emulation in Emacs
 #+end_src
 
 **** :checkers
@@ -1099,7 +1106,7 @@ larger PDFs.
 #+end_quote
 
 #+begin_src emacs-lisp :tangle init.el
-       pdf               ; pdf enhancements
+       (:if IS-LINUX pdf)  ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
        ;;rgb               ; creating color strings
        ;;taskrunner        ; taskrunner for all your projects
@@ -1136,6 +1143,15 @@ You can jump directly to any of this nodes with the =[g= and =]g= motion command
 
 **** :os
 
+***** macos
+
+I use a macbook for work, so this module adds some niceties.
+
+#+begin_src emacs-lisp :tangle init.el
+       :os
+       (:if IS-MAC macos)  ; improve compatibility with macOS
+#+end_src
+
 ***** tty
 
 Better integration of Emacs with the terminal emulator, particularly:
@@ -1149,8 +1165,6 @@ Better integration of Emacs with the terminal emulator, particularly:
 #+end_quote
 
 #+begin_src emacs-lisp :tangle init.el
-       :os
-       ;;(:if IS-MAC macos)  ; improve compatibility with macOS
        tty               ; improve the terminal Emacs experience
 #+end_src
 
@@ -1539,6 +1553,25 @@ Here's a simple trick to make =she-banged= scripts executable auto-magically by 
            #'executable-make-buffer-file-executable-if-script-p)
 #+end_src
 
+*** alert.el
+
+#+begin_quote
+Alert is a Growl-workalike for Emacs which uses a common notification interface and multiple, selectable "styles", whose use is fully customizable by the user.
+#+end_quote
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! alert)
+#+end_src
+
+I'm a =linux= user, so we pick the ~libnotify~ for getting system notifications.
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! alert
+  :defer t
+  :custom
+  (alert-default-style #'libnotify))
+#+end_src
+
 *** annotate.el
 
 #+begin_quote
@@ -1557,7 +1590,7 @@ Activate =annotate-mode= in file buffers that have annotations.
 
 (add-hook! find-file
            (let ((file-name (buffer-file-name))
-                 (annotation-files (mapcar #'car (annotate-load-annotation-data))))
+                 (annotation-files (mapcar #'car (annotate-load-annotation-data t))))
              (when (and file-name
                         (member file-name annotation-files))
                (annotate-mode +1))))
@@ -1591,25 +1624,6 @@ Add keybindings.
         "s" #'annotate-show-annotation-summary
         "]" #'annotate-goto-next-annotation
         "[" #'annotate-goto-previous-annotation))
-#+end_src
-
-*** alert.el
-
-#+begin_quote
-Alert is a Growl-workalike for Emacs which uses a common notification interface and multiple, selectable "styles", whose use is fully customizable by the user.
-#+end_quote
-
-#+begin_src emacs-lisp :tangle packages.el
-(package! alert)
-#+end_src
-
-I'm a =linux= user, so we pick the ~libnotify~ for getting system notifications.
-
-#+begin_src emacs-lisp :tangle yes
-(use-package! alert
-  :defer t
-  :custom
-  (alert-default-style #'libnotify))
 #+end_src
 
 *** awesome-client
@@ -1873,6 +1887,77 @@ Let's add some small customization to make everything a bit brighter and bigger:
   (doom-nord-region-highlight 'frost))
 #+end_src
 
+*** Detached
+
+#+begin_quote
+Detached, or Detach Emacs, is a package to run shell commands completely detachedd from Emacs.
+#+end_quote
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! detached)
+#+end_src
+
+#+begin_quote
+The detachable nature of the package means that commands started with it can outlive Emacs, which also works on remote hosts, essentially offering a lightweight alternative to Tmux or GNU Screen.
+#+end_quote
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! detached
+  :defer t
+  :config
+  (setq detached-db-directory doom-cache-dir
+        detached-session-directory (temporary-file-directory))
+  (detached-init))
+#+end_src
+
+~detached-shell-command~ acts as a replacement to ~async-shell-command~.
+
+#+begin_src emacs-lisp :tangle yes
+(map! :g "M-&" #'detached-shell-command)
+#+end_src
+
+~detached-consult~ allows us to manage the active sessions behind =detached=.
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! detached-consult
+  :defer t
+  :init
+  (map! :leader
+        :desc "Shell Sessions Detached" :g "o s" #'detached-consult-session))
+#+end_src
+
+~embark~ can integrate with ~detached~.
+
+#+begin_src emacs-lisp :tangle yes
+(after! (embark detached)
+  (defvar embark-detached-map (make-composed-keymap detached-action-map embark-general-map))
+  (add-to-list 'embark-keymap-alist '(detached . embark-detached-map)))
+#+end_src
+
+The commands ~detached-compile~ and ~detached-compile-recompile~ can act as drop in replacements for ~compile~ and ~compile-recompile~, respectively.
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! detached-compile
+  :after detached
+  :init
+  (map! :map detached-compilation-mode-map
+        :desc "Detache Session" :g "C-c C-q" #'detached-consult-session
+        :leader
+        :desc "Compile" :g  "c c" #'detached-compile
+        :desc "Recompile" :g "c C" #'detached-compile-recompile))
+#+end_src
+
+A small hack to integrate ~detached~ into ~projectile~.
+
+#+begin_src emacs-lisp :tangle yes
+(after! projectile
+  (defadvice! dan/projectile-run-compilation--use-detached (cmd &optional use-comint-mode)
+    :override #'projectile-run-compilation
+    (if (functionp cmd)
+        (funcall cmd)
+      (detached-compile cmd use-comint-mode))))
+#+end_src
+
 *** Dired
 
 One thing really missing from the default configuration of =dired= is an easy
@@ -1987,77 +2072,6 @@ Now let's activate it when opening a =.env=:
   :mode ("\\.env\\.?.*\\'" . dotenv-mode))
 #+end_src
 
-*** Detached
-
-#+begin_quote
-Detached, or Detach Emacs, is a package to run shell commands completely detachedd from Emacs.
-#+end_quote
-
-#+begin_src emacs-lisp :tangle packages.el
-(package! detached)
-#+end_src
-
-#+begin_quote
-The detachable nature of the package means that commands started with it can outlive Emacs, which also works on remote hosts, essentially offering a lightweight alternative to Tmux or GNU Screen.
-#+end_quote
-
-#+begin_src emacs-lisp :tangle yes
-(use-package! detached
-  :defer t
-  :config
-  (setq detached-db-directory doom-cache-dir
-        detached-session-directory (temporary-file-directory))
-  (detached-init))
-#+end_src
-
-~detached-shell-command~ acts as a replacement to ~async-shell-command~.
-
-#+begin_src emacs-lisp :tangle yes
-(map! :g "M-&" #'detached-shell-command)
-#+end_src
-
-~detached-consult~ allows us to manage the active sessions behind =detached=.
-
-#+begin_src emacs-lisp :tangle yes
-(use-package! detached-consult
-  :defer t
-  :init
-  (map! :leader
-        :desc "Shell Sessions Detached" :g "o s" #'detached-consult-session))
-#+end_src
-
-~embark~ can integrate with ~detached~.
-
-#+begin_src emacs-lisp :tangle yes
-(after! (embark detached)
-  (defvar embark-detached-map (make-composed-keymap detached-action-map embark-general-map))
-  (add-to-list 'embark-keymap-alist '(detached . embark-detached-map)))
-#+end_src
-
-The commands ~detached-compile~ and ~detached-compile-recompile~ can act as drop in replacements for ~compile~ and ~compile-recompile~, respectively.
-
-#+begin_src emacs-lisp :tangle yes
-(use-package! detached-compile
-  :after detached
-  :init
-  (map! :map detached-compilation-mode-map
-        :desc "Detache Session" :g "C-c C-q" #'detached-consult-session
-        :leader
-        :desc "Compile" :g  "c c" #'detached-compile
-        :desc "Recompile" :g "c C" #'detached-compile-recompile))
-#+end_src
-
-A small hack to integrate ~detached~ into ~projectile~.
-
-#+begin_src emacs-lisp :tangle yes
-(after! projectile
-  (defadvice! dan/projectile-run-compilation--use-detached (cmd &optional use-comint-mode)
-    :override #'projectile-run-compilation
-    (if (functionp cmd)
-        (funcall cmd)
-      (detached-compile cmd use-comint-mode))))
-#+end_src
-
 *** Elfeed
 
 First, lets bring our feeds into the cloud.
@@ -2138,6 +2152,24 @@ Various bits and pieces to enhance the Elfeed user experience.
         elfeed-goodies/entry-pane-position 'bottom))
 #+end_src
 
+*** Elfeed Org
+
+And point =elfeed= to the org configuration file.
+
+#+begin_src emacs-lisp :tangle yes
+(after! elfeed
+  (setq rmh-elfeed-org-files (list (expand-file-name "elfeed.org" org-directory))))
+#+end_src
+
+Keybinding to easily find the feeds file.
+
+#+begin_src emacs-lisp :tangle yes
+(map! :leader
+      :desc "News feed config" :m "o N" (cmd! (unless (featurep 'elfeed-org)
+                                                (require 'elfeed-org))
+                                              (find-file (car rmh-elfeed-org-files))))
+#+end_src
+
 *** Elfeed Tube
 
 #+begin_quote
@@ -2159,24 +2191,6 @@ Simple setup.
   (elfeed-tube-auto-fetch-p t)
   :config
   (elfeed-tube-setup))
-#+end_src
-
-*** Elfeed Org
-
-And point =elfeed= to the org configuration file.
-
-#+begin_src emacs-lisp :tangle yes
-(after! elfeed
-  (setq rmh-elfeed-org-files (list (expand-file-name "elfeed.org" org-directory))))
-#+end_src
-
-Keybinding to easily find the feeds file.
-
-#+begin_src emacs-lisp :tangle yes
-(map! :leader
-      :desc "News feed config" :m "o N" (cmd! (unless (featurep 'elfeed-org)
-                                                (require 'elfeed-org))
-                                              (find-file (car rmh-elfeed-org-files))))
 #+end_src
 
 *** eshell
@@ -2460,78 +2474,6 @@ Use the bitmap to display the indent level if we are in a graphic interface.
                                            'bitmap
                                          'character)
         highlight-indent-guides-responsive 'top))
-#+end_src
-
-*** kubedoc
-
-=kubedoc.el= provides Kubernetes API documentation in Emacs.
-
-#+begin_src emacs-lisp :tangle packages.el
-(package! kubedoc)
-#+end_src
-
-Lazy load with the command ~kubedoc~.
-
-#+begin_src emacs-lisp :tangle yes
-(use-package! kubedoc
-  :defer t)
-#+end_src
-
-*** kubernetes
-
-=kubernetes.el= is a ~kubectl~ porcelain to manage all your cluster comfortably from emacs. It is what =magit= is to ~git~.
-
-#+begin_src emacs-lisp :tangle packages.el
-(package! kubernetes
-  :recipe (:build (:not compile)))
-#+end_src
-
-We also bring along a =evil= keybind package for convenience.
-
-#+begin_src emacs-lisp :tangle packages.el
-(package! kubernetes-evil)
-#+end_src
-
-Finally, lazily load the package and it's =evil= keybindings when calling an entry command, ~kubernetes-overview~.
-
-#+begin_src emacs-lisp :tangle yes
-(use-package! kubernetes
-  :defer t)
-
-(use-package! kubernetes-evil
-  :after kubernetes-overview)
-
-(map! :leader
-      :desc "k8s Dashboard" "o k" #'kubernetes-overview)
-#+end_src
-
-When modifying =kubernetes= resources files, it can be useful to remove the extra clutter and keep only the essential API options. ~kubectl-neat~ offers this functionality and with the following command, we make it available to =emacs=, binding it to =SPC m n=.
-
-#+begin_src emacs-lisp :tangle yes
-(after! yaml-mode
-  (defun dan/kubectl-neatify ()
-    "Kube-neatify the contents of CURRENT-BUFFER yaml resource."
-    (interactive)
-    (let* ((old-buffer (current-buffer))
-           (temp-buf   (get-buffer-create (concat "*" (make-temp-name "kubectl-neat-") "*")))
-           (cmd-res
-            (with-current-buffer temp-buf
-              (insert-buffer-substring-no-properties old-buffer)
-              (list
-               :exit-code (call-process-region nil nil "kubectl-neat" t t)
-               :result    (buffer-string))))
-           (res-str (plist-get cmd-res :result))
-           (res-ec  (plist-get cmd-res :exit-code)))
-      (unwind-protect
-          (if (= (plist-get cmd-res :exit-code) 0)
-              (with-current-buffer old-buffer
-                (replace-buffer-contents temp-buf))
-            (error "kubectl-neat failed with error code %d:\n%s" res-ec res-str))
-        (kill-buffer temp-buf))))
-
-  (map! :map yaml-mode-map
-        :localleader
-        "n" #'dan/kubectl-neatify))
 #+end_src
 
 *** Language Tool
@@ -3262,18 +3204,33 @@ An easy =mnemonic= keybinding.
 
 #+begin_src emacs-lisp :tangle yes
 (after! run-command
-  (defun dan/run-command--nixos ()
-    (list
-     (list :command-line "rm -f ~/.config/mimeapps.list && sudo nixos-rebuild switch --flake '/etc/nixos#nyx15v2'"
-           :command-name "Rebuild NixOS"
-           :display "Create a new NixOS generation and switch to it")
-     (list :command-line "nix flake update /etc/nixos"
-           :command-name "Update NixOS"
-           :display "Update the NixOS flake inputs")
-     (list :command-line "sudo nix-collect-garbage -d"
-           :command-name "GC NixOS"
-           :display "Delete unused derivations and previous generations")))
-  (add-to-list 'run-command-recipes #'dan/run-command--nixos t))
+  (defun dan/run-command--nix ()
+    (when IS-LINUX
+      (list
+       (list :command-line "rm -f ~/.config/mimeapps.list && sudo nixos-rebuild switch --flake '/etc/nixos#nyx15v2'"
+             :command-name "Rebuild NixOS"
+             :display "Create a new NixOS generation and switch to it")
+       (list :command-line "nix flake update /etc/nixos"
+             :command-name "Update NixOS"
+             :display "Update the NixOS flake inputs")
+       (list :command-line "sudo nix-collect-garbage -d"
+             :command-name "GC NixOS"
+             :display "Delete unused derivations and previous generations")))
+    (when IS-MAC
+      (list
+       (list :command-line "darwin-rebuild switch --flake '/Users/dlevy/.config/nixos#autoMac'"
+             :command-name "Rebuild darwin"
+             :display "Create a new darwin generation and switch to it")
+       (list :command-line "darwin-rebuild check --flake '/Users/dlevy/.config/nixos#autoMac'"
+             :command-name "Check darwin"
+             :display "Check if new darwin generation can is buildable")
+       (list :command-line "nix flake update /Users/dlevy/.config/nixos"
+             :command-name "Update darwin"
+             :display "Update the darwin flake inputs")
+       (list :command-line "nix-collect-garbage -d"
+             :command-name "GC darwin"
+             :display "Delete unused derivations and previous generations"))))
+  (add-to-list 'run-command-recipes #'dan/run-command--nix t))
 #+end_src
 
 *** Rust
@@ -3453,6 +3410,14 @@ Center the text of chat buffers for more comfy reading.
 (add-hook! telega-chat-mode #'+zen/toggle)
 #+end_src
 
+*** Term
+
+Make =urls= clickable in ~term~ modes.
+
+#+begin_src emacs-lisp :tangle yes
+(add-hook! term-mode #'goto-address-mode)
+#+end_src
+
 *** topspace
 
 #+begin_quote
@@ -3489,7 +3454,6 @@ We create a =blacklist= of sorts to deactivate ~topspace-mode~ in special modes.
                              'comint-mode
                              'org-agenda-mode
                              '+doom-dashboard-mode
-                             'kubernetes-mode
                              'magit-mode
                              'telega-root-mode
                              'telega-chat-mode

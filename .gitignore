@@ -1,3 +1,4 @@
 *.el
 autoload
 snippets/*
+.DS_Store
