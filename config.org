@@ -3205,18 +3205,17 @@ An easy =mnemonic= keybinding.
 #+begin_src emacs-lisp :tangle yes
 (after! run-command
   (defun dan/run-command--nix ()
-    (when IS-LINUX
-      (list
-       (list :command-line "rm -f ~/.config/mimeapps.list && sudo nixos-rebuild switch --flake '/etc/nixos#nyx15v2'"
-             :command-name "Rebuild NixOS"
-             :display "Create a new NixOS generation and switch to it")
-       (list :command-line "nix flake update /etc/nixos"
-             :command-name "Update NixOS"
-             :display "Update the NixOS flake inputs")
-       (list :command-line "sudo nix-collect-garbage -d"
-             :command-name "GC NixOS"
-             :display "Delete unused derivations and previous generations")))
-    (when IS-MAC
+    (if IS-LINUX
+        (list
+         (list :command-line "rm -f ~/.config/mimeapps.list && sudo nixos-rebuild switch --flake '/etc/nixos#nyx15v2'"
+               :command-name "Rebuild NixOS"
+               :display "Create a new NixOS generation and switch to it")
+         (list :command-line "nix flake update /etc/nixos"
+               :command-name "Update NixOS"
+               :display "Update the NixOS flake inputs")
+         (list :command-line "sudo nix-collect-garbage -d"
+               :command-name "GC NixOS"
+               :display "Delete unused derivations and previous generations"))
       (list
        (list :command-line "darwin-rebuild switch --flake '/Users/dlevy/.config/nixos#autoMac'"
              :command-name "Rebuild darwin"
