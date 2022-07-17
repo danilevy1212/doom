@@ -2229,6 +2229,23 @@ The BUFFER-NAME is given as string surrounded by \"\"."
   (insert-and-inherit "\"" buffer-name "\""))
 #+end_src
 
+*** eterm256
+
+#+begin_quote
+This package uses xterm-color to add customizable 256 color support to term and ansi-term.
+#+end_quote
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! eterm-256color)
+#+end_src
+
+Only activate it on ~term-mode~ buffers.
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! eterm-256color
+  :hook (term-mode . eterm-256color-mode))
+#+end_src
+
 *** evil
 
 Vim keybindings are hard to let go once you are used to them.
