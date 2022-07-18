@@ -3239,7 +3239,7 @@ An easy =mnemonic= keybinding.
              :display "Create a new darwin generation and switch to it")
        (list :command-line "darwin-rebuild check --flake '/Users/dlevy/.config/nixos#autoMac'"
              :command-name "Check darwin"
-             :display "Check if new darwin generation can is buildable")
+             :display "Check if new darwin generation is buildable")
        (list :command-line "nix flake update /Users/dlevy/.config/nixos"
              :command-name "Update darwin"
              :display "Update the darwin flake inputs")
