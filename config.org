@@ -843,7 +843,7 @@ lines in the buffer without modifying the buffer content.
 
 #+begin_src emacs-lisp :tangle init.el
        :emacs
-       (dired +icons)    ; making dired pretty [functional]
+       (dired +icons +dirvish)    ; making dired pretty [functional]
 #+end_src
 
 =dired-mode=, as configured in the =dired= module, has only a few extra bells and
@@ -856,7 +856,7 @@ whistles added. Apart from aesthetic stuff, there are some extra keybindings:
 | =C-c C-r= | Run =dired-rsync=            |
 | =C-c C-e= | Rename entries with =wdired= |
 
-This complement the [[https://www.gnu.org/software/emacs/refcards/pdf/dired-ref.pdf][default keybindings]].
+This complements the [[https://www.gnu.org/software/emacs/refcards/pdf/dired-ref.pdf][default keybindings]]. Additionally, the =dirvish= package makes =dired= feel more like ~ranger~ by building on top of =dired= and =emacs= built-ins. It is also fully extensible.
 
 ***** electric
 
@@ -1960,39 +1960,11 @@ A small hack to integrate ~detached~ into ~projectile~.
 
 *** Dired
 
-One thing really missing from the default configuration of =dired= is an easy
-way to move up and down from directories.
-
-#+begin_src emacs-lisp :tangle yes
-(after! dired
-  (map! :map dired-mode-map
-        :m "h" #'dired-up-directory
-        :m "l" #'dired-find-file)
-#+end_src
-
 Most of the information =dired= throws at you is not really necessary, so let's
 hide it by default. One can toggle this information on/off with ~(~ keybinding.
 
 #+begin_src emacs-lisp :tangle yes
   (add-hook! dired-mode #'dired-hide-details-mode)
-#+end_src
-
-But, do show git information on repositories by default, can be toggled on/off with ~)~.
-
-#+begin_src emacs-lisp :tangle yes
-  (add-hook! 'dired-after-readin-hook #'+dired-enable-git-info-h)
-#+end_src
-
-There is a class between ~dired-subtree~ and ~dired-git-info~. Luckily, there is a [[https://github.com/clemera/dired-git-info/issues/9][hack]] to fix it.
-
-#+begin_src emacs-lisp :tangle yes
-  (defadvice! dan/dired-subtree-toggle-advice (orig-fn &rest args)
-    :around #'dired-subtree-toggle
-    (cond ((bound-and-true-p dired-git-info-mode)
-           (dired-git-info-mode -1)
-           (apply orig-fn args)
-           (dired-git-info-mode +1))
-          (t (apply orig-fn args)))))
 #+end_src
 
 Opening files from =dired= with an external program is a bit of drag by default, so
@@ -2027,17 +1999,13 @@ The following packages reduce the ~dired buffer~ clutter by condensing the infor
 
 #+begin_src emacs-lisp :tangle packages.el
 (package! dired-subtree)
-(package! dired-collapse)
 #+end_src
 
-~dired-collapse~ condenses empty directory paths or file paths with a single file in them. ~dired-subtree~ enables a tree view of te directory, which puts the information of sub-directories contents in the same buffer.
+ ~dired-subtree~ enables a tree view of te directory, which puts the information of sub-directories contents in the same buffer.
 
 #+begin_src emacs-lisp :tangle yes
 (use-package! dired-subtree
   :after dired)
-
-(use-package! dired-collapse
-  :hook (dired-mode . dired-collapse-mode))
 #+end_src
 
 =dired= can get hung up in some operations. Luckily, =dired-async= can do the same procedures without blocking.
@@ -2055,6 +2023,25 @@ Add keybindings overriding blocking operations.
         :n "C" #'dired-async-do-copy
         :n "S" #'dired-async-do-symlink
         :n "H" #'dired-async-do-hardlink))
+#+end_src
+
+*** Dirvish
+
+#+begin_quote
+Dirvish is an improved version of the Emacs inbuilt package Dired. It not only gives Dired an appealing and highly customizable user interface, but also comes together with almost all possible parts required for full usability as a modern file manager.
+#+end_quote
+
+#+begin_src emacs-lisp :tangle yes
+(setq dirvish-default-layout '(0 0 0.4)
+      dirvish-layout-recipes '((1 0.11 0.55)
+                               (0 0    0.40)))
+#+end_src
+
+Override ~dired-jump~ with ~dirvish~!
+
+#+begin_src emacs-lisp :tangle yes
+(map! :leader
+      :desc "Dirvish" "o -" #'dirvish)
 #+end_src
 
 *** Dotenv
