@@ -1650,6 +1650,7 @@ browser. The following advice takes care of this edge case.
   (defadvice! dan/browse-url-encode-url--parse-lbry-url (args)
     "Process a `lbry://' link so it can be opened with `browse-url'."
     :filter-args #'browse-url-xdg-open
+    :filter-args #'browse-url-default-macosx-browser
     (list
      (replace-regexp-in-string "^lbry:\/\/" "https://odysee.com/" (car args)))))
 #+end_src
