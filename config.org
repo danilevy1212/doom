@@ -2704,10 +2704,10 @@ Modules for keeping track of habits and completing checklists.
     (org-module  '(org-habit org-checklist))
 #+end_src
 
-Don't show TODOs which are scheduled in the future.
+Show me scheduled to-does in the next couple of days.
 
 #+begin_src emacs-lisp :tangle yes
-    (org-agenda-todo-ignore-scheduled 'future)
+    (org-agenda-todo-ignore-scheduled 2)
 #+end_src
 
 A project with no NEXT subheads is stuck.
@@ -2848,8 +2848,7 @@ The default agenda view shows yesterdays task, todays and tomorrows.
 
 #+begin_src emacs-lisp :tangle yes
 (after! org-agenda
-  (setq org-agenda-start-on-weekday nil
-        org-agenda-start-day        "-1d"
+  (setq org-agenda-start-day        "-1d"
         org-agenda-span             3))
 #+end_src
 
@@ -3005,10 +3004,14 @@ With the package installed, we are ready to define ~org-agenda-custom-commands~ 
                                  (todo priority-down category-keep)
                                  (tags priority-down category-keep)
                                  (search category-keep)))
-  (org-super-agenda-groups      '((:name "Next Items"
+  (org-super-agenda-groups      '((:name "Started"
                                    :and (:todo "NEXT" :not (:tag ("consume"))))
+                                  (:name "Today"
+                                   :scheduled today :scheduled past :date today)
                                   (:name "Important"
                                    :and (:priority "A" :not (:todo "WAIT")))
+                                  (:name "Soon"
+                                   :scheduled future)
                                   (:name "In Hold"
                                    :and (:not (:tag ("consume")) :todo "WAIT"))
                                   (:name "Incoming Events"
