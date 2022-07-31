@@ -1657,22 +1657,39 @@ browser. The following advice takes care of this edge case.
 
 *** calfw
 
-As part of the ~calendar~ module, we get the excellent ~calfw~ package, which displays a calendar view in the emacs buffer.
-
-Europeans start the week on monday!
-
-#+begin_src emacs-lisp :tangle yes
-(after! calfw
-  (setq calendar-week-start-day 1)
-#+end_src
-
 For the =calendar= view, it's useful to be able to see when a task is scheduled.
 
 #+begin_src emacs-lisp :tangle yes
+(after! calfw
   (defadvice! dan/org-agenda--show-scheduled-in-calfw (fn &rest args)
     :around #'cfw:org-collect-schedules-period
     (let ((org-agenda-todo-ignore-scheduled nil))
-      (apply fn args))))
+      (apply fn args)))
+#+end_src
+
+Until [[https://github.com/kiwanami/emacs-calfw/pull/134][134]] gets merged, this fixes repeating entries in range periods.
+
+#+begin_src emacs-lisp :tangle yes
+    (defadvice! dan/cfw:org-get-timerange (text)
+    "Return a range object (begin end text).
+    If TEXT does not have a range, return nil."
+    :override #'cfw:org-get-timerange
+    (let* ((dotime (cfw:org-tp text 'dotime)))
+        (and (stringp dotime) (string-match org-ts-regexp dotime)
+            (let ((date-string  (match-string 1 dotime))
+                (extra (cfw:org-tp text 'extra)))
+            (if (string-match "(\\([0-9]+\\)/\\([0-9]+\\)): " extra)
+                (let* ((cur-day (string-to-number
+                                    (match-string 1 extra)))
+                        (total-days (string-to-number
+                                    (match-string 2 extra)))
+                        (start-date (org-read-date nil t date-string))
+                        (end-date (time-add
+                                    start-date
+                                    (seconds-to-time (* 3600 24 (- total-days 1))))))
+                    (unless (= cur-day total-days)
+                    (list (calendar-gregorian-from-absolute (time-to-days start-date))
+                            (calendar-gregorian-from-absolute (time-to-days end-date)) text)))))))))
 #+end_src
 
 Finally, we create an entrance point to the calendar view.
