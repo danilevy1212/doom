@@ -2529,14 +2529,6 @@ numbers are disabled. For relative line numbers, set this to ~relative~.
 (setq display-line-numbers-type 'relative)
 #+end_src
 
-*** Lsp
-
-~plists~ provide better performance in deserialization and also put less presure than hash-table.
-
-#+begin_src emacs-lisp :tangle yes
-(setq lsp-use-plists "true")
-#+end_src
-
 *** Lua
 
 Search for the ~lsp-server~ in path:
