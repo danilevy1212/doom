@@ -2079,6 +2079,13 @@ Now let's activate it when opening a =.env=:
   :mode ("\\.env\\.?.*\\'" . dotenv-mode))
 #+end_src
 
+*** Dumb Jump
+
+#+begin_src emacs-lisp :tangle yes
+(after! dumb-jump
+  (setq dumb-jump-selector 'completing-read))
+#+end_src
+
 *** Elfeed
 
 First, lets bring our feeds into the cloud.
