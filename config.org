@@ -1923,9 +1923,11 @@ The detachable nature of the package means that commands started with it can out
 (use-package! detached
   :defer t
   :config
-  (setq detached-db-directory doom-cache-dir
-        detached-session-directory (temporary-file-directory))
-  (detached-init))
+  (setq detached-notification-function (if IS-LINUX
+                                           #'detached-state-transition-notifications-message
+                                         #'detached-extra-alert-notification)
+        detached-db-directory doom-cache-dir
+        detached-session-directory (temporary-file-directory)))
 #+end_src
 
 ~detached-shell-command~ acts as a replacement to ~async-shell-command~.
@@ -1944,14 +1946,6 @@ The detachable nature of the package means that commands started with it can out
         :desc "Shell Sessions Detached" :g "o s" #'detached-consult-session))
 #+end_src
 
-~embark~ can integrate with ~detached~.
-
-#+begin_src emacs-lisp :tangle yes
-(after! (embark detached)
-  (defvar embark-detached-map (make-composed-keymap detached-action-map embark-general-map))
-  (add-to-list 'embark-keymap-alist '(detached . embark-detached-map)))
-#+end_src
-
 The commands ~detached-compile~ and ~detached-compile-recompile~ can act as drop in replacements for ~compile~ and ~compile-recompile~, respectively.
 
 #+begin_src emacs-lisp :tangle yes
@@ -1965,15 +1959,23 @@ The commands ~detached-compile~ and ~detached-compile-recompile~ can act as drop
         :desc "Recompile" :g "c C" #'detached-compile-recompile))
 #+end_src
 
-A small hack to integrate ~detached~ into ~projectile~.
+There is a bug in ~detached-init-projectile~ that prevents it from properly integrating. Here is my fix.
 
 #+begin_src emacs-lisp :tangle yes
-(after! projectile
-  (defadvice! dan/projectile-run-compilation--use-detached (cmd &optional use-comint-mode)
-    :override #'projectile-run-compilation
-    (if (functionp cmd)
-        (funcall cmd)
-      (detached-compile cmd use-comint-mode))))
+(after! detached
+  (defadvice! dan/detached-init-projectile ()
+    "Initialize integration with `projectile'."
+    :override #'detached-init-projectile
+    (after! projectile
+        (advice-add 'projectile-run-compilation
+                    :override #'detached-extra-projectile-run-compilation))))
+#+end_src
+
+We start =detached= integration.
+
+#+begin_src emacs-lisp :tangle yes
+(after! detached
+  (detached-init))
 #+end_src
 
 *** Dired
