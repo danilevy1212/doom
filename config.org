@@ -1273,7 +1273,7 @@ This module adds [[https://golang.org][Go]] support, with optional (but recommen
 
 #+begin_src emacs-lisp :tangle init.el
        ;;nim               ; python + lisp at the speed of c
-       (nix +tree-sitter)               ; I hereby declare "nix geht mehr!"
+       (nix +tree-sitter +lsp)               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
 #+end_src
 
