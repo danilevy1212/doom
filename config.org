@@ -2376,6 +2376,117 @@ Quickly diff to regions of text.
   (setq evil-snipe-scope 'whole-buffer))
 #+end_src
 
+*** FlowJS
+
+=Typescript='s less beloved older brother.
+
+**** flow-minor-mode
+
+Though recent versions of =flow= come with a =lsp-server= implementation builtin, the version we use at my work does not support it. Starting with =flow-minor-mode=, the following packages more or less make up for =lsp= features.
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! flow-minor-mode)
+#+end_src
+
+Only enable in ~js2-mode~ files that have the ~// @flow~ heading.
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! flow-minor-mode
+  :hook (js2-mode . flow-minor-enable-automatically))
+#+end_src
+
+We use =flow= in a mono-repo, which makes ~flow-minor-binary~ confused about where exactly to look for the =flow= binary. With this advice we integrate with =projectile= to find the correct location.
+
+#+begin_src emacs-lisp :tangle yes
+(after! flow-minor-mode
+  (defadvice! dan/flow-minor-binary ()
+    "Search for a local or global flow binary.
+
+Integrates with projectile."
+    :override #'flow-minor-binary
+    (let* ((root (locate-dominating-file
+                  (or (projectile-project-root) default-directory (buffer-file-name))
+                  "node_modules"))
+           (flow (and root
+                      (expand-file-name "node_modules/.bin/flow"
+                                        root))))
+      (if (and flow (file-executable-p flow))
+          flow
+        flow-minor-default-binary))))
+#+end_src
+
+Setup lookups to use the ~flow~ binary directly.
+
+#+begin_src emacs-lisp :tangle yes
+(after! flow-minor-mode
+  (set-lookup-handlers! 'flow-minor-mode
+    :type-definition #'flow-minor-type-at-pos
+    :definition #'flow-minor-jump-to-definition))
+#+end_src
+
+**** company-flow
+
+Some completion is better than no completion...
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! company-flow)
+#+end_src
+
+Only activate in ~flow-minor-mode~.
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! company-flow
+  :after company
+  :config
+  (set-company-backend! 'flow-minor-mode 'company-flow))
+#+end_src
+
+**** flycheck-flow
+
+I get ~eslint~ errors through ~lsp~ generic checker, but I also need the ~flow~ specific type-related errors.
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! flycheck-flow)
+#+end_src
+
+Activate only on ~flow-minor-mode~.
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! flycheck-flow
+  :after flycheck
+  :config
+  (flycheck-add-mode 'javascript-flow 'flow-minor-mode))
+#+end_src
+
+Hack for making ~flycheck-flow~ work with the ~lsp~ checker, taken from [[https://github.com/flycheck/flycheck/issues/1762][this issue]].
+
+#+begin_src emacs-lisp :tangle yes
+;; Add buffer local Flycheck checkers after LSP for different major modes.
+(defvar-local dan/flycheck-local-cache nil)
+
+(after! flycheck
+  (defun dan/flycheck-local-checker-get (fn checker property)
+    ;; Only check the buffer local cache for the LSP checker, otherwise we get
+    ;; infinite loops.
+    (if (eq checker 'lsp)
+        (or (alist-get property dan/flycheck-local-cache)
+            (funcall fn checker property))
+      (funcall fn checker property)))
+  (advice-add 'flycheck-checker-get
+              :around 'dan/flycheck-local-checker-get)
+  (add-hook! 'lsp-managed-mode-hook
+    (when (bound-and-true-p flow-minor-mode)
+      (setq dan/flycheck-local-cache '((next-checkers . (javascript-flow)))))))
+#+end_src
+
+~flycheck~ has some trouble finding the ~flow~ binary, so I give it some help using =dir-local= variables on a per-project basis.
+
+#+begin_src emacs-lisp :tangle yes
+(after! flycheck-flow
+  (put 'flycheck-javascript-eslint-executable 'safe-local-variable #'stringp)
+  (put 'flycheck-javascript-flow-executable 'safe-local-variable #'stringp))
+#+end_src
+
 *** Harpoon
 
 #+begin_quote
