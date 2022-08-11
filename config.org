@@ -3620,7 +3620,7 @@ We activate ~topsy-mode~ only in programming contexts.
   :defer t
   :init
   (add-hook! prog-mode
-    (unless (memq major-mode '(+doom-dashboard-mode org-mode))
+    (unless (memq major-mode '(+doom-dashboard-mode org-mode dirvish-mode))
       (topsy-mode +1)))
 #+end_src
 
