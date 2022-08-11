@@ -1563,13 +1563,13 @@ Alert is a Growl-workalike for Emacs which uses a common notification interface 
 (package! alert)
 #+end_src
 
-I'm a =linux= user, so we pick the ~libnotify~ for getting system notifications.
+Depending if I am on =linux= or =macos=, choose the notification style.
 
 #+begin_src emacs-lisp :tangle yes
 (use-package! alert
   :defer t
   :custom
-  (alert-default-style #'libnotify))
+  (alert-default-style (if IS-LINUX 'libnotify 'osx-notifier)))
 #+end_src
 
 *** annotate.el
