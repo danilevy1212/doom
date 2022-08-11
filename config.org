@@ -3093,11 +3093,14 @@ Like =topsy=, for org mode.
 (package! org-sticky-header)
 #+end_src
 
-Lazy load only in ~org-mode~ buffers.
+Lazy load only in ~org-mode~ buffers. Show then full the path of the outline in the header.
 
 #+begin_src emacs-lisp :tangle yes
 (use-package! org-sticky-header
-  :hook (org-mode . org-sticky-header-mode))
+  :custom
+  (org-sticky-header-full-path 'full)
+  :hook
+  (org-mode . org-sticky-header-mode))
 #+end_src
 
 *** org-super-agenda
