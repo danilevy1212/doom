@@ -1,5 +1,14 @@
 ;;; cli.el -*- lexical-binding: t; -*-
 
+;; https://github.com/doomemacs/doomemacs/issues/5592#issuecomment-1210682905
+(after! comp
+  ;; HACK Disable native-compilation for some troublesome packages
+  (mapc (doom-partial #'add-to-list 'native-comp-deferred-compilation-deny-list)
+        (list "/emacs-jupyter.*\\.el\\'"
+              "/evil-collection-vterm\\.el\\'"
+              "/vterm\\.el\\'"
+              "/with-editor\\.el\\'")))
+
 (defcli! tangle ()
   "Tangle the literate configuration."
   (progn
