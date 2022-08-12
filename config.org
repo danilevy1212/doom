@@ -911,21 +911,14 @@ An =emacs= alternative to the traditional shell. From this shell, you have acces
        eshell            ; the elisp shell that works everywhere
 #+end_src
 
-***** term
-
-A =emacs-lisp= terminal emulator, worse than =vterm=, but gets the job done.
-
-#+begin_src emacs-lisp :tangle init.el
-       ;;shell             ; simple shell REPL for Emacs
-       (:if IS-MAC term)   ; basic terminal emulator for Emacs
-#+end_src
-
 ***** vterm
 
 A traditional terminal emulator, powered by [[https://github.com/neovim/libvterm][libvterm]] and Emacs [[https://phst.eu/emacs-modules.html][c modules]].
 
 #+begin_src emacs-lisp :tangle init.el
-       (:if IS-LINUX vterm)               ; the best terminal emulation in Emacs
+       ;;shell             ; simple shell REPL for Emacs
+       ;;term              ; basic terminal emulator for Emacs
+       vterm               ; the best terminal emulation in Emacs
 #+end_src
 
 **** :checkers
@@ -3569,14 +3562,6 @@ Center the text of chat buffers for more comfy reading.
 (add-hook! telega-chat-mode #'+zen/toggle)
 #+end_src
 
-*** Term
-
-Make =urls= clickable in ~term~ modes.
-
-#+begin_src emacs-lisp :tangle yes
-(add-hook! term-mode #'goto-address-mode)
-#+end_src
-
 *** topspace
 
 #+begin_quote
@@ -3727,6 +3712,37 @@ Make ~vterm~ as snappy as it can be.
 #+begin_src emacs-lisp :tangle yes
 (after! vterm
   (setq vterm-timer-delay nil))
+#+end_src
+
+Unfortunately, =MacOS M1= compilation is hardly straightforward. For a =HACK/FIX=, I force compilation through the latest ~gcc~ installed through =homebrew=.
+
+#+begin_src emacs-lisp :tangle yes
+(after! vterm
+  (defadvice! dan/vterm-module-compile (fn &rest _)
+    :around #'vterm-module-compile
+    (if IS-MAC
+        (let* ((vterm-directory
+                (shell-quote-argument (file-name-directory (locate-library "vterm.el" t))))
+               (vterm-module-cmake-args "-DCMAKE_C_COMPILER=`which gcc-12`")
+               (make-commands
+                (concat
+                 "cd " vterm-directory "; \
+               rm -rf build; \
+               mkdir -p build; \
+               cd build; \
+               cmake -B build "
+                 vterm-module-cmake-args
+                 " ..; \
+               cmake --build build; \
+               cd -"))
+               (buffer (get-buffer-create vterm-install-buffer-name)))
+          (pop-to-buffer buffer)
+          (compilation-mode)
+          (if (zerop (let ((inhibit-read-only t))
+                       (call-process "sh" nil buffer t "-c" make-commands)))
+              (message "Compilation of `emacs-libvterm' module succeeded")
+            (error "Compilation of `emacs-libvterm' module failed!")))
+      (funcall fn))))
 #+end_src
 
 *** Vundo
