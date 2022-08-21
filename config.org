@@ -2849,7 +2849,7 @@ Modules for keeping track of habits and completing checklists.
 Show me scheduled to-does in the next couple of days.
 
 #+begin_src emacs-lisp :tangle yes
-    (org-agenda-todo-ignore-scheduled 2)
+    (org-agenda-todo-ignore-scheduled 3)
 #+end_src
 
 A project with no NEXT subheads is stuck.
