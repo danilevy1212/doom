@@ -534,7 +534,7 @@ This module integrates with git to show hinges on the side of the buffer that
 indicate the difference between its contents and the version control version.
 
 #+begin_src emacs-lisp :tangle init.el
-       vc-gutter         ; vcs diff in the fringe
+       (vc-gutter +pretty)         ; vcs diff in the fringe
 #+end_src
 
 ***** vi-tilde-fringe
