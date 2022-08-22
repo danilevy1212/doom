@@ -2236,6 +2236,24 @@ The BUFFER-NAME is given as string surrounded by \"\"."
   (insert-and-inherit "\"" buffer-name "\""))
 #+end_src
 
+*** eshell-vterm
+
+An =emacs= global minor mode allowing =eshell= to use =vterm= for visual commands.
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! eshell-vterm)
+#+end_src
+
+Add an alias to ~eshell~ to be able to run any command in visual mode, =vt=.
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! eshell-vterm
+  :after eshell
+  :config
+  (eshell-vterm-mode)
+  (defalias 'eshell/vt 'eshell-exec-visual))
+#+end_src
+
 *** eterm256
 
 #+begin_quote
@@ -3598,6 +3616,7 @@ We create a =blacklist= of sorts to deactivate ~topspace-mode~ in special modes.
                              'comint-mode
                              'org-agenda-mode
                              '+doom-dashboard-mode
+                             'eshell-mode
                              'magit-mode
                              'telega-root-mode
                              'telega-chat-mode
