@@ -1901,7 +1901,7 @@ Let's add some small customization to make everything a bit brighter and bigger:
 *** Detached
 
 #+begin_quote
-Detached, or Detach Emacs, is a package to run shell commands completely detachedd from Emacs.
+Detached, or Detach Emacs, is a package to run shell commands completely detached from Emacs.
 #+end_quote
 
 #+begin_src emacs-lisp :tangle packages.el
@@ -1958,8 +1958,8 @@ There is a bug in ~detached-init-projectile~ that prevents it from properly inte
 (after! detached
   (defadvice! dan/detached-init-projectile ()
     "Initialize integration with `projectile'."
-    :override #'detached-init-projectile
-    (after! projectile
+    :override #'detached-init--projectile
+    (when (featurep 'projectile)
         (advice-add 'projectile-run-compilation
                     :override #'detached-extra-projectile-run-compilation))))
 #+end_src
