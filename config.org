@@ -3932,6 +3932,18 @@ ${3:description}
 `(make-string (+ 2 (org-outline-level)) ?*)` Events
 #+end_src
 
+For adding a new package in ~package.el~.
+
+#+begin_src snippet :mkdirp yes :tangle snippets/org-mode/new_package
+# -*- mode: snippet -*-
+# name: New package
+# key: package
+# --
+,#+begin_src emacs-lisp :tangle packages.el
+(package! ${1:package-name})
+,#+end_src
+#+end_src
+
 ** Private modules.
 
 =doom= allows the user to [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#writing-your-own-modules][to write their own modules]] in their ~$DOOMDIR~
