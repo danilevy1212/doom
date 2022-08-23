@@ -1952,18 +1952,6 @@ The commands ~detached-compile~ and ~detached-compile-recompile~ can act as drop
         :desc "Recompile" :g "c C" #'detached-compile-recompile))
 #+end_src
 
-There is a bug in ~detached-init-projectile~ that prevents it from properly integrating. Here is my fix.
-
-#+begin_src emacs-lisp :tangle yes
-(after! detached
-  (defadvice! dan/detached-init-projectile ()
-    "Initialize integration with `projectile'."
-    :override #'detached-init--projectile
-    (when (featurep 'projectile)
-        (advice-add 'projectile-run-compilation
-                    :override #'detached-extra-projectile-run-compilation))))
-#+end_src
-
 We start =detached= integration.
 
 #+begin_src emacs-lisp :tangle yes
