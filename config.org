@@ -3014,6 +3014,12 @@ Keybinding for the default agenda.
         "f" #'org-agenda-follow-mode))
 #+end_src
 
+To have timestamps consistently in english, no matter the system language.
+
+#+begin_src emacs-lisp :tangle yes
+(setq system-time-locale "C")
+#+end_src
+
 **** Auto-loads
 
 Lexical Binding.
