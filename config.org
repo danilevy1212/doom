@@ -2208,6 +2208,15 @@ Do not use bash for auto-completion backend.
   (setq fish-completion-fallback-on-bash-p nil))
 #+end_src
 
+[[https://github.com/atomontage/xterm-color#eshell][Hack into eshell]] to get proper true color support.
+
+#+begin_src emacs-lisp :tangle yes
+(after! eshell
+  (add-hook! 'eshell-banner-load-hook  (setq-local xterm-color-preserve-properties t))
+  (add-to-list 'eshell-preoutput-filter-functions #'xterm-color-filter)
+  (delq! #'eshell-handle-ansi-color eshell-output-filter-functions))
+#+end_src
+
 **** Auto-loads
 
 Here I define the slightly modified version of ~eshell-insert-buffer-name~.
@@ -3873,6 +3882,23 @@ Make ~zen-mode~ togglable in a per file basis, just like in this ~config.org~!
              '(when (and (fboundp #'+zen/toggle)
                          (not noninteractive))
                 (+zen/toggle)))
+#+end_src
+
+*** xterm-color
+
+#+begin_quote
+xterm-color.el is an ANSI control sequence to text-property translator.
+#+end_quote
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! xterm-color)
+#+end_src
+
+Lazy load.
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! xterm-color
+  :defer t)
 #+end_src
 
 *** Yasnippet
