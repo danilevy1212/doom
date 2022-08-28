@@ -2217,6 +2217,14 @@ Do not use bash for auto-completion backend.
   (delq! #'eshell-handle-ansi-color eshell-output-filter-functions))
 #+end_src
 
+Remote servers are a bit slow for auto-completion
+
+#+begin_src emacs-lisp :tangle yes
+(after! eshell
+  (add-hook! 'eshell-directory-change-hook
+    (company-mode (file-remote-p default-directory))))
+#+end_src
+
 **** Auto-loads
 
 Here I define the slightly modified version of ~eshell-insert-buffer-name~.
