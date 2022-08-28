@@ -2251,23 +2251,6 @@ Add an alias to ~eshell~ to be able to run any command in visual mode, =vt=.
   (defalias 'eshell/vt 'eshell-exec-visual))
 #+end_src
 
-*** eterm256
-
-#+begin_quote
-This package uses xterm-color to add customizable 256 color support to term and ansi-term.
-#+end_quote
-
-#+begin_src emacs-lisp :tangle packages.el
-(package! eterm-256color)
-#+end_src
-
-Only activate it on ~term-mode~ buffers.
-
-#+begin_src emacs-lisp :tangle yes
-(use-package! eterm-256color
-  :hook (term-mode . eterm-256color-mode))
-#+end_src
-
 *** evil
 
 Vim keybindings are hard to let go once you are used to them.
