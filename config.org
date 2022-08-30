@@ -2227,6 +2227,16 @@ Remote servers are a bit slow for auto-completion.
     (company-mode (if (file-remote-p default-directory) -1 +1))))
 #+end_src
 
+Temporary solution / hack to fix completion after it break when inserting a ='=. See [[https://github.com/doomemacs/doomemacs/issues/3817][here]].
+
+#+begin_src emacs-lisp :tangle yes
+(after! eshell
+  (defun dan/eshell-completion-hotfix ()
+    (remove-hook 'completion--capf-misbehave-funs
+                 #'pcomplete-completions-at-point))
+  (add-hook! 'eshell-post-command-hook #'dan/eshell-completion-hotfix))
+#+end_src
+
 **** Auto-loads
 
 Here I define the slightly modified version of ~eshell-insert-buffer-name~.
