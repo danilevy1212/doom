@@ -1914,7 +1914,7 @@ The detachable nature of the package means that commands started with it can out
 
 #+begin_src emacs-lisp :tangle yes
 (use-package! detached
-  :defer t
+  :after-call (compile dired dired-rsync embark-act eshell org-mode projectile-mode shell vterm)
   :config
   (setq detached-notification-function (if IS-LINUX
                                            #'detached-state-transition-notifications-message
