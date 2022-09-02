@@ -2188,6 +2188,14 @@ Simple setup.
   (elfeed-tube-setup))
 #+end_src
 
+*** envrc
+
+=home-manager= overwrites the ~PATH~ variable in =zshrc=, so we cannot use =zsh= as our default shell for =emacs= processes if we want conserve the ~PATH~ set in each project.
+
+#+begin_src emacs-lisp :tangle yes
+(setq-default shell-file-name "/bin/sh")
+#+end_src
+
 *** eshell
 
 The keybinding =M-SPC m b= inserts the name of a buffer in the =eshell= syntax.
@@ -2269,6 +2277,13 @@ Add an alias to ~eshell~ to be able to run any command in visual mode, =vt=.
   :config
   (eshell-vterm-mode)
   (defalias 'eshell/vt 'eshell-exec-visual))
+#+end_src
+
+Hack while [[https://github.com/iostapyshyn/eshell-vterm/issues/5][visual commands not inheriting environment]] bug gets resolved.
+
+#+begin_src emacs-lisp :tangle yes
+(after! eshell-vterm
+  (inheritenv-add-advice #'eshell-vterm-exec-visual))
 #+end_src
 
 *** evil
@@ -2565,6 +2580,26 @@ Let's make the =hydra= module's functions easily accessible:
 (map! :leader
       :desc "Navigate/Hydra"  :m "w N" #'+hydra/window-nav/body
       :desc "Text-Zoom/Hydra" :m "w f" #'+hydra/text-zoom/body)
+#+end_src
+
+*** inheritenv
+
+#+begin_quote
+inheritenv provides a couple of tools for dealing with this issue:
+
+1. Library authors can wrap code that plans to execute processes in temporary buffers with the inheritenv macro.
+2. Users can modify commands like shell-command-to-string using the inheritenv-add-advice macro.
+#+end_quote
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! inheritenv)
+#+end_src
+
+Make an =autoload= out of ~inheritenv-add-advice~.
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! inheritenv
+  :commands (inheritenv-add-advice))
 #+end_src
 
 *** image
@@ -3718,6 +3753,13 @@ Lastly, let's activate =git-gutter= for remote files as well.
 #+end_src
 
 *** Vterm
+
+Use default system shell for ~vterm~.
+
+#+begin_src emacs-lisp :tangle yes
+(after! vterm
+  (setq-default vterm-shell (getenv "SHELL")))
+#+end_src
 
 Make =urls= clickable in ~vterm~ modes.
 
