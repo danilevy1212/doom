@@ -1717,6 +1717,16 @@ Compilation URLs should be followable.
 (add-hook! compilation-mode #'goto-address-mode)
 #+end_src
 
+Enable true color support in compilation buffers.
+
+#+begin_src emacs-lisp :tangle yes
+(after! compile
+  (setq compilation-environment '("TERM=xterm-256color"))
+  (defadvice! dan/compilation-filter--xterm-color (f proc string)
+    :around #'compilation-filter
+    (funcall f proc (xterm-color-filter string))))
+#+end_src
+
 *** consult-company
 
 A _consult_ing-read interface for ~company-mode~.
