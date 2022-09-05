@@ -3722,6 +3722,16 @@ To make the ~header-line~ a little more noticeable while consistent with the buf
                   :inherit default)))
 #+end_src
 
+*** Tramp
+
+Already have ~ssh-controlmaster~ configured in my ~config~ for ssh. Additionally, make the ~chunksize~ a reasonable default.
+
+#+begin_src emacs-lisp :tangle yes
+(after! tramp-sh
+  (setq tramp-use-ssh-controlmaster-options nil
+        tramp-chunksize 2000))
+#+end_src
+
 *** Typescript
 
 For some reason, =eslint lsp= does not work for some of the sub-directories of a monorepo with =typescript=. This ugly hack let's me get diagnostics from =ts-ls= from =lsp= and =eslint= from =flycheck-eslint=.
