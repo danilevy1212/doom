@@ -3224,46 +3224,95 @@ The primary use of this package is for the daily/weekly agenda, made by the org-
   (org-super-agenda-mode)
 #+end_src
 
-With the package installed, we are ready to define ~org-agenda-custom-commands~ as well as the ~org-super-agenda-groups~. For extra visibility, we tweak the agenda sorting strategy to make priority hight tasks appear early.
+For extra visibility, we tweak the agenda sorting strategy to make priority high tasks appear early.
 
 #+begin_src emacs-lisp :tangle yes
   :custom
   (org-agenda-sorting-strategy '((agenda priority-down habit-down time-up category-keep)
                                  (todo priority-down category-keep)
                                  (tags priority-down category-keep)
-                                 (search category-keep)))
-  (org-super-agenda-groups      '((:name "Started"
-                                   :and (:todo "NEXT" :not (:tag ("consume") :scheduled future)))
-                                  (:name "Today"
-                                   :scheduled today :scheduled past :date today)
-                                  (:name "Important"
-                                   :and (:priority "A" :not (:todo "WAIT" :scheduled future)))
-                                  (:name "Soon"
-                                   :scheduled future)
-                                  (:name "In Hold"
-                                   :and (:not (:tag ("consume")) :todo "WAIT"))
-                                  (:name "Incoming Events"
-                                   :and (:todo "EVENT"))
-                                  (:name "Candidates"
-                                   :and (:not (:todo ("EVENT" "WAIT"))
-                                         :priority "B"))
-                                  (:name "Backlog"
-                                   :and (:todo "TODO" :not (:tag ("consume") :priority>= "B")))
-                                  (:name "Ideas"
-                                   :and (:not (:tag ("consume")) :todo "IDEA"))
-                                  (:name "Active projects"
-                                   :todo "PROJ")
-                                  (:name "Entertainment"
-                                   :tag  ("entertainment"))
-                                  (:name "Wishlist"
-                                   :tag  ("wishlist")))))
+                                 (search category-keep))))
+#+end_src
+
+The ~dan/org-super-agenda--date-today~ selector picks agenda items with timestamps in the past or today.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org-super-agenda
+  (defsubst dan/ts-doe (ts)
+    "Number of days since the epoch \"1970-01-01 00:00:00\" contained in the TS
+  struct."
+    (days-between (format-time-string "%Y-%m-%d 00:00:00" (ts-unix ts))
+                  "1970-01-01 00:00:00"))
+
+  (defun dan/org-super-agenda--date-today (item)
+    "Pick agenda ITEM whose date is today or with a daterange that includes today."
+    (let ((this-marker (org-find-text-property-in-string 'org-marker item)))
+      (when-let ((date (org-entry-get this-marker "TIMESTAMP")))
+        (if (string-match-p "--" date)
+            (cl-destructuring-bind (date-start date-end) (split-string date "--" t)
+              (ts-in (ts-parse-org date-start) (ts-parse-org date-end) (ts-now))))
+        (>= (dan/ts-doe (ts-now)) (dan/ts-doe (ts-parse-org date)))))))
+#+end_src
+
+
+The ~dan/org-super-agenda--transformer-show-scheduled-or-deadline~ shows an item's DEADLINE and/or SCHEDULED in the entry.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org-super-agenda
+  (defun dan/org-super-agenda--transformer-show-scheduled-or-deadline (item)
+    "Transform ITEM to show SCHEDULED and DEADLINE properties."
+    (let* ((this-marker    (org-find-text-property-in-string 'org-marker item))
+           (scheduled-date (org-entry-get this-marker "SCHEDULED"))
+           (deadline-date  (org-entry-get this-marker "DEADLINE"))
+           (tags           (or (and (string-match "\s*:[[:word:]:@_]*: *$" item)
+                                    (match-string 0 item))
+                               "")))
+      (if (or scheduled-date deadline-date)
+          (concat (string-replace tags "" item)
+                  (when scheduled-date
+                    (concat "\t\t"
+                            (propertize "SCHEDULED: " 'face 'org-special-keyword)
+                            (propertize (or scheduled-date "") 'face 'org-date)))
+                  (when deadline-date
+                    (concat "\t\t"
+                            (propertize "DEADLINE: " 'face 'org-special-keyword)
+                            (propertize (or deadline-date "") 'face 'org-date)))
+                  tags)
+        item))))
+#+end_src
+
+With the package installed, we are ready to define ~org-agenda-custom-commands~ as well as the ~org-super-agenda-groups~.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org-super-agenda
+  (setq org-super-agenda-groups      '((:name "Started"
+                                        :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline
+                                        :and (:todo "NEXT" :not (:tag ("consume") :scheduled future)))
+                                       (:name "Important"
+                                        :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline
+                                        :and (:priority "A" :not (:todo "WAIT" :scheduled future)))
+                                       (:name "In Hold"
+                                        :and (:not (:tag ("consume")) :todo "WAIT"))
+                                       (:name "Today"
+                                        :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline
+                                        :scheduled today :scheduled past :pred dan/org-super-agenda--date-today)
+                                       (:name "Soon"
+                                        :scheduled future
+                                        :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline)
+                                       (:name "Incoming Events"
+                                        :and (:todo "EVENT"))
+                                       (:name "Active projects"
+                                        :todo "PROJ"))))
 #+end_src
 
 There are a few clashes between ~evil-org-agenda-mode-map~ and ~org-super-agenda-header-map~. To remove them, we simply override the latter keymap, after loading both ~evil-org-agenda~ and ~org-super-agenda~.
 
 #+begin_src emacs-lisp :tangle yes
 (after! (evil-org-agenda org-super-agenda)
-  (setq org-super-agenda-header-map (copy-keymap evil-org-agenda-mode-map)))
+  (setq org-super-agenda-header-map (copy-keymap evil-org-agenda-mode-map))
+  (map! :map org-super-agenda-header-map
+        :nm "q" #'org-agenda-quit
+        :nm "TAB" #'ignore))
 #+end_src
 
 To prevent unnecessary scrolling when calling the agenda buffer, we automate the cursor position on agenda ~todo~ views.
