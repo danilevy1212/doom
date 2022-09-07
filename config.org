@@ -2176,6 +2176,13 @@ And point =elfeed= to the org configuration file.
   (setq rmh-elfeed-org-files (list (expand-file-name "elfeed.org" org-directory))))
 #+end_src
 
+[[https://github.com/skeeto/elfeed#tag-hooks][Auto-tagger]] settings are not configurable through =elfeed-org=, so we load them in a separate file.
+
+#+begin_src emacs-lisp :tangle yes
+(after! elfeed
+  (load! "elfeed-settings" org-directory t))
+#+end_src
+
 Keybinding to easily find the feeds file.
 
 #+begin_src emacs-lisp :tangle yes
