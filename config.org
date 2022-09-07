@@ -3890,7 +3890,7 @@ Unfortunately, =MacOS M1= compilation is hardly straightforward. For a =HACK/FIX
                cmake -B build "
                  vterm-module-cmake-args
                  " ..; \
-               cmake --build build; \
+               arch -arm64 cmake --build build; \
                cd -"))
                (buffer (get-buffer-create vterm-install-buffer-name)))
           (pop-to-buffer buffer)
