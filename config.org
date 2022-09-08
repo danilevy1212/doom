@@ -3284,7 +3284,7 @@ The ~dan/org-super-agenda--transformer-show-scheduled-or-deadline~ shows an item
                                     (match-string 0 item))
                                "")))
       (if (or scheduled-date deadline-date)
-          (concat (string-replace tags "" item)
+          (concat (string-remove-suffix tags item)
                   (when scheduled-date
                     (concat "\t\t"
                             (propertize "SCHEDULED: " 'face 'org-special-keyword)
@@ -3304,11 +3304,6 @@ With the package installed, we are ready to define ~org-agenda-custom-commands~ 
   (setq org-super-agenda-groups      '((:name "Started"
                                         :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline
                                         :and (:todo "NEXT" :not (:tag ("consume") :scheduled future)))
-                                       (:name "Important"
-                                        :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline
-                                        :and (:priority "A" :not (:todo "WAIT" :scheduled future)))
-                                       (:name "In Hold"
-                                        :and (:not (:tag ("consume")) :todo "WAIT"))
                                        (:name "Today"
                                         :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline
                                         :scheduled today :scheduled past :pred dan/org-super-agenda--date-today)
@@ -3317,6 +3312,11 @@ With the package installed, we are ready to define ~org-agenda-custom-commands~ 
                                         :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline)
                                        (:name "Incoming Events"
                                         :and (:todo "EVENT"))
+                                       (:name "Important"
+                                        :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline
+                                        :and (:priority "A" :not (:todo "WAIT" :scheduled future)))
+                                       (:name "In Hold"
+                                        :and (:not (:tag ("consume")) :todo "WAIT"))
                                        (:name "Active projects"
                                         :todo "PROJ"))))
 #+end_src
