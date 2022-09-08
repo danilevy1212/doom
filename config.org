@@ -2944,7 +2944,7 @@ Modules for keeping track of habits and completing checklists.
     (org-module  '(org-habit org-checklist))
 #+end_src
 
-Show me scheduled to-does in the next couple of days.
+Show me scheduled TODOs in the next couple of days.
 
 #+begin_src emacs-lisp :tangle yes
     (org-agenda-todo-ignore-scheduled 3)
