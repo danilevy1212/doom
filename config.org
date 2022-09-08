@@ -2045,6 +2045,13 @@ Add keybindings overriding blocking operations.
         :n "H" #'dired-async-do-hardlink))
 #+end_src
 
+Use most recently used =dired= window as default directory for file operations.
+
+#+begin_src emacs-lisp :tangle yes
+(after! dired
+  (setq dired-dwim-target #'dired-dwim-target-recent))
+#+end_src
+
 *** Dirvish
 
 #+begin_quote
