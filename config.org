@@ -1657,6 +1657,13 @@ Share bookmarks between hosts.
   (setq bookmark-default-file (expand-file-name "bookmark" "~/Cloud")))
 #+end_src
 
+Save bookmarks to a file as soon as they are modified.
+
+#+begin_src emacs-lisp :tangle yes
+(after! bookmark
+  (setq bookmark-save-flag 1))
+#+end_src
+
 *** calfw
 
 For the =calendar= view, it's useful to be able to see when a task is scheduled.
