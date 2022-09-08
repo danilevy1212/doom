@@ -1648,6 +1648,15 @@ browser. The following advice takes care of this edge case.
      (replace-regexp-in-string "^lbry:\/\/" "https://odysee.com/" (car args)))))
 #+end_src
 
+*** bookmarks
+
+Share bookmarks between hosts.
+
+#+begin_src emacs-lisp :tangle yes
+(after! bookmark
+  (setq bookmark-default-file (expand-file-name "bookmark" "~/Cloud")))
+#+end_src
+
 *** calfw
 
 For the =calendar= view, it's useful to be able to see when a task is scheduled.
