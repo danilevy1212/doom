@@ -2647,6 +2647,25 @@ Make an =autoload= out of ~inheritenv-add-advice~.
   :commands (inheritenv-add-advice))
 #+end_src
 
+*** Intellij
+
+I have to use =Intellij Idea= for some tasks work tasks. These function makes it possible to open the current file in =Intellij Idea=, provided the scripts from [[https://www.jetbrains.com/help/idea/working-with-the-ide-features-from-command-line.html#toolbox][Jetbrains Toolbox are installed and in path]].
+
+#+begin_src emacs-lisp :tangle yes
+(when IS-MAC
+  (after! projectile
+    (defun dan/open-in-intellij-idea (file line column)
+      (interactive (list
+                    (buffer-file-name)
+                    (format "%d" (line-number-at-pos))
+                    (format "%d" (current-column))))
+      (unless (and file line column)
+        (throw 'user-error "Needs to be called on a real file"))
+      (start-process "idea" nil "idea" "--line" line "--column" column file))
+    (map! :leader
+          :desc "Open in Intellij" :g "o j" #'dan/open-in-intellij-idea)))
+#+end_src
+
 *** image
 
 Help ~emacs~ interpret exotic image formats using external programs, like ~ffmpeg~.
