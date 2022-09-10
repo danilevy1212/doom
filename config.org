@@ -3122,11 +3122,12 @@ The default agenda view shows yesterdays task, todays and tomorrows.
         org-agenda-span             3))
 #+end_src
 
-Keybinding for the default agenda.
+Keybinding for the default agenda and file-local ~org-todo~ agenda.
 
 #+begin_src emacs-lisp :tangle yes
 (map! :leader
-      :desc "3 Day Org Agenda" "o a d" #'org-agenda-list)
+      :desc "3 Day Org Agenda" "o a d" #'org-agenda-list
+      :desc "Todo list here"   "o a T" #'dan/org-todo-list-current-file)
 #+end_src
 
 #+begin_src emacs-lisp :tangle yes
@@ -3199,6 +3200,25 @@ This function is meant to be run as as part of `org-checkbox-statistics-hook'."
                   (unless (string-equal todo-state "DONE")
                     (org-todo 'done)))))))))
 #+end_src
+
+Show the TODOs of the current file in ~org-todo~ fashion.
+
+#+begin_src emacs-lisp :tangle yes
+;;;###autoload
+(defun dan/org-todo-list-current-file (&optional arg)
+  "Same as `org-todo-list' but restricted to the current buffer."
+  (interactive "P")
+  (let* ((cbfn             (buffer-file-name (current-buffer)))
+         (org-agenda-files (list cbfn)))
+    (unless (and (eq major-mode 'org-mode)
+                 cbfn)
+      (user-error "Must be called within an .org file"))
+    (org-agenda-set-restriction-lock 'file)
+    (org-todo-list arg)
+    (with-current-buffer org-agenda-buffer-name
+      (add-hook! 'kill-buffer-hook :local t (org-agenda-remove-restriction-lock t)))))
+#+end_src
+
 
 *** org-appear
 
