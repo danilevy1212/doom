@@ -3232,6 +3232,16 @@ Make =org-edna= to trigger in any state change except done.
   (org-edna-from-todo-states 'not-done))
 #+end_src
 
+*** org-link
+
+Add support for links to =man= pages and =info= internal documentation.
+
+#+begin_src emacs-lisp :tangle yes
+(after! ol
+  (dolist (p '(ol-man ol-info))
+    (require p)))
+#+end_src
+
 *** org-sticky-header
 
 Like =topsy=, for org mode.
