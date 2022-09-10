@@ -3300,9 +3300,9 @@ Display any =scheduled= or =timestamp= info in agenda.
 #+begin_src emacs-lisp :tangle yes
 (after! org-agenda
   (setq org-agenda-prefix-format    '((agenda . "  %?-12t%-12s")
-                                      (todo . "  %-12s")
-                                      (tags . "  %-12s")
-                                      (search . " %-12s"))))
+                                      (todo . "  %?-12s")
+                                      (tags . "  %?-12s")
+                                      (search . " %?-12s"))))
 #+end_src
 
 The ~dan/org-super-agenda--date-today~ selector picks agenda items with timestamps in the past or today.
