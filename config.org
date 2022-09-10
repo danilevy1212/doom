@@ -1633,21 +1633,6 @@ With this, we can create a =repl= for the =awesome-client=.
    (pop-to-buffer (make-comint "repl:awesome-client" "awesome-client" nil)))
 #+end_src
 
-*** Browse Url
-
-Some of my RSS feeds offer links to =lbry=, which cannot be open directly with a
-browser. The following advice takes care of this edge case.
-
-#+begin_src emacs-lisp :tangle yes
-(after! browse-url
-  (defadvice! dan/browse-url-encode-url--parse-lbry-url (args)
-    "Process a `lbry://' link so it can be opened with `browse-url'."
-    :filter-args #'browse-url-xdg-open
-    :filter-args #'browse-url-default-macosx-browser
-    (list
-     (replace-regexp-in-string "^lbry:\/\/" "https://odysee.com/" (car args)))))
-#+end_src
-
 *** bookmarks
 
 Share bookmarks between hosts.
@@ -1662,6 +1647,21 @@ Save bookmarks to a file as soon as they are modified.
 #+begin_src emacs-lisp :tangle yes
 (after! bookmark
   (setq bookmark-save-flag 1))
+#+end_src
+
+*** Browse Url
+
+Some of my RSS feeds offer links to =lbry=, which cannot be open directly with a
+browser. The following advice takes care of this edge case.
+
+#+begin_src emacs-lisp :tangle yes
+(after! browse-url
+  (defadvice! dan/browse-url-encode-url--parse-lbry-url (args)
+    "Process a `lbry://' link so it can be opened with `browse-url'."
+    :filter-args #'browse-url-xdg-open
+    :filter-args #'browse-url-default-macosx-browser
+    (list
+     (replace-regexp-in-string "^lbry:\/\/" "https://odysee.com/" (car args)))))
 #+end_src
 
 *** calfw
@@ -2638,45 +2638,6 @@ Let's make the =hydra= module's functions easily accessible:
       :desc "Text-Zoom/Hydra" :m "w f" #'+hydra/text-zoom/body)
 #+end_src
 
-*** inheritenv
-
-#+begin_quote
-inheritenv provides a couple of tools for dealing with this issue:
-
-1. Library authors can wrap code that plans to execute processes in temporary buffers with the inheritenv macro.
-2. Users can modify commands like shell-command-to-string using the inheritenv-add-advice macro.
-#+end_quote
-
-#+begin_src emacs-lisp :tangle packages.el
-(package! inheritenv)
-#+end_src
-
-Make an =autoload= out of ~inheritenv-add-advice~.
-
-#+begin_src emacs-lisp :tangle yes
-(use-package! inheritenv
-  :commands (inheritenv-add-advice))
-#+end_src
-
-*** Intellij
-
-I have to use =Intellij Idea= for some tasks work tasks. These function makes it possible to open the current file in =Intellij Idea=, provided the scripts from [[https://www.jetbrains.com/help/idea/working-with-the-ide-features-from-command-line.html#toolbox][Jetbrains Toolbox are installed and in path]].
-
-#+begin_src emacs-lisp :tangle yes
-(when IS-MAC
-  (after! projectile
-    (defun dan/open-in-intellij-idea (file line column)
-      (interactive (list
-                    (buffer-file-name)
-                    (format "%d" (line-number-at-pos))
-                    (format "%d" (current-column))))
-      (unless (and file line column)
-        (throw 'user-error "Needs to be called on a real file"))
-      (start-process "idea" nil "idea" "--line" line "--column" column file))
-    (map! :leader
-          :desc "Open in Intellij" :g "o j" #'dan/open-in-intellij-idea)))
-#+end_src
-
 *** image
 
 Help ~emacs~ interpret exotic image formats using external programs, like ~ffmpeg~.
@@ -2748,6 +2709,45 @@ Use the bitmap to display the indent level if we are in a graphic interface.
                                            'bitmap
                                          'character)
         highlight-indent-guides-responsive 'top))
+#+end_src
+
+*** inheritenv
+
+#+begin_quote
+inheritenv provides a couple of tools for dealing with this issue:
+
+1. Library authors can wrap code that plans to execute processes in temporary buffers with the inheritenv macro.
+2. Users can modify commands like shell-command-to-string using the inheritenv-add-advice macro.
+#+end_quote
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! inheritenv)
+#+end_src
+
+Make an =autoload= out of ~inheritenv-add-advice~.
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! inheritenv
+  :commands (inheritenv-add-advice))
+#+end_src
+
+*** Intellij
+
+I have to use =Intellij Idea= for some tasks work tasks. These function makes it possible to open the current file in =Intellij Idea=, provided the scripts from [[https://www.jetbrains.com/help/idea/working-with-the-ide-features-from-command-line.html#toolbox][Jetbrains Toolbox are installed and in path]].
+
+#+begin_src emacs-lisp :tangle yes
+(when IS-MAC
+  (after! projectile
+    (defun dan/open-in-intellij-idea (file line column)
+      (interactive (list
+                    (buffer-file-name)
+                    (format "%d" (line-number-at-pos))
+                    (format "%d" (current-column))))
+      (unless (and file line column)
+        (throw 'user-error "Needs to be called on a real file"))
+      (start-process "idea" nil "idea" "--line" line "--column" column file))
+    (map! :leader
+          :desc "Open in Intellij" :g "o j" #'dan/open-in-intellij-idea)))
 #+end_src
 
 *** Language Tool
@@ -3411,9 +3411,6 @@ Prevent false error messages with ~org-element--cache-sync~.
 #+begin_src emacs-lisp :tangle yes
 (after! org
   (add-hook! 'org-capture-after-finalize-hook (org-element-cache-reset t)))
-#+end_src
-
-#+begin_src emacs-lisp :tangle yes
 #+end_src
 
 *** PDF Tools
