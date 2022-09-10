@@ -1715,6 +1715,27 @@ Disable ~evil-snipe~ in this mode, since It overrides some of the keybindings.
   (add-to-list 'evil-snipe-disabled-modes 'cfw:calendar-mode))
 #+end_src
 
+*** cape
+
+#+begin_quote
+Cape provides Completion At Point Extensions which can be used in combination with the Corfu completion UI or the default completion UI
+#+end_quote
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! cape)
+#+end_src
+
+Until [[https://github.com/doomemacs/doomemacs/issues/3817][completion stops working in eshell when typing quote characters]] is fixed, we apply the fix ourselves.  See [[https://github.com/doomemacs/doomemacs/issues/3817][here]].
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! cape
+  :init
+  (after! eshell
+    (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
+    (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
+  :defer t)
+#+end_src
+
 *** company-mode
 
 Begin giving candidates as soon as something is typed. This can be slow sometimes, so it might be a good idea to change it back to it's default value of ~3~. Also reduce the idle delay so it *feels* more responsive.
@@ -2278,16 +2299,6 @@ Remote servers are a bit slow for auto-completion.
 (after! eshell
   (add-hook! 'eshell-directory-change-hook
     (company-mode (if (file-remote-p default-directory) -1 +1))))
-#+end_src
-
-Temporary solution / hack to fix completion after it break when inserting a ='=. See [[https://github.com/doomemacs/doomemacs/issues/3817][here]].
-
-#+begin_src emacs-lisp :tangle yes
-(after! eshell
-  (defun dan/eshell-completion-hotfix ()
-    (remove-hook 'completion--capf-misbehave-funs
-                 #'pcomplete-completions-at-point))
-  (add-hook! 'eshell-post-command-hook #'dan/eshell-completion-hotfix))
 #+end_src
 
 **** Auto-loads
