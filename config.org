@@ -3220,7 +3220,7 @@ This function is meant to be run as as part of `org-checkbox-statistics-hook'."
 
 Show the TODOs of the current file in ~org-todo~ fashion.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp :tangle autoload/org.el :mkdirp yes
 ;;;###autoload
 (defun dan/org-todo-list-current-file (&optional arg)
   "Same as `org-todo-list' but restricted to the current buffer."
