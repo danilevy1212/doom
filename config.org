@@ -4048,6 +4048,29 @@ Doom Emacs default configuration is too slow, let's speed it up.
         which-key-idle-secondary-delay 0.2))
 #+end_src
 
+*** Whitespace
+
+Make white spaces visible in programming modes.
+
+#+begin_src emacs-lisp :tangle yes
+(after! prog-mode
+  (add-hook! prog-mode #'whitespace-mode))
+#+end_src
+
+Minimal configuration to show most of everything except newlines. Missing newlines and end-of-files are also visually indicated.
+
+#+begin_src emacs-lisp :tangle yes
+;;;###package whitespace
+(setq whitespace-style '(face
+                         indentation
+                         tabs
+                         tab-mark
+                         spaces
+                         space-mark
+                         missing-newline-at-eof
+                         trailing))
+#+end_src
+
 *** Word wrap
 
 I work with lots of files that have long lines, which can be hard to read
