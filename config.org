@@ -3130,11 +3130,26 @@ Keybinding for the default agenda and file-local ~org-todo~ agenda.
       :desc "Todo list here"   "o a T" #'dan/org-todo-list-current-file)
 #+end_src
 
+Key-bind ~org-agenda-follow-mode~.
+
 #+begin_src emacs-lisp :tangle yes
-(after! (org org-agenda)
-  (map! :map org-agenda-mode-map
-        :localleader
-        "f" #'org-agenda-follow-mode))
+(map! :after org-agenda
+      :map org-agenda-mode-map
+      :localleader
+      "f" #'org-agenda-follow-mode)
+#+end_src
+
+Key-bind restrictions to the ~org-agenda~.
+
+#+begin_src emacs-lisp :tangle yes
+(map! (:after org
+       :map org-mode-map :localleader
+       :g "<" #'org-agenda-set-restriction-lock
+       :g ">" #'org-agenda-remove-restriction-lock)
+      (:after org-agenda :localleader
+       :map org-agenda-mode-map
+       :g "<" #'org-agenda-set-restriction-lock-from-agenda
+       :g ">" #'org-agenda-remove-restriction-lock))
 #+end_src
 
 To have timestamps consistently in english, no matter the system language.
