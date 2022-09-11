@@ -1362,7 +1362,9 @@ support.
        everywhere        ; *leave* Emacs!? You must be joking
 #+end_src
 
-***** TODO rss
+***** rss
+
+Read RSS feeds in the comfort of Emacs. Thanks to [[https://github.com/skeeto/elfeed][elfeed]].
 
 #+begin_src emacs-lisp :tangle init.el
        ;;irc               ; how neckbeards socialize
