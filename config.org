@@ -4060,15 +4060,15 @@ Make white spaces visible in programming modes.
 Minimal configuration to show most of everything except newlines. Missing newlines and end-of-files are also visually indicated.
 
 #+begin_src emacs-lisp :tangle yes
-;;;###package whitespace
-(setq whitespace-style '(face
-                         indentation
-                         tabs
-                         tab-mark
-                         spaces
-                         space-mark
-                         missing-newline-at-eof
-                         trailing))
+(add-transient-hook! 'prog-mode-hook
+  (setq whitespace-style '(face
+                           indentation
+                           tabs
+                           tab-mark
+                           spaces
+                           space-mark
+                           missing-newline-at-eof
+                           trailing)))
 #+end_src
 
 *** Word wrap
