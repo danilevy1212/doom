@@ -1707,7 +1707,7 @@ Finally, we create an entrance point to the calendar view.
 
 #+begin_src emacs-lisp :tangle yes
 (map! :leader
-      :desc "Calfw" :mv "o a c" #'cfw:open-org-calendar)
+      :desc "Calfw" :mv "o a c" #'=calendar)
 #+end_src
 
 Disable ~evil-snipe~ in this mode, since It overrides some of the keybindings.
