@@ -3142,9 +3142,11 @@ The default agenda view shows yesterdays task, todays and tomorrows.
 Keybinding for the default agenda and file-local ~org-todo~ agenda.
 
 #+begin_src emacs-lisp :tangle yes
-(map! :leader
-      :desc "3 Day Org Agenda" "o a d" #'org-agenda-list
-      :desc "Todo list here"   "o a T" #'dan/org-todo-list-current-file)
+(map! (:leader
+       :prefix "o a"
+       :desc "3 Day Org Agenda" "d" #'org-agenda-list
+       :desc "Global Todo List" "t" #'dan/=org-todo-list
+       :desc "Todo list here"   "T" #'dan/org-todo-list-current-file))
 #+end_src
 
 Key-bind ~org-agenda-follow-mode~.
@@ -3258,6 +3260,25 @@ Show the TODOs of the current file in ~org-todo~ fashion.
       (add-hook! 'kill-buffer-hook :local t (org-agenda-remove-restriction-lock t)))))
 #+end_src
 
+Show the global TODO list in it's own workspace.
+
+#+begin_src emacs-lisp :tangle autoload/org.el
+(defvar +org-todo-list-workspace-name "Org TODOs")
+
+;;;###autoload
+(defun dan/=org-todo-list (&optional arg)
+  "Like `org-todo-list', but the buffer is within it's own workspace."
+  (interactive "P")
+  (+workspace-switch +org-todo-list-workspace-name t)
+  (unless (eq (buffer-local-value 'major-mode (window-buffer (selected-window)))
+              'org-agenda-mode)
+    (doom/switch-to-scratch-buffer)
+    (org-todo-list arg)
+    (with-current-buffer org-agenda-buffer-name
+      (add-hook! 'kill-buffer-hook :local t
+                 (+workspace-delete +org-todo-list-workspace-name)))
+    (+workspace/display)))
+  #+end_src
 
 *** org-appear
 
