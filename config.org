@@ -3771,15 +3771,16 @@ Minimal configuration to be able to build the server and load the cache.
                                         (when telega-ffplay-media-timestamp
                                           (format " --start=%f" telega-ffplay-media-timestamp))))
   (telega-completing-read-function completing-read-function)
-  (telega-server-libs-prefix (getenv "TDLIB_PREFIX"))
   (telega-use-docker t))
 #+end_src
 
-Quick keybinding to open =telega=.
+Quick keybinding to open and close =telega=.
 
 #+begin_src emacs-lisp :tangle yes
-(map! :leader
-    :desc "telegram" :mv "o m" #'telega)
+(map! (:leader
+       :desc "Telegram" :mv "o m" #'dan/=telega)
+      (:map telega-root-mode-map
+       :n "q" #'dan/=telega-kill))
 #+end_src
 
 ~evil-snipe~ shadows the =search= default bindings of =telega= in ~evil-collection~, so we disable it for ~telega-root-mode~.
@@ -3840,6 +3841,50 @@ Center the text of chat buffers for more comfy reading.
 
 #+begin_src emacs-lisp :tangle yes
 (add-hook! telega-chat-mode #'+zen/toggle)
+#+end_src
+
+=telega= root buffer is managed by the workspace configuration.
+
+#+begin_src emacs-lisp :tangle yes
+(after! telega
+  (set-popup-rule! "\\`\\*Telega.+"
+    :ignore t))
+#+end_src
+
+**** Autoloads
+
+Some functions to integrate with the ~workspaces~ module.
+
+#+begin_src emacs-lisp :tangle autoload/telega.el
+;;; $DOOMDIR/autoload/telega.el -*- lexical-binding: t; -*-
+#+end_src
+
+A function to open the =telega= workspace.
+
+#+begin_src emacs-lisp :tangle autoload/telega.el
+(defvar +telega-workspace-name "Telega")
+
+;;;###autoload
+(defun dan/=telega (&optional arg)
+  "Like `telega', but opens the buffer in it's own workspace."
+  (interactive "P")
+  (+workspace-switch +telega-workspace-name t)
+  (unless (memq (buffer-local-value 'major-mode (window-buffer (selected-window)))
+                '(telega-root-mode telega-chat-mode telega-image-mode))
+    (doom/switch-to-scratch-buffer)
+    (telega arg)
+    (+workspace/display)))
+#+end_src
+
+A function to close the =telega= workspace.
+
+#+begin_src emacs-lisp :tangle autoload/telega.el
+;;;###autoload
+(defun dan/=telega-kill (&optional args)
+  "Like `telega-kill', but deletes the workspace associated with `+telega-workspace-name' if it exists."
+  (interactive "P")
+  (telega-kill args)
+  (+workspace-delete +telega-workspace-name))
 #+end_src
 
 *** topspace
