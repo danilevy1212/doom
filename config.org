@@ -3,6 +3,7 @@
 #+TITLE: Dan's DOOM Emacs configuration
 #+OPTIONS: tags:nil todo:nil
 #+LANGUAGE: en
+#+PROPERTY: header-args+ :mkdirp yes
 
 * Rationale
 
@@ -1628,7 +1629,7 @@ with the regex ~^\\(?:\\+\\)?\\([^/]+\\)/open-\\(?:\\(.+\\)-\\)?repl$~, will app
 
 With this, we can create a =repl= for the =awesome-client=.
 
-#+begin_src emacs-lisp :tangle autoload/awesomewm.el :mkdirp yes
+#+begin_src emacs-lisp :tangle autoload/awesomewm.el
 ;;;###autoload
 (defun +lua/open-awesome-client-repl ()
    (interactive)
@@ -2307,7 +2308,7 @@ Remote servers are a bit slow for auto-completion.
 
 Here I define the slightly modified version of ~eshell-insert-buffer-name~.
 
-#+begin_src emacs-lisp :tangle autoload/eshell.el :mkdirp yes
+#+begin_src emacs-lisp :tangle autoload/eshell.el
 ;;; $DOOMDIR/autoload/eshell.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
@@ -2737,7 +2738,7 @@ Make an =autoload= out of ~inheritenv-add-advice~.
 
 I have to use =Intellij Idea= for some tasks work tasks. This function makes it possible to open the current file in =Intellij Idea=, provided the scripts from [[https://www.jetbrains.com/help/idea/working-with-the-ide-features-from-command-line.html#toolbox][Jetbrains Toolbox are installed and in path]].
 
-#+begin_src emacs-lisp :tangle autoload/idea.el :mkdirp yes
+#+begin_src emacs-lisp :tangle autoload/idea.el
 ;;; $DOOMDIR/autoload/idea.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
@@ -3171,14 +3172,21 @@ To have timestamps consistently in english, no matter the system language.
 
 Lexical Binding.
 
-#+begin_src emacs-lisp :tangle autoload/org.el :mkdirp yes
+#+begin_src emacs-lisp :tangle autoload/org.el
 ;;; $DOOMDIR/autoload/org.el -*- lexical-binding: t; -*-
+#+end_src
+
+Require =org-mode=.
+
+#+begin_src emacs-lisp :tangle autoload/org.el
+(require 'org)
+(require 'org-agenda)
 #+end_src
 
 Define the custom function, switch entry to 'DONE' when all sub-entries are
 'DONE', else keep entry original todo state.
 
-#+begin_src emacs-lisp :tangle autoload/org.el :mkdirp yes
+#+begin_src emacs-lisp :tangle autoload/org.el
 ;;;###autoload
 (defun dan/org-after-todo-statistics-preserve-todo-state (n-done n-not-done)
   "Change `TODO' state to `DONE' if all subheadings are also `DONE', otherwise
@@ -3195,7 +3203,7 @@ headings that are not done. This function is meant to be run as part of
 
 Custom function that switches heading from 'TODO' to 'DONE' when all checkboxes are ticked.
 
-#+begin_src emacs-lisp :tangle autoload/org.el :mkdirp yes
+#+begin_src emacs-lisp :tangle autoload/org.el
 ;;;###autoload
 (defun dan/org-checkbox-statistics-change-to-done-when-all-ticked ()
   "Change `TODO' state to `DONE' if all checkboxes of the heading are ticked.
@@ -3227,7 +3235,7 @@ This function is meant to be run as as part of `org-checkbox-statistics-hook'."
 
 Show the TODOs of the current file in ~org-todo~ fashion.
 
-#+begin_src emacs-lisp :tangle autoload/org.el :mkdirp yes
+#+begin_src emacs-lisp :tangle autoload/org.el
 ;;;###autoload
 (defun dan/org-todo-list-current-file (&optional arg)
   "Same as `org-todo-list' but restricted to the current buffer."
@@ -4172,7 +4180,7 @@ YASnippet is a template system for Emacs. It allows you to type an abbreviation 
 
 For 日本語 grammar snippets.
 
-#+begin_src snippet :mkdirp yes :tangle snippets/org-mode/文法
+#+begin_src snippet :tangle snippets/org-mode/文法
 # -*- mode: snippet -*-
 # name: 文法の事項
 # key: bunpou
@@ -4199,7 +4207,7 @@ ${6:例の翻訳}
 
 For starting a new project!
 
-#+begin_src snippet :mkdirp yes :tangle snippets/org-mode/new_proj
+#+begin_src snippet :tangle snippets/org-mode/new_proj
 # -*- mode: snippet -*-
 # name: New project
 # key: project
@@ -4217,7 +4225,7 @@ ${3:description}
 
 For adding a new package in ~package.el~.
 
-#+begin_src snippet :mkdirp yes :tangle snippets/org-mode/new_package
+#+begin_src snippet :tangle snippets/org-mode/new_package
 # -*- mode: snippet -*-
 # name: New package
 # key: package
