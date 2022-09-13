@@ -4308,6 +4308,21 @@ For adding a new package in ~package.el~.
 ,#+end_src
 #+end_src
 
+For adding new autoload functions in ~autoload/*.el~.
+
+#+begin_src snippet :tangle snippets/org-mode/new_autoload
+# -*- mode: snippet -*-
+# name: New Autoload function
+# key: autoload
+# --
+,#+begin_src emacs-lisp :tangle autoload/${1:`(downcase (car (last (org-get-outline-path))))`}.el
+;;;###autoload
+(defun dan/${2:function} (${3:args})
+   "${4:docs}"
+   $0)
+,#+end_src
+#+end_src
+
 ** Private modules.
 
 =doom= allows the user to [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#writing-your-own-modules][to write their own modules]] in their ~$DOOMDIR~
