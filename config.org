@@ -2198,8 +2198,7 @@ When updating the entries, commit changes to the DB.
 Set the name of the =RSS= workspace.
 
 #+begin_src emacs-lisp :tangle yes
-(after! elfeed
-  (setq +rss-workspace-name "RSS"))
+(setq +rss-workspace-name "RSS")
 #+end_src
 
 Give it an easy keybinding to access it:
