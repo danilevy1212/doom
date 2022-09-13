@@ -3778,7 +3778,8 @@ Quick keybinding to open and close =telega=.
 #+begin_src emacs-lisp :tangle yes
 (map! (:leader
        :desc "Telegram" :mv "o m" #'dan/=telega)
-      (:map telega-root-mode-map
+      (:after telega
+       :map telega-root-mode-map
        :n "q" #'dan/=telega-kill))
 #+end_src
 
