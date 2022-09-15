@@ -1961,6 +1961,7 @@ The detachable nature of the package means that commands started with it can out
                                            #'detached-state-transition-notifications-message
                                          #'detached-extra-alert-notification)
         detached-db-directory doom-cache-dir
+        detached-init-block-list   '(dired-rsync dired)
         detached-session-directory (temporary-file-directory)))
 #+end_src
 
