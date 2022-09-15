@@ -3428,7 +3428,7 @@ Refresh the =soon= limit date on each ~org-super-agenda~ calling.
     (let ((group (cl-find-if (lambda (group)
                                (string= (plist-get group :name) "Soon"))
                              org-super-agenda-groups)))
-      (setf (cl-getf group :scheduled)
+      (setf (plist-get group :scheduled)
             `(before ,(dan/org-super-agenda--soon-limit))))))
 #+end_src
 
@@ -4060,6 +4060,13 @@ Make ~vterm~ as snappy as it can be.
 #+begin_src emacs-lisp :tangle yes
 (after! vterm
   (setq vterm-timer-delay nil))
+#+end_src
+
+Use =bash= as default shell in remote servers.
+
+#+begin_src emacs-lisp :tangle yes
+(after! vterm
+  (pushnew! vterm-tramp-shells '("ssh" "/bin/bash")))
 #+end_src
 
 Unfortunately, =MacOS M1= compilation is hardly straightforward. For a =HACK/FIX=, I force compilation through the latest ~gcc~ installed through =homebrew=.
