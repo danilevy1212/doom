@@ -3370,35 +3370,33 @@ Display any =scheduled= or =timestamp= info in agenda.
                                       (search . "   %?-12s"))))
 #+end_src
 
-The ~dan/org-super-agenda--date-today~ selector picks agenda items with timestamps in the past or today. Similarly, ~dan/org-super-agenda--date-soon~ select items that are soon.
+Provide a macro to dynamically build =TIMESTAMP= selectors. We want the date providers to be functions so their return values are refreshed on each calling.
 
 #+begin_src emacs-lisp :tangle yes
 (after! org-super-agenda
-  (defun dan/org-super-agenda--date-today (item)
-    "Select agenda ITEM whose date is today or with a daterange that includes today."
-    (let ((this-marker (org-find-text-property-in-string 'org-marker item)))
-      (when-let ((date (org-entry-get this-marker "TIMESTAMP")))
-        (if (string-match-p "--" date)
-            (cl-destructuring-bind (date-start date-end) (split-string date "--" t)
-              (and (>= (org-today)
-                       (org-time-string-to-absolute date-start))
-                   (<= (org-today)
-                       (org-time-string-to-absolute date-end)))))
-        (>= (org-today)
-            (org-time-string-to-absolute date)))))
+  (defun  dan/org-super-agenda--soon-limit ()
+    "Return the last ISO Date that is within the soon limit."
+    (org-read-date nil nil "+3d"))
 
-  (defun dan/org-super-agenda--date-soon (item)
-    "Select agenda ITEM whose date is within 3 days from today."
-    (let ((this-marker (org-find-text-property-in-string 'org-marker item)))
-      (when-let ((date          (org-entry-get this-marker "TIMESTAMP"))
-                 (soon-end-date (+ 3 (org-today))))
-        (if (string-match-p "--" date)
-            (cl-destructuring-bind (date-start date-end) (split-string date "--" t)
-              (and (>= soon-end-date
-                      (org-time-string-to-absolute date-start))
-                  (<= soon-end-date
-                      (org-time-string-to-absolute date-end)))))
-        (>= soon-end-date (org-time-string-to-absolute date))))))
+  (defmacro dan/org-super-agenda--build-timestamp-selector (&optional date-provider)
+    "Build a timestamp selector that includes the date returned by
+    DATE-PROVIDER.
+
+DATE-PROVIDER is a function with no arguments that returns a date in the style
+of `calendar-gregorian-from-absolute'.  It defaults to `org-today' if empty."
+    (let ((date-provider (or (and (functionp date-provider)
+                                  (bound-and-true-p date-provider))
+                             #'org-today)))
+      `(lambda (date)
+         (let ((other-date ,(funcall date-provider)))
+           (if (string-match-p "--" date)
+               (cl-destructuring-bind (date-start date-end) (split-string date "--" t)
+                 (and (>= other-date
+                          (org-time-string-to-absolute date-start))
+                      (<= other-date
+                          (org-time-string-to-absolute date-end))))
+             (>= other-date
+                 (org-time-string-to-absolute date))))))))
 #+end_src
 
 
@@ -3432,9 +3430,6 @@ Refresh the =soon= limit date on each ~org-super-agenda~ calling.
 
 #+begin_src emacs-lisp :tangle yes
 (after! org-super-agenda
-  (defun  dan/org-super-agenda--soon-limit ()
-    "Return the last ISO Date that is within the soon limit."
-    (org-read-date nil nil "+3d"))
   (defadvice! dan/org-super-agenda--refresh-soon-limit (_)
     :before #'org-super-agenda--group-items
     (let ((group (cl-find-if (lambda (group)
@@ -3452,13 +3447,17 @@ With the package installed, we are ready to define ~org-agenda-custom-commands~ 
                                         :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline
                                         :and (:todo "NEXT"))
                                        (:name "Today"
-                                        :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline
                                         :scheduled today
                                         :scheduled past
-                                        :pred dan/org-super-agenda--date-today)
+                                        :property ("TIMESTAMP"
+                                                   ,(dan/org-super-agenda--build-timestamp-selector))
+                                        :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline)
                                        (:name "Soon"
                                         :scheduled (before ,(dan/org-super-agenda--soon-limit))
-                                        :pred dan/org-super-agenda--date-soon
+                                        :property ("TIMESTAMP"
+                                                   ,(dan/org-super-agenda--build-timestamp-selector
+                                                     (lambda ()
+                                                       (org-time-string-to-absolute (dan/org-super-agenda--soon-limit)))))
                                         :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline)
                                        (:name "Incoming Events"
                                         :todo "EVENT")
