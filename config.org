@@ -3538,13 +3538,6 @@ We reduce the default zoom factor to have more leeway between zoom levels.
   (setq pdf-view-resize-factor 1.05))
 #+end_src
 
-We also auto install ~epdinfo~.
-
-#+begin_src emacs-lisp :tangle yes
-(after! pdf-tools
-   (pdf-loader-install t))
-#+end_src
-
 *** Personal information
 
 Some functionality uses this to identify you, e.g. GPG configuration, email
