@@ -3425,11 +3425,11 @@ The ~dan/org-super-agenda--transformer-show-scheduled-or-deadline~ shows an item
       (if (or scheduled-date deadline-date)
           (concat (string-remove-suffix tags item)
                   (when scheduled-date
-                    (concat "\t\t"
+                    (concat "\t"
                             (propertize "SCHEDULED: " 'face 'org-special-keyword)
                             (propertize (or scheduled-date "") 'face 'org-date)))
                   (when deadline-date
-                    (concat "\t\t"
+                    (concat "\t"
                             (propertize "DEADLINE: " 'face 'org-special-keyword)
                             (propertize (or deadline-date "") 'face 'org-date)))
                   tags)
