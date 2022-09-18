@@ -1985,7 +1985,7 @@ The commands ~detached-compile~ and ~detached-compile-recompile~ can act as drop
 
 #+begin_src emacs-lisp :tangle yes
 (use-package! detached-compile
-  :after detached
+  :defer t
   :init
   (map! :leader
         :desc "Compile" :g  "c c" #'detached-compile
@@ -1996,7 +1996,7 @@ Use ~detached-list-sessions~ to manage multiple sessions.
 
 #+begin_src emacs-lisp :tangle yes
 (use-package! detached-list
-  :after detached
+  :defer t
   :init
   (map! :leader
         :desc "Detached Manage Sessions" :g "o S" #'detached-list-sessions)
