@@ -3455,7 +3455,7 @@ With the package installed, we are ready to define ~org-agenda-custom-commands~ 
 (after! org-super-agenda
   (setq org-super-agenda-groups      `((:name "Started"
                                         :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline
-                                        :and (:todo "NEXT"))
+                                        :and (:todo "NEXT" :not (:scheduled future)))
                                        (:name "Today"
                                         :scheduled today
                                         :scheduled past
