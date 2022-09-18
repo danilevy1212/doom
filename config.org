@@ -1978,7 +1978,7 @@ The detachable nature of the package means that commands started with it can out
   :defer t
   :init
   (map! :leader
-        :desc "Shell Sessions Detached" :g "o s" #'detached-consult-session))
+        :desc "Detached Sessions" :g "o s" #'detached-consult-session))
 #+end_src
 
 The commands ~detached-compile~ and ~detached-compile-recompile~ can act as drop in replacements for ~compile~ and ~compile-recompile~, respectively.
@@ -1987,11 +1987,21 @@ The commands ~detached-compile~ and ~detached-compile-recompile~ can act as drop
 (use-package! detached-compile
   :after detached
   :init
-  (map! :map detached-compilation-mode-map
-        :desc "Detache Session" :g "C-c C-q" #'detached-consult-session
-        :leader
+  (map! :leader
         :desc "Compile" :g  "c c" #'detached-compile
         :desc "Recompile" :g "c C" #'detached-compile-recompile))
+#+end_src
+
+Use ~detached-list-sessions~ to manage multiple sessions.
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! detached-list
+  :after detached
+  :init
+  (map! :leader
+        :desc "Detached Manage Sessions" :g "o S" #'detached-list-sessions)
+  :config
+  (evil-set-initial-state 'detached-list-mode 'emacs))
 #+end_src
 
 We start =detached= integration.
