@@ -2986,10 +2986,15 @@ Make emphasis markers auto-hide.
     (org-hide-emphasis-markers t)
 #+end_src
 
-Modules for keeping track of habits and completing checklists.
+Modules for keeping track of habits, completing checklists and making links to =bookmarks=, =elisp= symbols, =pdf= s, =info= pages and =man= pages.
 
-#+begin_src emacs-lisp :tangle yes
-    (org-module  '(org-habit org-checklist))
+#+begin_src lisp-data :tangle config.el
+    (org-modules  '(org-habit
+                    org-checklist
+                    ol-elisp-symbol
+                    ol-bookmark
+                    ol-info
+                    ol-man))
 #+end_src
 
 A project with no NEXT subheads is stuck.
@@ -3305,16 +3310,6 @@ Make =org-edna= to trigger in any state change except done.
 #+begin_src emacs-lisp :tangle yes
   :custom
   (org-edna-from-todo-states 'not-done))
-#+end_src
-
-*** org-link
-
-Add support for links to =man= pages and =info= internal documentation.
-
-#+begin_src emacs-lisp :tangle yes
-(after! ol
-  (dolist (p '(ol-man ol-info))
-    (require p)))
 #+end_src
 
 *** org-sticky-header
