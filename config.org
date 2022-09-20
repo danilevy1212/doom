@@ -3322,6 +3322,15 @@ Make =org-edna= to trigger in any state change except done.
   (org-edna-from-todo-states 'not-done))
 #+end_src
 
+Bind ~org-edna-edit~ in =org-mode= buffers.
+
+#+begin_src emacs-lisp :tangle yes
+(map! (:after org
+       :localleader
+       :map  org-mode-map
+       :desc "Org Edna Edit" :g "E" #'org-edna-edit))
+#+end_src
+
 *** org-sticky-header
 
 Like =topsy=, for org mode.
