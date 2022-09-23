@@ -3004,7 +3004,8 @@ Modules for keeping track of habits, completing checklists and making links to =
                     ol-elisp-symbol
                     ol-bookmark
                     ol-info
-                    ol-man))
+                    ol-man
+                    ol-telega))
 #+end_src
 
 A project with no NEXT subheads is stuck.
