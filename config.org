@@ -3399,7 +3399,7 @@ Provide a macro to dynamically build =TIMESTAMP= selectors. We want the date pro
 
 #+begin_src emacs-lisp :tangle yes
 (after! org-super-agenda
-  (defun  dan/org-super-agenda--soon-limit ()
+  (defsubst dan/org-super-agenda--soon-limit ()
     "Return the last ISO Date that is within the soon limit."
     (org-read-date nil nil "+3d"))
 
