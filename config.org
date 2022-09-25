@@ -1699,7 +1699,7 @@ Finally, we create an entrance point to the calendar view.
 
 #+begin_src emacs-lisp :tangle yes
 (map! :leader
-      :desc "Calfw" :mv "o a c" #'=calendar)
+      :desc "Calfw" "o c" #'=calendar)
 #+end_src
 
 Disable ~evil-snipe~ in this mode, since It overrides some of the keybindings.
@@ -2973,27 +2973,21 @@ One of the killer features of Emacs.
 If you use ~org~ and don't want your org files in the default location below,
 change ~org-directory~. It must be set before org loads!
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src lisp-data :tangle config.el
     :custom
     (org-directory "~/Cloud/org/")
 #+end_src
 
 Set ~org-attach-id-dir~ back to default value.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src lisp-data :tangle config.el
     (org-attach-id-dir  "data")
 #+end_src
 
 Any file in the ~agenda~ directory is part of the agenda view.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src lisp-data :tangle config.el
     (org-agenda-files (list (expand-file-name "agenda/" org-directory)))
-#+end_src
-
-Make emphasis markers auto-hide.
-
-#+begin_src emacs-lisp :tangle yes
-    (org-hide-emphasis-markers t)
 #+end_src
 
 Modules for keeping track of habits, completing checklists and making links to =bookmarks=, =elisp= symbols, =pdf= s, =info= pages and =man= pages.
@@ -3010,64 +3004,34 @@ Modules for keeping track of habits, completing checklists and making links to =
 
 A project with no NEXT subheads is stuck.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src lisp-data :tangle config.el
     (org-stuck-projects '("TODO=\"PROJ\"" ("NEXT") nil ""))
 #+end_src
 
 Default priority is lowest priority
 
-#+begin_src emacs-lisp :tangle yes
-    (org-priority-default org-priority-lowest)
-#+end_src
-
-Add custom functions to some org hooks. First, a function that runs when
-subheading change KEYWORD state.
-
-#+begin_src emacs-lisp :tangle yes
-    :config
-    (add-hook! 'org-after-todo-statistics-hook #'dan/org-after-todo-statistics-preserve-todo-state)
+#+begin_src lisp-data :tangle config.el
+    (org-priority-default org-priority-lowest))
 #+end_src
 
 In org buffers, remove the line number fringe.
 
 #+begin_src emacs-lisp :tangle yes
-    (add-hook! org-mode (setq-local display-line-numbers nil))
-#+end_src
-
-Switch header 'TODO' state to 'DONE' when all checkboxes are ticked, to 'TODO'
-otherwise
-
-#+begin_src emacs-lisp :tangle yes
-    (add-hook! 'org-checkbox-statistics-hook  #'dan/org-checkbox-statistics-change-to-done-when-all-ticked))
-#+end_src
-
-Skip sub-tasks whose parents are scheduled in the future. The function ~org-agenda-skip-function~ can be used in individual commands instead.
-
-#+begin_src emacs-lisp :tangle yes
 (after! org
-  (setq org-agenda-skip-function-global
-         (defun dan/org-agenda-skip-if-inherited-timestamp ()
-           "Skip item with an inherited timestamp according to the org-agenda settings..
-Uses built-in `org-agenda-check-for-timestamp-as-reason-to-ignore-todo-item'."
-           (let ((subtree-end (save-excursion (org-end-of-subtree t)))
-                 (ignore-item-p (org-agenda-check-for-timestamp-as-reason-to-ignore-todo-item)))
-             (while (and (org-up-heading-safe)
-                         (null ignore-item-p))
-               (setq ignore-item-p (org-agenda-check-for-timestamp-as-reason-to-ignore-todo-item)))
-             (when ignore-item-p
-               subtree-end)))))
+  (setq-hook! org-mode
+    display-line-numbers nil))
 #+end_src
 
 Use the TODO keywords that suit my workflow.
 
-- TODO :: Self-explanatory
-- NEXT :: Within a PROJ, what needs to be done next.
-- PROJ :: Indicated a PROJECT, personal or work related.
-- WAIT :: Tasks that are in WAIT of another.
-- EVENT :: Indicates an event.
-- IDEA :: Indicates a potential idea, for a task or project, in the future. A backlog of sorts.
-- DONE :: Self-explanatory
-- CANCELLED :: Self-explanatory. It's better if they have a note explaining why.
+- TODO :: Task that needs to be done.
+- NEXT :: Task that has already started.
+- PROJ :: Task that holds a large collection of inner tasks and events.
+- WAIT :: Tasks that cannot be completed until of another task is done or and external event happens.
+- EVENT :: Indicates a happening.
+- IDEA :: A note that could turn into a task or an entire project, needs exploration.
+- DONE :: Completed task.
+- CANCELLED :: Task that will not be done.
 
 Also, add them faces so they stick out more:
 
@@ -3095,9 +3059,9 @@ The key files of the capture template are:
 #+begin_src emacs-lisp :tangle yes
 (after! org
   (setq +org-capture-projects-file (expand-file-name "projects.org" (car org-agenda-files))
-        +org-capture-todo-file (expand-file-name "diary.org" (car org-agenda-files))
-        +org-capture-journal-file (expand-file-name "schedule.org" (car org-agenda-files))
-        +org-capture-notes-file (expand-file-name "ideas.org" (car org-agenda-files))))
+        +org-capture-todo-file     (expand-file-name "diary.org"    (car org-agenda-files))
+        +org-capture-journal-file  (expand-file-name "schedule.org" (car org-agenda-files))
+        +org-capture-notes-file    (expand-file-name "ideas.org"    (car org-agenda-files))))
 #+end_src
 
 And the templates that use those files:
@@ -3142,154 +3106,11 @@ Now we specify the ~org-refile-targets~. Any open org file and the files that ar
                              (org-agenda-files :maxlevel . 9))))
 #+end_src
 
-The default agenda view shows yesterdays task, todays and tomorrows.
-
-#+begin_src emacs-lisp :tangle yes
-(after! org-agenda
-  (setq org-agenda-start-day        "-1d"
-        org-agenda-span             3))
-#+end_src
-
-Keybinding for the default agenda and file-local ~org-todo~ agenda.
-
-#+begin_src emacs-lisp :tangle yes
-(map! (:leader
-       :prefix "o a"
-       :desc "3 Day Org Agenda" "d" #'org-agenda-list
-       :desc "Global Todo List" "t" #'dan/=org-todo-list
-       :desc "Todo list here"   "T" #'dan/org-todo-list-current-file))
-#+end_src
-
-Key-bind ~org-agenda-follow-mode~.
-
-#+begin_src emacs-lisp :tangle yes
-(map! :after org-agenda
-      :map org-agenda-mode-map
-      :localleader
-      "f" #'org-agenda-follow-mode)
-#+end_src
-
-Key-bind restrictions to the ~org-agenda~.
-
-#+begin_src emacs-lisp :tangle yes
-(map! (:after org
-       :map org-mode-map :localleader
-       :g "<" #'org-agenda-set-restriction-lock
-       :g ">" #'org-agenda-remove-restriction-lock)
-      (:after org-agenda :localleader
-       :map org-agenda-mode-map
-       :g "<" #'org-agenda-set-restriction-lock-from-agenda
-       :g ">" #'org-agenda-remove-restriction-lock))
-#+end_src
-
 To have timestamps consistently in english, no matter the system language.
 
 #+begin_src emacs-lisp :tangle yes
 (setq system-time-locale "C")
 #+end_src
-
-**** Auto-loads
-
-Lexical Binding.
-
-#+begin_src emacs-lisp :tangle autoload/org.el
-;;; $DOOMDIR/autoload/org.el -*- lexical-binding: t; -*-
-#+end_src
-
-Require =org-mode=.
-
-#+begin_src emacs-lisp :tangle autoload/org.el
-(require 'org)
-(require 'org-agenda)
-#+end_src
-
-Define the custom function, switch entry to 'DONE' when all sub-entries are
-'DONE', else keep entry original todo state.
-
-#+begin_src emacs-lisp :tangle autoload/org.el
-;;;###autoload
-(defun dan/org-after-todo-statistics-preserve-todo-state (n-done n-not-done)
-  "Change `TODO' state to `DONE' if all subheadings are also `DONE', otherwise
-conserve `TODO' state.
-
-N-DONE are the number of subheadings that are done and N-NOT-DONE the number of
-headings that are not done. This function is meant to be run as part of
-`org-after-todo-statistics-hook'."
-  (let (org-log-done org-log-states)
-    (org-todo (if (= n-not-done 0)
-                  "DONE"
-                (concat (org-get-todo-state))))))
-#+end_src
-
-Custom function that switches heading from 'TODO' to 'DONE' when all checkboxes are ticked.
-
-#+begin_src emacs-lisp :tangle autoload/org.el
-;;;###autoload
-(defun dan/org-checkbox-statistics-change-to-done-when-all-ticked ()
-  "Change `TODO' state to `DONE' if all checkboxes of the heading are ticked.
-
-This function is meant to be run as as part of `org-checkbox-statistics-hook'."
-  (let ((todo-state (condition-case _
-                        (org-get-todo-state)
-                      (user-error nil)))
-        beg
-        end)
-    (when todo-state
-      (save-excursion
-        (org-back-to-heading t)
-        (setq beg (point))
-        (end-of-line)
-        (setq end (point))
-        (goto-char beg)
-        (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
-                               end t)
-            (if (match-end 1)
-                (when (equal (match-string 1) "100%")
-                    (unless (string-equal todo-state "DONE")
-                      (org-todo 'done)))
-              (when (and (> (match-end 2) (match-beginning 2))
-                         (equal (match-string 2) (match-string 3)))
-                  (unless (string-equal todo-state "DONE")
-                    (org-todo 'done)))))))))
-#+end_src
-
-Show the TODOs of the current file in ~org-todo~ fashion.
-
-#+begin_src emacs-lisp :tangle autoload/org.el
-;;;###autoload
-(defun dan/org-todo-list-current-file (&optional arg)
-  "Same as `org-todo-list' but restricted to the current buffer."
-  (interactive "P")
-  (let* ((cbfn             (buffer-file-name (current-buffer)))
-         (org-agenda-files (list cbfn)))
-    (unless (and (eq major-mode 'org-mode)
-                 cbfn)
-      (user-error "Must be called within an .org file"))
-    (org-agenda-set-restriction-lock 'file)
-    (org-todo-list arg)
-    (with-current-buffer org-agenda-buffer-name
-      (add-hook! 'kill-buffer-hook :local t (org-agenda-remove-restriction-lock t)))))
-#+end_src
-
-Show the global TODO list in it's own workspace.
-
-#+begin_src emacs-lisp :tangle autoload/org.el
-(defvar +org-todo-list-workspace-name "Org TODOs")
-
-;;;###autoload
-(defun dan/=org-todo-list (&optional arg)
-  "Like `org-todo-list', but the buffer is within it's own workspace."
-  (interactive "P")
-  (+workspace-switch +org-todo-list-workspace-name t)
-  (unless (eq (buffer-local-value 'major-mode (window-buffer (selected-window)))
-              'org-agenda-mode)
-    (doom/switch-to-scratch-buffer)
-    (org-todo-list arg)
-    (with-current-buffer org-agenda-buffer-name
-      (add-hook! 'kill-buffer-hook :local t
-                 (+workspace-delete +org-todo-list-workspace-name)))
-    (+workspace/display)))
-  #+end_src
 
 *** org-appear
 
@@ -3372,17 +3193,64 @@ The primary use of this package is for the daily/weekly agenda, made by the org-
 (use-package! org-super-agenda
   :after org
   :config
-  (org-super-agenda-mode)
+  (org-super-agenda-mode))
+#+end_src
+
+The ~org-agenda~ shows today's tasks.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org-agenda
+  (setq org-agenda-span      'day
+        org-agenda-start-day "<today>"))
+#+end_src
+
+Keybinding for the ~org-agenda~.
+
+#+begin_src emacs-lisp :tangle yes
+(map! (:prefix "o"
+       :leader
+       :desc "Agenda Menu" "a" #'org-agenda))
+#+end_src
+
+Create a *workspace* like feel to each ~org-agenda~ calling. We make it fill the whole frame and restore the previous window configuration after we are done.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org-agenda
+  (setq org-agenda-window-setup 'only-window
+        org-agenda-restore-windows-after-quit t))
+#+end_src
+
+Sometimes I schedule a task for a particular day and set a deadline for a time in that same day. In those cases, we want to emphasize the deadline and not the schedule date.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org-agenda
+  (setq org-agenda-skip-scheduled-if-deadline-is-shown t))
+#+end_src
+
+Don't show deadline warning if task is scheduled prior to the deadline time.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org-agenda
+  (setq org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled))
+#+end_src
+
+Prevent done tasks to show in the agenda.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org-agenda
+  (setq org-agenda-skip-scheduled-if-done t
+        org-agenda-skip-deadline-if-done  t
+        org-agenda-skip-timestamp-if-done t))
 #+end_src
 
 For extra visibility, we tweak the agenda sorting strategy to make =scheduled= tasks appear first, ordered by =priority=.
 
 #+begin_src emacs-lisp :tangle yes
-  :custom
-  (org-agenda-sorting-strategy '((agenda habit-down scheduled-up deadline-up ts-up time-up priority-down)
-                                 (todo habit-down scheduled-up priority-down)
-                                 (tags habit-down scheduled-up priority-down)
-                                 (search habit-down scheduled-up priority-down))))
+(after! org-agenda
+  (setq org-agenda-sorting-strategy '((agenda time-up priority-down)
+                                      (todo habit-down scheduled-up priority-down)
+                                      (tags habit-down scheduled-up priority-down)
+                                      (search habit-down scheduled-up priority-down))))
 #+end_src
 
 Display any =scheduled= or =timestamp= info in agenda.
@@ -3424,7 +3292,6 @@ of `calendar-gregorian-from-absolute'.  It defaults to `org-today' if empty."
                  (org-time-string-to-absolute date))))))))
 #+end_src
 
-
 The ~dan/org-super-agenda--transformer-show-scheduled-or-deadline~ shows an item's DEADLINE and/or SCHEDULED in the entry.
 
 #+begin_src emacs-lisp :tangle yes
@@ -3464,37 +3331,121 @@ Refresh the =soon= limit date on each ~org-super-agenda~ calling.
             `(before ,(dan/org-super-agenda--soon-limit))))))
 #+end_src
 
-With the package installed, we are ready to define ~org-agenda-custom-commands~ as well as the ~org-super-agenda-groups~.
+With the package installed, we are ready to define ~org-agenda-custom-commands~ as well as the ~org-super-agenda-groups~. First we start with my personal custom commands, which focus on anything that is not work related.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org-agenda
+  (setq org-agenda-custom-commands '(("p" . "Personal Tasks"))))
+#+end_src
+
+How does my day look like? =Day agenda= focus on answering that question with as little noise as posible. No info about anything else but my current day.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org-agenda
+  (add-to-list 'org-agenda-custom-commands '("pd"
+                                             "Day Agenda"
+                                             agenda
+                                             ""
+                                             ((org-super-agenda-groups         '((:discard (:tag "work"))))
+                                              (org-super-agenda-unmatched-name "")
+                                              (org-super-agenda-header-prefix  "")))))
+#+end_src
+
+A more general view of my tasks, with extra contextual information, such as task that are on hold, task that are scheduled soon, etc. See ~org-super-agenda-groups~.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org-agenda
+  (add-to-list 'org-agenda-custom-commands '("pt"
+                                             "Global TODOs"
+                                             tags-todo
+                                             "-work"
+                                             ((org-tags-history (pushnew! org-tags-history "-work"))))))
+#+end_src
+
+Work custom commands.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org-agenda
+  (add-to-list 'org-agenda-custom-commands '("w" . "Work Tasks")))
+#+end_src
+
+Same as my personal =Day Agenda= but only for work related tasks.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org-agenda
+  (add-to-list 'org-agenda-custom-commands '("wd"
+                                             "Day Agenda"
+                                             agenda
+                                             ""
+                                             ((org-super-agenda-groups         '((:discard (:not (:tag "work")))))
+                                              (org-super-agenda-unmatched-name "")
+                                              (org-super-agenda-header-prefix  "")))))
+#+end_src
+
+Same as my personal =Global TODOs=, but only for work related tasks.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org-agenda
+  (add-to-list 'org-agenda-custom-commands '("wt"
+                                             "Global TODOs"
+                                             tags-todo
+                                             "+work"
+                                             ((org-tags-history (pushnew! org-tags-history "+work"))))))
+#+end_src
+
+The default =org-super-agenda-groups=.
+
+- Started :: Tasks that are being actively worked on. Omit the tasks that are rescheduled.
+- Today   :: Anything that is due, scheduled or is going to happen today or in the past.
+- Soon     :: Anything that is due, scheduled or is going to happen within the next three days.
+- Incoming Events :: Future happenings.
+- Important :: Important tasks that haven't been scheduled. Ideally should always be empty.
+- On Hold :: Tasks that are wating on other task or some external happening.
+- Are Scheduled :: Scheduled future tasks.
+- Have Deadline :: Task with a dealine, but not scheduled>
+- Backlog :: Everything else, except projects.
+- Projects :: All projects.
+
+Everything
 
 #+begin_src emacs-lisp :tangle yes
 (after! org-super-agenda
-  (setq org-super-agenda-groups      `((:name "Started"
-                                        :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline
-                                        :and (:todo "NEXT" :not (:scheduled future)))
-                                       (:name "Today"
-                                        :scheduled today
-                                        :scheduled past
-                                        :property ("TIMESTAMP"
-                                                   ,(dan/org-super-agenda--build-timestamp-selector))
-                                        :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline)
-                                       (:name "Soon"
-                                        :scheduled (before ,(dan/org-super-agenda--soon-limit))
-                                        :property ("TIMESTAMP"
-                                                   ,(dan/org-super-agenda--build-timestamp-selector
-                                                     (lambda ()
-                                                       (org-time-string-to-absolute (dan/org-super-agenda--soon-limit)))))
-                                        :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline)
-                                       (:name "Incoming Events"
-                                        :todo "EVENT")
-                                       (:name "Important"
-                                        :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline
-                                        :and (:priority "A"
-                                              :not (:todo "WAIT"
-                                                    :scheduled future)))
-                                       (:name "On Hold"
-                                        :todo "WAIT")
-                                       (:name "Active projects"
-                                        :todo "PROJ"))))
+  (setq org-super-agenda-groups         `((:name "Started"
+                                           :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline
+                                           :and (:todo "NEXT" :not (:scheduled future)))
+                                          (:name "Today"
+                                           :scheduled today
+                                           :scheduled past
+                                           :property ("TIMESTAMP"
+                                                      ,(dan/org-super-agenda--build-timestamp-selector))
+                                           :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline)
+                                          (:name "Soon"
+                                           :scheduled (before ,(dan/org-super-agenda--soon-limit))
+                                           :deadline  (before ,(dan/org-super-agenda--soon-limit))
+                                           :property ("TIMESTAMP"
+                                                      ,(dan/org-super-agenda--build-timestamp-selector
+                                                        (lambda ()
+                                                          (org-time-string-to-absolute (dan/org-super-agenda--soon-limit)))))
+                                           :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline)
+                                          (:name "Incoming Events"
+                                           :todo "EVENT")
+                                          (:name "Important"
+                                           :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline
+                                           :and (:priority "A"
+                                                 :not (:todo "WAIT"
+                                                       :scheduled future)))
+                                          (:name "On Hold"
+                                           :todo "WAIT")
+                                          (:name "Are Scheduled"
+                                           :scheduled future
+                                           :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline)
+                                          (:name "Have Deadline"
+                                           :deadline future
+                                           :transformer dan/org-super-agenda--transformer-show-scheduled-or-deadline)
+                                          (:name "Backlog"
+                                           :not (:todo "PROJ"))
+                                          (:name "Projects"
+                                           :todo "PROJ"))))
 #+end_src
 
 There are a few clashes between ~evil-org-agenda-mode-map~ and ~org-super-agenda-header-map~. To remove them, we simply override the latter keymap, after loading both ~evil-org-agenda~ and ~org-super-agenda~.
@@ -3512,15 +3463,13 @@ To prevent unnecessary scrolling when calling the agenda buffer, we automate the
 #+begin_src emacs-lisp :tangle yes
 (after! (evil-org-agenda org-super-agenda)
  (add-hook! 'org-agenda-finalize-hook
-            :append (when (and (org-agenda-check-type nil 'todo)
-                               ;; Don't do any of this if the buffer is narrowed.
-                               (not (buffer-narrowed-p)))
-                     (goto-char (point-min))
-                     (re-search-forward "^$")
-                     (forward-line)
-                     (evil-scroll-line-to-center (count-lines (point-min)
-                                                              (point)))
-                     (org-agenda-next-item 1))))
+            :append (when (and (not (buffer-narrowed-p))
+                               (goto-char (point-min)))
+                      (when (not (org-agenda-check-type nil 'agenda))
+                        (re-search-forward "^$")
+                        (forward-line)
+                        (evil-scroll-line-to-center (count-lines (point-min) (point))))
+                      (org-agenda-next-item 1))))
 #+end_src
 
 Prevent ~org-capture~ buffers from loosing their target when restarting.
@@ -3664,7 +3613,7 @@ An easy =mnemonic= keybinding.
 
 #+begin_src elisp :tangle yes
 (map! :leader
-      "o c" #'run-command)
+      :desc "Run command recipe" "r" #'run-command)
 #+end_src
 
 =NixOS= recipes.
