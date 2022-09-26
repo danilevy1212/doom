@@ -3246,8 +3246,15 @@ Prevent done tasks to show in the agenda.
 Show scheduled items without a time first in the =Day Agenda=.
 
 #+begin_src emacs-lisp :tangle yes
-(after! org
+(after! org-agenda
   (setq org-agenda-sort-notime-is-late nil))
+#+end_src
+
+Show  =habit= styles task outside of just today.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org-agenda
+  (setq org-habit-show-habits-only-for-today nil))
 #+end_src
 
 For extra visibility, we tweak the agenda sorting strategy to make =scheduled= tasks appear first, ordered by =priority=.
