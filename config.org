@@ -3343,7 +3343,7 @@ How does my day look like? =Day agenda= focus on answering that question with as
 #+begin_src emacs-lisp :tangle yes
 (after! org-agenda
   (add-to-list 'org-agenda-custom-commands '("pd"
-                                             "Day Agenda"
+                                             "Personal Day Agenda"
                                              agenda
                                              ""
                                              ((org-super-agenda-groups         '((:discard (:tag "work"))))
@@ -3356,7 +3356,7 @@ A more general view of my tasks, with extra contextual information, such as task
 #+begin_src emacs-lisp :tangle yes
 (after! org-agenda
   (add-to-list 'org-agenda-custom-commands '("pt"
-                                             "Global TODOs"
+                                             "Personal TODOs"
                                              tags-todo
                                              "-work"
                                              ((org-tags-history (pushnew! org-tags-history "-work"))))))
@@ -3374,7 +3374,7 @@ Same as my personal =Day Agenda= but only for work related tasks.
 #+begin_src emacs-lisp :tangle yes
 (after! org-agenda
   (add-to-list 'org-agenda-custom-commands '("wd"
-                                             "Day Agenda"
+                                             "Work Day Agenda"
                                              agenda
                                              ""
                                              ((org-super-agenda-groups         '((:discard (:not (:tag "work")))))
@@ -3387,10 +3387,23 @@ Same as my personal =Global TODOs=, but only for work related tasks.
 #+begin_src emacs-lisp :tangle yes
 (after! org-agenda
   (add-to-list 'org-agenda-custom-commands '("wt"
-                                             "Global TODOs"
+                                             "Work TODOs"
                                              tags-todo
                                              "+work"
                                              ((org-tags-history (pushnew! org-tags-history "+work"))))))
+#+end_src
+
+A =Day Agenda= with any and all tasks of today.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org-agenda
+  (add-to-list 'org-agenda-custom-commands '("d"
+                                             "Global Day Agenda"
+                                             agenda
+                                             ""
+                                             ((org-super-agenda-groups         nil)
+                                              (org-super-agenda-unmatched-name "")
+                                              (org-super-agenda-header-prefix  "")))))
 #+end_src
 
 The default =org-super-agenda-groups=.
