@@ -2990,11 +2990,10 @@ Any file in the ~agenda~ directory is part of the agenda view.
     (org-agenda-files (list (expand-file-name "agenda/" org-directory)))
 #+end_src
 
-Modules for keeping track of habits, completing checklists and making links to =bookmarks=, =elisp= symbols, =pdf= s, =info= pages and =man= pages.
+Modules for completing checklists and making links to =bookmarks=, =elisp= symbols, =pdf= s, =info= pages and =man= pages.
 
 #+begin_src lisp-data :tangle config.el
-    (org-modules  '(org-habit
-                    org-checklist
+    (org-modules  '(org-checklist
                     ol-elisp-symbol
                     ol-bookmark
                     ol-info
@@ -3250,21 +3249,14 @@ Show scheduled items without a time first in the =Day Agenda=.
   (setq org-agenda-sort-notime-is-late nil))
 #+end_src
 
-Show  =habit= styles task outside of just today.
-
-#+begin_src emacs-lisp :tangle yes
-(after! org-agenda
-  (setq org-habit-show-habits-only-for-today nil))
-#+end_src
-
 For extra visibility, we tweak the agenda sorting strategy to make =scheduled= tasks appear first, ordered by =priority=.
 
 #+begin_src emacs-lisp :tangle yes
 (after! org-agenda
   (setq org-agenda-sorting-strategy '((agenda time-up priority-down)
-                                      (todo habit-down scheduled-up priority-down)
-                                      (tags habit-down scheduled-up priority-down)
-                                      (search habit-down scheduled-up priority-down))))
+                                      (todo scheduled-up priority-down)
+                                      (tags scheduled-up priority-down)
+                                      (search scheduled-up priority-down))))
 #+end_src
 
 Display any =scheduled= or =timestamp= info in agenda.
