@@ -3352,7 +3352,8 @@ How does my day look like? =Day agenda= focus on answering that question with as
                                              "Personal Day Agenda"
                                              agenda
                                              ""
-                                             ((org-super-agenda-groups         '((:discard (:tag "work"))))
+                                             ((org-agenda-tag-filter-preset    '("-work"))
+                                              (org-super-agenda-groups         nil)
                                               (org-super-agenda-unmatched-name "")
                                               (org-super-agenda-header-prefix  "")))))
 #+end_src
@@ -3383,7 +3384,8 @@ Same as my personal =Day Agenda= but only for work related tasks.
                                              "Work Day Agenda"
                                              agenda
                                              ""
-                                             ((org-super-agenda-groups         '((:discard (:not (:tag "work")))))
+                                             ((org-super-agenda-groups         nil)
+                                              (org-agenda-tag-filter-preset    '("+work"))
                                               (org-super-agenda-unmatched-name "")
                                               (org-super-agenda-header-prefix  "")))))
 #+end_src
