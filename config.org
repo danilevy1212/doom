@@ -3242,6 +3242,13 @@ Show scheduled items without a time first in the =Day Agenda=.
   (setq org-agenda-sort-notime-is-late nil))
 #+end_src
 
+Don't show blocked tasks.
+
+#+begin_src emacs-lisp :tangle yes
+(after! org-agenda
+  (setq org-agenda-dim-blocked-tasks 'invisible))
+#+end_src
+
 For extra visibility, we tweak the agenda sorting strategy to make =scheduled= tasks appear first, ordered by =priority=.
 
 #+begin_src emacs-lisp :tangle yes
