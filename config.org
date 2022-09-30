@@ -2944,16 +2944,6 @@ Use ~alejandra~ as the default formatter.
   (setq nodejs-repl-arguments '("--experimental-repl-await")))
 #+end_src
 
-*** osx-trash
-
-Prevent attempting to move files to trash when in a remote directory.
-
-#+begin_src emacs-lisp :tangle yes
-(when IS-MAC
-  (setq-hook! (dired-mode magit-mode)
-    delete-by-moving-to-trash (not (file-remote-p default-directory))))
-#+end_src
-
 *** Org
 
 One of the killer features of Emacs.
