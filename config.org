@@ -1282,10 +1282,17 @@ This module adds [[https://golang.org][Go]] support, with optional (but recommen
        ;;raku              ; the artist formerly known as perl6
 #+end_src
 
-***** TODO rest
+***** rest
+
+#+begin_quote
+ 💡 ~restclient-mode~ is tremendously useful for automated or quick testing REST
+    APIs. My workflow is to open an ~org-mode~ buffer, create a restclient
+    source block and hack away. ~restclient-mode~ and ~company-restclient~ power
+    this arcane wizardry.
+#+end_quote
 
 #+begin_src emacs-lisp :tangle init.el
-       rest                ; Emacs as a REST client
+       (rest +jq)          ; Emacs as a REST client
        ;;rst               ; ReST in peace
        ;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
 #+end_src
