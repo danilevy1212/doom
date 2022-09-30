@@ -956,17 +956,6 @@ My english is not the best, neither is my spanish or my 日本語 for that matte
 
 **** :tools
 
-***** debugger
-
-Fixing that code, on step at a time.
-
-#+begin_src emacs-lisp :tangle init.el
-       :tools
-       ;;ansible
-       ;;biblio                 ; Writes a PhD for you (citation needed)
-       (debugger +lsp)          ; FIXME stepping through code, to help you add bugs
-#+end_src
-
 ***** direnv
 
 #+begin_quote
@@ -974,6 +963,10 @@ This module integrates direnv into Emacs.
 #+end_quote
 
 #+begin_src emacs-lisp :tangle init.el
+       :tools
+       ;;ansible
+       ;;biblio                 ; Writes a PhD for you (citation needed)
+       ;;(debugger +lsp)        ; FIXME stepping through code, to help you add bugs
        direnv
 #+end_src
 
