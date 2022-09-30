@@ -1268,15 +1268,10 @@ This module adds [[https://golang.org][Go]] support, with optional (but recommen
 
 #+begin_src emacs-lisp :tangle init.el
        (org +dragndrop +pretty)               ; organize your plain life in plain text
-#+end_src
-
-***** TODO python
-
-#+begin_src emacs-lisp :tangle init.el
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       (python +lsp +pyright +poetry +tree-sitter) ; beautiful is better than ugly
+       ;;(python +lsp +pyright +poetry +tree-sitter) ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
