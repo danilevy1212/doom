@@ -1251,6 +1251,7 @@ This module adds [[https://golang.org][Go]] support, with optional (but recommen
 #+end_src
 
 ***** markdown
+
 This module provides Markdown support for Emacs. The =+grip= flag enables [[https://github.com/seagle0128/grip-mode][grip support]] (on [[kbd:][<localleader> p]]), to provide live github-style previews of your markdown (or org) files.
 
 #+begin_src emacs-lisp :tangle init.el
@@ -3548,6 +3549,19 @@ store projects.
 
 #+begin_src emacs-lisp :tangle yes
 (setq projectile-project-search-path '("~/Projects/" "~/.config/"))
+#+end_src
+
+There is a bug in ~projectile-skel-dir-locals~ that prevents completion of the template, as a workaround:
+
+#+begin_src emacs-lisp :tangle yes
+(after! projectile
+  (defadvice! dan/projectile-skel-dir-locals--fixed (&optional str arg)
+    :override #'projectile-skel-dir-locals
+    (interactive "*P\nP")
+    (skeleton-proxy-new
+     '(nil "((nil . (" ("" '(projectile-skel-variable-cons) n)
+       resume: ")))")
+     str arg)))
 #+end_src
 
 *** QR encode
