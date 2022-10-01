@@ -322,24 +322,24 @@ By default, completion starts after a short idle period or with the
 
 | Keybind | Description                              |
 |---------+------------------------------------------|
-| =C-n=   | Go to next candidate                     |
-| =C-p=   | Go to previous candidate                 |
-| =C-j=   | (evil) Go to next candidate              |
-| =C-k=   | (evil) Go to previous candidate          |
-| =C-h=   | Display documentation (if available)     |
-| =C-u=   | Move to previous page of candidates      |
-| =C-d=   | Move to next page of candidates          |
-| =C-s=   | Filter candidates                        |
-| =C-S-s= | Search candidates with helm/ivy          |
-| =C-SPC= | Complete common                          |
-| =TAB=   | Complete common or select next candidate |
-| =S-TAB= | Select previous candidate                |
+| =C-n=     | Go to next candidate                     |
+| =C-p=     | Go to previous candidate                 |
+| =C-j=     | (evil) Go to next candidate              |
+| =C-k=     | (evil) Go to previous candidate          |
+| =C-h=     | Display documentation (if available)     |
+| =C-u=     | Move to previous page of candidates      |
+| =C-d=     | Move to next page of candidates          |
+| =C-s=     | Filter candidates                        |
+| =C-S-s=   | Search candidates with helm/ivy          |
+| =C-SPC=   | Complete common                          |
+| =TAB=     | Complete common or select next candidate |
+| =S-TAB=   | Select previous candidate                |
 
 In the spirit of Vim's omni completion, the following insert mode key binds are
 available to evil users to access specific company backend:
 
-| Keybind   | Description                       |
-|-----------+-----------------------------------|
+| Keybind | Description                       |
+|---------+-----------------------------------|
 | =C-x C-]= | Complete etags                    |
 | =C-x C-f= | Complete file path                |
 | =C-x C-k= | Complete from dictionary/keyword  |
@@ -374,17 +374,17 @@ Some important keybindings.
 When in an active Vertico completion session, the following doom added
 keybindings are available:
 
-| Keybind               | Description                                        |
-|-----------------------+----------------------------------------------------|
-| =C-p=                 | Go to previous candidate                           |
-| =C-n=                 | Go to next candidate                               |
-| =C-k=                 | (evil) Go to previous candidate                    |
-| =C-j=                 | (evil) Go to next candidate                        |
+| Keybind           | Description                                       |
+|-------------------+---------------------------------------------------|
+| =C-p=               | Go to previous candidate                          |
+| =C-n=               | Go to next candidate                              |
+| =C-k=               | (evil) Go to previous candidate                   |
+| =C-j=               | (evil) Go to next candidate                       |
 | =C-;= or =<leader> a= | Open an ~embark-act~ menu to choose a useful action |
-| =C-c C-;=             | export the current candidate list to a buffer      |
-| =C-SPC=               | Preview the current candidate                      |
-| =C-M-k=               | (evil) Go to previous candidate and preview.       |
-| =C-M-j=               | (evil) Go to next candidate and preview.           |
+| =C-c C-;=           | export the current candidate list to a buffer     |
+| =C-SPC=             | Preview the current candidate                     |
+| =C-M-k=             | (evil) Go to previous candidate and preview.      |
+| =C-M-j=             | (evil) Go to next candidate and preview.          |
 
 ~embark-act~ will prompt you with a =which-key= menu with useful commands on the
 selected candidate or candidate list, depending on the completion category. Note
@@ -401,7 +401,7 @@ Marginalia toggle:
 #+begin_quote
 | Keybind | Description                     |
 |---------+---------------------------------|
-| =M-A=   | Cycle between annotation levels |
+| =M-A=     | Cycle between annotation levels |
 #+end_quote
 
 #+begin_quote
@@ -451,8 +451,8 @@ Not really necessary, but they are fun. Use the ~emojify-insert-emoji~ function
 =hl-todo= not highlights `TODO` comments in buffers, but also comes some handy
 keybindings:
 
-| keybind   | description                      |
-|-----------+----------------------------------|
+| keybind | description                      |
+|---------+----------------------------------|
 | =]t=      | go to next TODO item             |
 | =[t=      | go to previous TODO item         |
 | =SPC p t= | show all TODO items in a project |
