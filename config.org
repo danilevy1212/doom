@@ -3094,11 +3094,11 @@ To have timestamps consistently in english, no matter the system language.
 
 *** org-appear
 
-Add integration with ~evil-mode~, to auto hide/show entities.
+Add integration with ~evil-mode~, to auto hide/show entities. With the builtin ~+org-pretty-mode~ we hide the emphasis markers.
 
 #+begin_src emacs-lisp :tangle yes
 (after! org
-  (add-hook! org-mode #'org-appear-mode))
+  (add-hook! org-mode #'+org-pretty-mode #'org-appear-mode))
 #+end_src
 
 *** org-edna
