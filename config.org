@@ -2564,9 +2564,8 @@ Make ~flycheck-flow~ work with the ~lsp~ checker.
 ~flycheck~ has some trouble finding the ~flow~ binary, so I give it some help using =dir-local= variables on a per-project basis.
 
 #+begin_src emacs-lisp :tangle yes
-(after! flycheck-flow
-  (put 'flycheck-javascript-eslint-executable 'safe-local-variable #'stringp)
-  (put 'flycheck-javascript-flow-executable 'safe-local-variable #'stringp))
+(put 'flycheck-javascript-eslint-executable 'safe-local-variable #'stringp)
+(put 'flycheck-javascript-flow-executable   'safe-local-variable #'stringp)
 #+end_src
 
 *** Flycheck
@@ -2589,8 +2588,7 @@ Hack to add buffer local =flycheck= checkers after =lsp= for different major mod
 Add the ability to use a checker in a per-directory basis, thanks to =.dir-locals.el=
 
 #+begin_src emacs-lisp :tangle yes
-(after! flycheck
-  (put 'flycheck-checker 'safe-local-variable #'symbolp))
+(put 'flycheck-checker 'safe-local-variable #'symbolp)
 #+end_src
 
 *** Harpoon
@@ -2797,8 +2795,7 @@ numbers are disabled. For relative line numbers, set this to ~relative~.
 Allow per-directory disabling of certain =lsp-clients=.
 
 #+begin_src emacs-lisp :tangle yes
-(after! lsp-mode
-  (put 'lsp-disabled-clients 'safe-local-variable #'sequencep))
+(put 'lsp-disabled-clients 'safe-local-variable #'sequencep)
 #+end_src
 
 *** Lua
@@ -2813,33 +2810,31 @@ Search for the ~lsp-server~ in path:
 Add ~lsp-lua-diagnostics-globals~ as a ~safe-local-variable~.
 
 #+begin_src emacs-lisp :tangle yes
-(after! lua-mode
-  (put 'lsp-lua-diagnostics-globals
-       'safe-local-variable
-       (lambda (e)
-         (and (vectorp e)
-              (--all?
-               (and (stringp it)
-                    (not (string-empty-p it)))
-               (seq-concatenate 'list e))))))
+(put 'lsp-lua-diagnostics-globals
+     'safe-local-variable
+     (lambda (e)
+       (and (vectorp e)
+            (--all?
+             (and (stringp it)
+                  (not (string-empty-p it)))
+             (seq-concatenate 'list e)))))
 #+end_src
 
 Add ~lsp-lua-workspace-library~ as a ~safe-local-variable~.
 
 #+begin_src emacs-lisp :tangle yes
-(after! lua-mode
-  (put 'lsp-lua-workspace-library 'safe-local-variable
-       (lambda (e)
-         (let ((is-dir-p (lambda (dir) (and (stringp dir))
-                           (file-directory-p dir))))
-           (and (listp e)
-                (--all? (pcase it
-                          (`(,first . ,last) (and (funcall is-dir-p first)
-                                                  (or (eq last t)
-                                                      (and (listp last)
-                                                           (-all? is-dir-p
-                                                                  last))))))
-                        e))))))
+(put 'lsp-lua-workspace-library 'safe-local-variable
+     (lambda (e)
+       (let ((is-dir-p (lambda (dir) (and (stringp dir))
+                         (file-directory-p dir))))
+         (and (listp e)
+              (--all? (pcase it
+                        (`(,first . ,last) (and (funcall is-dir-p first)
+                                                (or (eq last t)
+                                                    (and (listp last)
+                                                         (-all? is-dir-p
+                                                                last))))))
+                      e)))))
 #+end_src
 
 *** magit-delta
@@ -4003,8 +3998,7 @@ For some reason, =eslint lsp= does not work for some of the sub-directories of a
              (bound-and-true-p dan/flycheck-javascript-eslint-use-after-lsp))
     (setq dan/flycheck-local-cache '((next-checkers . (javascript-eslint))))))
 
-(after! flycheck
-  (put 'dan/flycheck-javascript-eslint-use-after-lsp 'safe-local-variable #'identity))
+(put 'dan/flycheck-javascript-eslint-use-after-lsp 'safe-local-variable #'identity)
 #+end_src
 
 *** uniquify
