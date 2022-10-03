@@ -1258,7 +1258,18 @@ This module provides Markdown support for Emacs. The =+grip= flag enables [[http
        (markdown +grip)          ; writing docs for people to ignore
 #+end_src
 
-***** TODO nix
+***** nix
+
+#+begin_quote
+This module adds support for the Nix language to Doom Emacs, along with tools
+for managing [[https://nixos.org/][Nix(OS)]].
+
+Includes:
+- Syntax highlighting
+- Completion through [[doom-package:][company]] and/or [[doom-package:][helm]]
+- Nix option lookup
+- Formatting (~nixfmt~)
+#+end_quote
 
 #+begin_src emacs-lisp :tangle init.el
        ;;nim               ; python + lisp at the speed of c
