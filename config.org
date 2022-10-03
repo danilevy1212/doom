@@ -3565,6 +3565,15 @@ There is a bug in ~projectile-skel-dir-locals~ that prevents completion of the t
      str arg)))
 #+end_src
 
+I work on a large monorepo at work, which ~projectile-find-file~ can struggle with. Setting the indexing method to =alien= can speed things up. We make this variable a ~safe-local-variable~.
+
+#+begin_src emacs-lisp :tangle yes
+(put 'projectile-indexing-method
+     'safe-local-variable
+     (lambda (val)
+       (memq val '(alien hybrid native))))
+#+end_src
+
 *** QR encode
 
 #+begin_quote
