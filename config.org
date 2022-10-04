@@ -3013,7 +3013,7 @@ Use the TODO keywords that suit my workflow.
 - TODO :: Task that needs to be done.
 - NEXT :: Task that has already started.
 - PROJ :: Task that holds a large collection of inner tasks and events.
-- WAIT :: Tasks that cannot be completed until of another task is done or and external event happens.
+- WAIT :: Tasks that cannot be completed until an external event happens, that is, something outside my control. Tasks that depend on other tasks, whose completion depend exclusively on me, use the =BLOCKER= property.
 - EVENT :: Indicates a happening.
 - IDEA :: A note that could turn into a task or an entire project, needs exploration.
 - DONE :: Completed task.
