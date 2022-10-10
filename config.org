@@ -2310,7 +2310,7 @@ Remote servers are a bit slow for auto-completion.
 
 #+begin_src emacs-lisp :tangle yes
 (after! eshell
-  (add-hook! 'eshell-directory-change-hook
+  (add-hook! 'eshell-before-prompt-hook
     (company-mode (if (file-remote-p default-directory) -1 +1))))
 #+end_src
 
