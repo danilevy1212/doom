@@ -3510,6 +3510,16 @@ Prevent false error messages with ~org-element--cache-sync~.
   (add-hook! 'org-capture-after-finalize-hook (org-element-cache-reset t)))
 #+end_src
 
+*** osx-trash
+
+Prevent attempting to move files to trash when in a remote directory.
+
+#+begin_src emacs-lisp :tangle yes
+(when IS-MAC
+  (setq-hook! (dired-mode magit-mode 'eshell-before-prompt-hook)
+    delete-by-moving-to-trash (not (file-remote-p default-directory))))
+#+end_src
+
 *** PDF Tools
 
 We reduce the default zoom factor to have more leeway between zoom levels.
