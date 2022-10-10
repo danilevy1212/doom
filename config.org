@@ -2977,10 +2977,11 @@ Any file in the ~agenda~ directory is part of the agenda view.
     (org-agenda-files (list (expand-file-name "agenda/" org-directory)))
 #+end_src
 
-Modules for completing checklists and making links to =bookmarks=, =elisp= symbols, =pdf= s, =info= pages and =man= pages.
+Modules for completing checklists and making links to =bookmarks=, =elisp= symbols, =pdf= s, =info= pages, =man= pages and others.
 
 #+begin_src lisp-data :tangle config.el
     (org-modules  '(org-checklist
+                    org-mouse
                     ol-elisp-symbol
                     ol-bookmark
                     ol-info
