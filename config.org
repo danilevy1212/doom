@@ -2771,6 +2771,7 @@ Bind it to =SPC o j=.
 *** Language Tool
 
 Do not run the jar file! Run the binary.
+
 #+begin_src emacs-lisp :tangle yes
 (setq langtool-bin "languagetool-commandline")
 #+end_src
