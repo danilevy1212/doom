@@ -2,3 +2,4 @@
 autoload
 snippets/*
 .DS_Store
+.stignore
