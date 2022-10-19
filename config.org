@@ -3819,13 +3819,12 @@ We set up auto-completion for chats.
 #+begin_src emacs-lisp :tangle yes
 (after! telega
   (set-company-backend! 'telega-chat-mode
-    '(:separate
+    '(company-ispell
+      company-dabbrev
       telega-company-telegram-emoji
       telega-company-username
       telega-company-botcmd
-      telega-company-hashtag
-      company-ispell
-      company-dabbrev)))
+      telega-company-hashtag)))
 #+end_src
 
 Finally, we add some extra goodies, some in =core= and others in =contrib=. These include visual customization like =shortening url's= or =code blocks syntax highlighting= to more complicated functionality like =system notifications= brought to you via ~alert.el~.
