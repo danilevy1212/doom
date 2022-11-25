@@ -3841,6 +3841,7 @@ Finally, we add some extra goodies, some in =core= and others in =contrib=. Thes
            #'telega-mode-line-mode
            #'global-telega-squash-message-mode
            #'telega-notifications-mode
+           #'telega-autoplay-mode
 
            ;; contrib
            #'global-telega-url-shorten-mode
