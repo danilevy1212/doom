@@ -4108,7 +4108,9 @@ Use =bash= as default shell in remote servers.
 
 #+begin_src emacs-lisp :tangle yes
 (after! vterm
-  (pushnew! vterm-tramp-shells '("ssh" "/bin/bash") '("scp" "/bin/bash")))
+  (pushnew! vterm-tramp-shells
+            '("ssh" "/bin/bash")
+            '("scp" "/bin/bash")))
 #+end_src
 
 Unfortunately, =MacOS M1= compilation is hardly straightforward. For a =HACK/FIX=, I force compilation through the latest ~gcc~ installed through =homebrew=.
