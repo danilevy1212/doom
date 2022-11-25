@@ -2838,6 +2838,12 @@ Add ~lsp-lua-workspace-library~ as a ~safe-local-variable~.
                       e)))))
 #+end_src
 
+Due to the limited number of file descriptors available in the MacOS version of =emacs=, we need to be conservative with their use. This means turning off automatic file-watching in ~lsp~.
+
+#+begin_src emacs-lisp :tangle yes
+(setq lsp-enable-file-watchers (not IS-MAC))
+#+end_src
+
 *** magit-delta
 
 This =emacs= package provides a minor mode which configures =magit= to use delta when displaying diffs.
