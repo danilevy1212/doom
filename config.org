@@ -3915,31 +3915,6 @@ Uniquify makes buffers with the same name easier to distinguish. The ~'forward~ 
 (setq uniquify-buffer-name-style 'forward)
 #+end_src
 
-*** vlf
-
-#+begin_quote
-Emacs minor mode that allows viewing, editing, searching and comparing large files in batches, trading memory for processor time.
-#+end_quote
-
-#+begin_src emacs-lisp :tangle packages.el
-(package! vlf)
-#+end_src
-
-~vlf-setup~ adds a menu option to use ~vlf~ when accessing a file larger than ~large-file-warning-threshold~. Other optimizations included expanding the number of bytes read on each batch and activating ~so-long-mode~ eagerly.
-
-#+begin_src emacs-lisp :tangle yes
-(use-package! vlf
-  :defer-incrementally t
-  :custom
-  (vlf-batch-size-remote read-process-output-max)
-  :config
-  (require 'vlf-setup)
-  (add-to-list 'so-long-mode-preserved-variables 'vlf-mode)
-  (add-hook! 'vlf-mode-hook #'so-long-mode))
-#+end_src
-
-For opening big files in remote servers, this package is a God send. When ~vlf-mode~ is active, other useful keybindings can be found under the prefix ~C-c v~.
-
 *** use-package
 
 We want packages to be lazy by default. In other words, load only on demand.
@@ -3969,6 +3944,31 @@ Lastly, let's activate =git-gutter= for remote files as well.
 #+begin_src emacs-lisp :tangle yes
 (setq +vc-gutter-in-remote-files t)
 #+end_src
+
+*** vlf
+
+#+begin_quote
+Emacs minor mode that allows viewing, editing, searching and comparing large files in batches, trading memory for processor time.
+#+end_quote
+
+#+begin_src emacs-lisp :tangle packages.el
+(package! vlf)
+#+end_src
+
+~vlf-setup~ adds a menu option to use ~vlf~ when accessing a file larger than ~large-file-warning-threshold~. Other optimizations included expanding the number of bytes read on each batch and activating ~so-long-mode~ eagerly.
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! vlf
+  :defer-incrementally t
+  :custom
+  (vlf-batch-size-remote read-process-output-max)
+  :config
+  (require 'vlf-setup)
+  (add-to-list 'so-long-mode-preserved-variables 'vlf-mode)
+  (add-hook! 'vlf-mode-hook #'so-long-mode))
+#+end_src
+
+For opening big files in remote servers, this package is a God send. When ~vlf-mode~ is active, other useful keybindings can be found under the prefix ~C-c v~.
 
 *** Vterm
 
