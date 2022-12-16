@@ -3607,6 +3607,19 @@ An easy =mnemonic= keybinding.
   (add-to-list 'run-command-recipes #'dan/run-command--nix t))
 #+end_src
 
+=MacOS= recipes.
+
+#+begin_src emacs-lisp :tangle yes
+(after! run-command
+  (when IS-MAC
+    (defun dan/run-command--macos ()
+      (list
+       (list :command-line "arch -arm64 brew upgrade"
+             :command-name "Upgrade Brew"
+             :display      "Upgrade Brew packages")))
+    (add-to-list 'run-command-recipes #'dan/run-command--macos)))
+#+end_src
+
 *** Rust
 
 Use =rust-analyzer= by default, since it has more features.
