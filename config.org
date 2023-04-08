@@ -2921,12 +2921,12 @@ In org buffers, remove the line number fringe.
 
 Use the TODO keywords that suit my workflow.
 
-- TODO :: Task that needs to be done.
+- TODO :: Task that needs to be done. Needs a SCHEDULED or DEADLINE date, else it's just a pipe dream.
 - NEXT :: Task that has already started.
-- PROJ :: Task that holds a large collection of inner tasks and events.
+- PROJ :: Task that holds a collection of related tasks, events and ideas.
 - WAIT :: Tasks that cannot be completed until an external event happens, that is, something outside my control. Tasks that depend on other tasks, whose completion depend exclusively on me, use the =BLOCKER= property.
 - EVENT :: Indicates a happening.
-- IDEA :: A note that could turn into a task or an entire project, needs exploration.
+- IDEA :: A note that could turn into a task or an entire project, needs refinement.
 - DONE :: Completed task.
 - CANCELLED :: Task that will not be done.
 
@@ -4249,8 +4249,8 @@ For starting a new project!
 ${3:description}
 
 `(make-string (+ 2 (org-outline-level)) ?*)` Ideas
+`(make-string (+ 3 (org-outline-level)) ?*)` IDEA ${4:My first task!}
 `(make-string (+ 2 (org-outline-level)) ?*)` Tasks
-`(make-string (+ 3 (org-outline-level)) ?*)` TODO ${4:My first task!}
 `(make-string (+ 2 (org-outline-level)) ?*)` Events
 #+end_src
 
