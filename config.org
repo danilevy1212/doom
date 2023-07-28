@@ -966,6 +966,7 @@ This module integrates direnv into Emacs.
        :tools
        ;;ansible
        ;;biblio                 ; Writes a PhD for you (citation needed)
+       ;;collab                 ; buffers with friends
        ;;(debugger +lsp)        ; FIXME stepping through code, to help you add bugs
        direnv
 #+end_src
@@ -3582,9 +3583,10 @@ An easy =mnemonic= keybinding.
   (defun dan/run-command--nix ()
     (if IS-LINUX
         (list
-         (list :command-line "rm -f ~/.config/mimeapps.list && sudo nixos-rebuild switch --flake '/etc/nixos#nyx15v2'"
-               :command-name "Rebuild NixOS"
-               :display "Create a new NixOS generation and switch to it")
+         ;; FIXME Detect the host first
+         ;; (list :command-line "rm -f ~/.config/mimeapps.list && sudo nixos-rebuild switch --flake '/etc/nixos#nyx15v2'"
+         ;;       :command-name "Rebuild NixOS"
+         ;;       :display "Create a new NixOS generation and switch to it")
          (list :command-line "nix flake update /etc/nixos"
                :command-name "Update NixOS"
                :display "Update the NixOS flake inputs")
