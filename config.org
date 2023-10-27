@@ -3973,8 +3973,10 @@ Emacs minor mode that allows viewing, editing, searching and comparing large fil
   (vlf-batch-size-remote read-process-output-max)
   :config
   (require 'vlf-setup)
-  (add-to-list 'so-long-mode-preserved-variables 'vlf-mode)
   (add-hook! 'vlf-mode-hook #'so-long-mode))
+
+(after! so-long
+  (add-to-list 'so-long-mode-preserved-variables 'vlf-mode))
 #+end_src
 
 For opening big files in remote servers, this package is a God send. When ~vlf-mode~ is active, other useful keybindings can be found under the prefix ~C-c v~.
