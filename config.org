@@ -1364,15 +1364,8 @@ support.
 #+begin_src emacs-lisp :tangle init.el
        ;;emms
        everywhere        ; *leave* Emacs!? You must be joking
-#+end_src
-
-***** rss
-
-Read RSS feeds in the comfort of Emacs. Thanks to [[https://github.com/skeeto/elfeed][elfeed]].
-
-#+begin_src emacs-lisp :tangle init.el
        ;;irc               ; how neckbeards socialize
-       (rss +org)        ; Emacs as an RSS reader
+       ;;(rss +org)        ; Emacs as an RSS reader
        ;;twitter           ; twitter client https://twitter.com/vnought
 #+end_src
 
@@ -2137,131 +2130,6 @@ Now let's activate it when opening a =.env=:
 #+begin_src emacs-lisp :tangle yes
 (after! dumb-jump
   (setq dumb-jump-selector 'completing-read))
-#+end_src
-
-*** Elfeed
-
-First, lets bring our feeds into the cloud.
-
-#+begin_src emacs-lisp :tangle yes
-(use-package! elfeed
-  :defer t
-  :custom
-  (elfeed-db-directory "~/Cloud/elfeed/")
-#+end_src
-
-Special faces for special tags.
-
-#+begin_src emacs-lisp :tangle yes
-  (elfeed-search-face-alist '((unread    elfeed-search-unread-title-face)
-                              (star      elfeed-search-unread-count-face)))
-#+end_src
-
-Show me entries from within a month that I haven't read and that I have 'starred'.
-
-#+begin_src emacs-lisp :tangle yes
-  :config
-  (setq elfeed-search-filter "@4-week-ago +unread ")
-#+end_src
-
-Some entries are worth preserving. By 'starring' them we don't lose them.
-
-#+begin_src emacs-lisp :tangle yes
-  (defalias 'dan/elfeed-search-tag-all-star
-          (elfeed-expose #'elfeed-search-tag-all 'star)
-          "Add the `star' tag to all selected entries.")
-
-  (defalias 'dan/elfeed-search-untag-all-star
-          (elfeed-expose #'elfeed-search-untag-all 'star)
-          "Remove the `star' tag from all selected entries.")
-#+end_src
-
-Expose the aliases to the =x= keybinding.
-
-    #+begin_src emacs-lisp :tangle yes
-  (map! :map 'elfeed-search-mode-map
-        :nv "x" #'dan/elfeed-search-tag-all-star
-        :nv "X" #'dan/elfeed-search-untag-all-star))
-#+end_src
-
-Automatically updating feed when opening =elfeed=.
-
-#+begin_src emacs-lisp :tangle yes
-(add-hook! 'elfeed-search-mode-hook #'elfeed-update)
-#+end_src
-
-When updating the entries, commit changes to the DB.
-
-#+begin_src emacs-lisp :tangle yes
-(after! elfeed
-  (defadvice! dan/elfeed-search-update--force--commit-changes (&rest _)
-    "After updating the elfeed, commit changes to DB."
-    :after #'elfeed-search-update--force
-    (elfeed-db-save-safe)))
-#+end_src
-
-Set the name of the =RSS= workspace.
-
-#+begin_src emacs-lisp :tangle yes
-(setq +rss-workspace-name "RSS")
-#+end_src
-
-Give it an easy keybinding to access it:
-
-#+begin_src emacs-lisp :tangle yes
-(map! :leader :desc "News feed" :m "o n" #'=rss)
-#+end_src
-
-*** Elfeed Goodies
-
-#+begin_quote
-Various bits and pieces to enhance the Elfeed user experience.
-#+end_quote
-
-#+begin_src emacs-lisp :tangle yes
-(after! elfeed-goodies
-  (setq elfeed-goodies/feed-source-column-width 24
-        elfeed-goodies/tag-column-width 40
-        elfeed-goodies/entry-pane-position 'bottom))
-#+end_src
-
-*** Elfeed Org
-
-Point =elfeed= to the org configuration file.
-
-#+begin_src emacs-lisp :tangle yes
-(after! elfeed
-  (setq rmh-elfeed-org-files (list (expand-file-name "elfeed.org" org-directory))))
-#+end_src
-
-[[https://github.com/skeeto/elfeed#tag-hooks][Auto-tagger]] settings are not configurable through =elfeed-org=, so we load them in a separate file.
-
-#+begin_src emacs-lisp :tangle yes
-(after! elfeed
-  (load! "elfeed-settings" org-directory t))
-#+end_src
-
-*** Elfeed Tube
-
-#+begin_quote
-Elfeed Tube is an Emacs package for a richer, interactive, noise-free and fully text-capable interface to your Youtube subscriptions and playlists using Elfeed, the RSS feed reader for Emacs.
-#+end_quote
-
-#+begin_src emacs-lisp :tangle packages.el
-(package! elfeed-tube
-  :recipe (:host github :repo "karthink/elfeed-tube"))
-#+end_src
-
-Simple setup.
-
-#+begin_src emacs-lisp :tangle yes
-(use-package elfeed-tube
-  :after elfeed
-  :custom
-  (elfeed-tube-auto-save-p  t)
-  (elfeed-tube-auto-fetch-p t)
-  :config
-  (elfeed-tube-setup))
 #+end_src
 
 *** envrc
@@ -3872,8 +3740,6 @@ We create a =blacklist= of sorts to deactivate ~topspace-mode~ in special modes.
                              'image-mode
                              'Custom-mode
                              'compilation-mode
-                             'elfeed-search-mode
-                             'elfeed-show-mode
                              'cfw:calendar-mode
                              'special-mode)))))
 #+end_src
