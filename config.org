@@ -1183,29 +1183,7 @@ This module extends support for Emacs Lisp in Doom Emacs.
        ;;fsharp            ; ML stands for Microsoft's Language
        ;;fstar             ; (dependent) types and (monadic) effects and Z3
        ;;gdscript          ; the language you waited for
-#+end_src
-
-***** golang
-
-#+begin_quote
-This module adds [[https://golang.org][Go]] support, with optional (but recommended) LSP support via
-[[https://github.com/golang/tools/blob/master/gopls/README.md][gopls]].
-
-+ Code completion (~gocode~)
-+ Documentation lookup (~godoc~)
-+ Eldoc support (~go-eldoc~)
-+ REPL (~gore~)
-+ Syntax-checking (~flycheck~)
-+ Auto-formatting on save (~gofmt~) (requires =:editor (format +onsave)=)
-+ Code navigation & refactoring (~go-guru~)
-+ [[../../editor/file-templates/templates/go-mode][File templates]]
-+ [[https://github.com/hlissner/doom-snippets/tree/master/go-mode][Snippets]]
-+ Generate testing code (~go-gen-test~)
-+ Code checking (~flycheck-golangci-lint~)
-#+end_quote
-
-#+begin_src emacs-lisp :tangle init.el
-       (go +lsp +tree-sitter)           ; the hipster dialect
+       ;;(go +lsp +tree-sitter)           ; the hipster dialect
        ;;(graphql +lsp)    ; Give queries a REST
        ;;(haskell +lsp)      ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
@@ -2093,7 +2071,7 @@ Override ~dired-jump~ with ~dirvish~!
 
 #+begin_src emacs-lisp :tangle yes
 (map! :leader
-      :desc "Dirvish" "o -" #'dirvish)
+      :desc "Dired" "o -" #'dired-jump)
 #+end_src
 
 *** Dotenv
