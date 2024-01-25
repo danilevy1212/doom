@@ -1080,21 +1080,7 @@ The best porcelain for ~git~, in =emacs=!
        magit             ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
-#+end_src
-
-***** pdf
-
-#+begin_quote
-This module improves support for reading and interacting with PDF files in Emacs.
-
-It uses =pdf-tools=, which is a replacement for the built-in ~doc-view-mode~ for
-PDF files. The key difference being pages are not pre-rendered, but instead
-rendered on-demand and stored in memory; a much faster approach, especially for
-larger PDFs.
-#+end_quote
-
-#+begin_src emacs-lisp :tangle init.el
-       (:if IS-LINUX pdf)  ; pdf enhancements
+       ;;pdf               ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
        ;;rgb               ; creating color strings
        ;;taskrunner        ; taskrunner for all your projects
@@ -3297,15 +3283,6 @@ Prevent attempting to move files to trash when in a remote directory.
 (when IS-MAC
   (setq-hook! (dired-mode magit-mode 'eshell-before-prompt-hook)
     delete-by-moving-to-trash (not (file-remote-p default-directory))))
-#+end_src
-
-*** PDF Tools
-
-We reduce the default zoom factor to have more leeway between zoom levels.
-
-#+begin_src emacs-lisp :tangle yes
-(after! pdf-tools
-  (setq pdf-view-resize-factor 1.05))
 #+end_src
 
 *** Personal information
